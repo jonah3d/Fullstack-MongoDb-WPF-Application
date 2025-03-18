@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\StoreFrontDb\StoreFrontDb.csproj" />
+    <ProjectReference Include="..\StoreFrontModel\StoreFrontModel.csproj" />
+    <ProjectReference Include="..\StoreFrontRepository\StoreFrontRepository.csproj" />
+  </ItemGroup>
+
+</Project>
