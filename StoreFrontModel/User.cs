@@ -36,6 +36,11 @@ namespace StoreFrontModel
         public string Phone { get; set; }
 
         [BsonElement("address")]
-        public List<string> Addresses { get; set; }
+        public List<Address> Addresses { get; set; }
+
+        [BsonElement("profileImage")]
+        public byte[] ProfileImage { get; set; }
     }
+
+
 }

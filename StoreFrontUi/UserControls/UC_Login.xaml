@@ -5,8 +5,58 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:StoreFrontUi.UserControls"
              mc:Ignorable="d" 
-             d:DesignHeight="200" d:DesignWidth="200">
-    <Grid>
-            
+             Background="Transparent"
+             BorderBrush="Black"
+             BorderThickness="2"
+             d:DesignHeight="180" d:DesignWidth="240">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <TextBox x:Name="Txt_Username" Height="30" Margin="5" Padding="5" BorderThickness="1"/>
+            <TextBlock x:Name="Placeholder_Username" Text="Username" 
+                       Foreground="Gray" VerticalAlignment="Center"
+                       Margin="10,0,0,0" IsHitTestVisible="False"
+                       Visibility="Visible"/>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <PasswordBox x:Name="Txt_Password" Height="30" Margin="5" Padding="5" BorderThickness="1"/>
+            <TextBlock x:Name="Placeholder_Password" Text="Password" 
+                       Foreground="Gray" VerticalAlignment="Center"
+                       Margin="10,0,0,0" IsHitTestVisible="False"
+                       Visibility="Visible"/>
+        </Grid>
+
+  
+        <Button x:Name="Btn_Login" Grid.Row="2" Content="Login" 
+                Height="35" Margin="5" Background="Black" 
+                Foreground="White" Click="Btn_Login_Click"/>
+
+    
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
+            <TextBlock>
+                <Run Text="Don't have an account? "/>
+                <Hyperlink Click="SignUp_Click">
+                    <Run Text="Sign Up"/>
+                </Hyperlink>
+            </TextBlock>
+        </StackPanel>
+
+        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center">
+            <TextBlock>
+                <Run Text="Forgot your password? "/>
+                <Hyperlink Click="ForgotPassword_Click">
+                    <Run Text="Reset Password"/>
+                </Hyperlink>
+            </TextBlock>
+        </StackPanel>
+
     </Grid>
 </UserControl>

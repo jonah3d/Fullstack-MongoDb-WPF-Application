@@ -11,14 +11,37 @@ using System.Windows.Shapes;
 
 namespace StoreFrontUi
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
+            Popup_Login.StaysOpen = false;
+        }
+        private void Btn_UserAcc_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Popup_Login.IsOpen = true;
+        }
+
+        private void Btn_UserAcc_MouseLeave(object sender, MouseEventArgs e)
+        {
+
+           
+            
+                if (!Popup_Login.IsMouseOver && !Btn_UserAcc.IsMouseOver)
+                {
+                    Popup_Login.IsOpen = false;
+                }
+           
+        }
+        private void Popup_Login_MouseLeave(object sender, MouseEventArgs e)
+        {
+        
+            if (!Btn_UserAcc.IsMouseOver)
+            {
+                Popup_Login.IsOpen = false;
+            }
         }
     }
 }
