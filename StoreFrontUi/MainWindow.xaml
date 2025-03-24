@@ -74,10 +74,8 @@
             
         </Border>
 
-        <ScrollViewer Grid.Row="1">
+        <Frame Grid.Row="1" x:Name="MainFramePage"/>
 
-
-        </ScrollViewer>
 
 
     </Grid>

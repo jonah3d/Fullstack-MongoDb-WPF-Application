@@ -17,6 +17,7 @@ namespace StoreFrontUi
         public MainWindow()
         {
             InitializeComponent();
+            MainFramePage.Navigate(new Pages.MainPage());
             Popup_Login.StaysOpen = false;
         }
         private void Btn_UserAcc_MouseEnter(object sender, MouseEventArgs e)

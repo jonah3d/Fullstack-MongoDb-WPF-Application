@@ -12,5 +12,7 @@ namespace StoreFrontRepository
         public bool CreateUser();
         public bool LoginUser(string username, string password);
 
+      
+
     }
 }
