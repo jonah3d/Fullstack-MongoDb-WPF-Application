@@ -9,7 +9,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\default_contact.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\StoreFrontRepository\StoreFrontRepository.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\default_contact.png" />
   </ItemGroup>
 
 </Project>

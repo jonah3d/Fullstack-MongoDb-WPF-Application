@@ -11,6 +11,11 @@ namespace StoreFrontModel
 {
     public class User
     {
+        public User()
+        {
+            Addresses = new List<Address>();
+        }
+
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public ObjectId Id { get; set; }

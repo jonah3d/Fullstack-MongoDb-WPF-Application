@@ -4,18 +4,105 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:StoreFrontUi.Pages"
-      mc:Ignorable="d" 
-      Background="Red"
-      d:DesignHeight="450" d:DesignWidth="800"
+      mc:Ignorable="d"
       Title="CreateUserPage">
 
-    <Border Background="Yellow"  HorizontalAlignment="Center"
-            VerticalAlignment="Center" Width="750" Height="400" CornerRadius="20" 
+    <Page.Resources>
+        <!-- Global Style for TextBlock -->
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontFamily" Value="Arial"/>
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+
+        
+        <Style TargetType="TextBox">
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="Height" Value="25"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontFamily" Value="Arial"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="1.5"/>
+        </Style>
+    </Page.Resources>
+
+    <Border HorizontalAlignment="Center"
+            VerticalAlignment="Center" Width="1000" Height="600" CornerRadius="20" 
             BorderBrush="Black" BorderThickness="1.5">
 
-        <StackPanel Orientation=""> 
-            
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <TextBlock Text="First Name:"/>
+                <TextBox x:Name="Tb_Name"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+                <TextBlock Text="Last Name:"/>
+                <TextBox x:Name="Tb_LastName"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+                <TextBlock Text="Email:"/>
+                <TextBox x:Name="Tb_Email"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+                <TextBlock Text="Username:"/>
+                <TextBox x:Name="Tb_username"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+                <TextBlock Text="Phone:"/>
+                <TextBox x:Name="Tb_phone"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+                <TextBlock Text="Password:"/>
+                <PasswordBox x:Name="Tb_password" Width="200" Background="Transparent" BorderBrush="Black" BorderThickness="1.5"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+                <TextBlock Text="Confirm Password:"/>
+                <PasswordBox x:Name="Tb_confpassword" Width="200" Background="Transparent" BorderBrush="Black" BorderThickness="1.5"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+                <TextBlock Text="Street:" Margin="0,0,15,0"/>
+                <TextBox x:Name="Tb_street" Width="200"/>
+                <TextBlock Text="City:" Margin="15,0,0,0"/>
+                <TextBox x:Name="Tb_city" Width="200"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+                <TextBlock Text="Postal Code:" Margin="0,0,15,0"/>
+                <TextBox x:Name="Tb_postalcode" Width="200"/>
+                <TextBlock Text="Province:" Margin="15,0,0,0"/>
+                <TextBox x:Name="Tb_province" Width="200"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+                <TextBlock Text="Profile Image:"/>
+                <Image x:Name="Img_profileImage" Height="32" Width="32" Source="pack://application:,,,/Assets/default_contact.png">
+                    <Image.Style>
+                        <Style TargetType="Image">
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Opacity" Value="0.7"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+            </StackPanel>
+
+            <Button x:Name="btn_registerUser" Content="Register" Width="150" 
+                    Height="25" Margin="0,20,0,0" BorderBrush="Black" Click="btn_registerUser_Click"
+                    BorderThickness="1.5" Background="Transparent"/>
+
         </StackPanel>
-        
+
     </Border>
 </Page>

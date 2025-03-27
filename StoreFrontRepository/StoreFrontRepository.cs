@@ -30,14 +30,20 @@ namespace StoreFrontRepository
         }
 
 
-        public bool CreateUser()
+        public bool CreateUser(User user)
         {
-            throw new NotImplementedException();
+            try
+            {
+                mongoDatabase.GetCollection<User>("users").InsertOne(user);
+                return true;
+            }catch(Exception ex)
+            {
+                throw new StoreFrontException($"Error Creating New User { ex.Message }");
+            }
         }
 
-        public bool LoginUser(string username, string password)
+        public User LoginUser(string username, string password)
         {
-            bool ans = false;
 
             if(username == null || password == null)
             {
@@ -47,13 +53,13 @@ namespace StoreFrontRepository
           var user =  mongoDatabase.GetCollection<User>("users").Find
                 (x => x.Username == username && x.Password == password).FirstOrDefault();
 
-            if (user != null)
+            if (user == null)
             {
-                ans = true;
+                return null;
             }
 
+            return user;
 
-            return ans;
         }
     }
 }
