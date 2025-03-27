@@ -10,13 +10,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
 namespace StoreFrontUi
 {
     public partial class MainWindow : Window
     {
-
-        public User CurrentUser { get; set; }
+        public User CurrentUser { get; set; } = new User();
 
         public MainWindow()
         {
@@ -24,12 +22,15 @@ namespace StoreFrontUi
             MainFramePage.NavigationUIVisibility = NavigationUIVisibility.Hidden;
             NavigateToMainPage();
             Popup_Login.StaysOpen = false;
+
+            this.DataContext = this;
         }
 
         public void NavigateToMainPage()
         {
             MainFramePage.Navigate(new Pages.MainPage());
         }
+
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             if (MainFramePage.CanGoBack)
@@ -37,37 +38,69 @@ namespace StoreFrontUi
                 MainFramePage.GoBack();
             }
         }
+
         private void MainFramePage_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
         {
             BackButton.GetBindingExpression(Button.VisibilityProperty)?.UpdateTarget();
         }
+
         public void NavigateToCreateUserPage()
         {
             MainFramePage.Navigate(new Pages.CreateUserPage());
         }
 
+
         private void Btn_UserAcc_MouseEnter(object sender, MouseEventArgs e)
         {
-            Popup_Login.IsOpen = true;
+            if (CurrentUser != null && CurrentUser.ProfileImage != null)
+            {
+             
+                Popup_loggedInUser.IsOpen = true;
+                Popup_Login.IsOpen = false;
+            }
+            else
+            {
+                Popup_Login.IsOpen = true;
+                Popup_loggedInUser.IsOpen = false;
+            }
         }
+
 
         private void Btn_UserAcc_MouseLeave(object sender, MouseEventArgs e)
         {
-            if (!Popup_Login.IsMouseOver && !Btn_UserAcc.IsMouseOver)
+            if (CurrentUser != null)
             {
-                Popup_Login.IsOpen = false;
+               
+                if (!Popup_loggedInUser.IsMouseOver && !Btn_UserAcc.IsMouseOver)
+                {
+                    Popup_loggedInUser.IsOpen = false;
+                }
+            }
+            else
+            {
+             
+                if (!Popup_Login.IsMouseOver && !Btn_UserAcc.IsMouseOver)
+                {
+                    Popup_Login.IsOpen = false;
+                }
             }
         }
 
         private void Popup_Login_MouseLeave(object sender, MouseEventArgs e)
         {
-            if (!Btn_UserAcc.IsMouseOver)
+            if (!Btn_UserAcc.IsMouseOver && !Popup_Login.IsMouseOver)
             {
                 Popup_Login.IsOpen = false;
             }
         }
 
-   
+        private void Popup_loggedInUser_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (!Btn_UserAcc.IsMouseOver && !Popup_loggedInUser.IsMouseOver)
+            {
+                Popup_loggedInUser.IsOpen = false;
+            }
+        }
 
         public void SetUpCurrentUser()
         {
@@ -76,12 +109,13 @@ namespace StoreFrontUi
                 Btn_UserAcc.Background = ConvertImageToBrush.ConvertToImageBrush(CurrentUser.ProfileImage);
                 Btn_Tb_Icon.Visibility = Visibility.Collapsed;
             }
-
-            if(CurrentUser.ProfileImage == null)
+            else
             {
                 Btn_UserAcc.Background = new SolidColorBrush(Colors.Transparent);
                 Btn_Tb_Icon.Visibility = Visibility.Visible;
             }
+
+            
         }
-        }
+    }
 }

@@ -63,6 +63,9 @@ namespace StoreFrontUi.UserControls
                     MessageBox.Show("Login Successful");
                     parentWindow.CurrentUser = loggedUser;
                     parentWindow.SetUpCurrentUser();
+                    Txt_Password.Password = string.Empty;
+                    Txt_Username.Text = string.Empty;
+
                 }
                 else
                 {

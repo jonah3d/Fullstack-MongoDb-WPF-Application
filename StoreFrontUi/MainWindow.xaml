@@ -77,6 +77,19 @@
                         </Border>
                     </Popup>
 
+                    <Popup x:Name="Popup_loggedInUser" Margin="15"
+       Placement="Bottom"
+       PlacementTarget="{Binding ElementName=Btn_UserAcc}"
+       StaysOpen="False"
+       AllowsTransparency="True"
+       MouseLeave="Popup_loggedInUser_MouseLeave">
+                        <Border Background="White" BorderBrush="Black" BorderThickness="1"
+            Padding="10" CornerRadius="5" Width="260" Height="205">
+                            <local1:UC_LoggedInUser LoginUser="{Binding}" />
+                        </Border>
+                    </Popup>
+
+
 
                     <Button Width="30" Height="30" Margin="10,0,0,0" Background="Transparent" BorderThickness="1.5" BorderBrush="Black">
                         <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="16"  Text="&#xE719;" 
