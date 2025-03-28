@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:StoreFrontUi" xmlns:local1="clr-namespace:StoreFrontUi.UserControls"
         mc:Ignorable="d"
         ResizeMode="NoResize"
+        x:Name="winmain"
         Title="MainWindow" Height="720" Width="1280">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
@@ -85,7 +86,7 @@
        MouseLeave="Popup_loggedInUser_MouseLeave">
                         <Border Background="White" BorderBrush="Black" BorderThickness="1"
             Padding="10" CornerRadius="5" Width="260" Height="205">
-                            <local1:UC_LoggedInUser LoginUser="{Binding}" />
+                            <local1:UC_LoggedInUser LoginUser="{Binding ElementName=winmain,Path=CurrentUser}" />
                         </Border>
                     </Popup>
 

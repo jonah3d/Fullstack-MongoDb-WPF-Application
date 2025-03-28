@@ -14,7 +14,19 @@ namespace StoreFrontUi
 {
     public partial class MainWindow : Window
     {
-        public User CurrentUser { get; set; } = new User();
+
+
+        public User CurrentUser
+        {
+            get { return (User)GetValue(CurrentUserProperty); }
+            set { SetValue(CurrentUserProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for CurrentUser.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty CurrentUserProperty =
+            DependencyProperty.Register("CurrentUser", typeof(User), typeof(MainWindow), new PropertyMetadata(null));
+
+
 
         public MainWindow()
         {
