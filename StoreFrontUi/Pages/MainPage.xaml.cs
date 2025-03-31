@@ -15,14 +15,29 @@ using System.Windows.Shapes;
 
 namespace StoreFrontUi.Pages
 {
-    /// <summary>
-    /// Interaction logic for MainPage.xaml
-    /// </summary>
     public partial class MainPage : Page
     {
         public MainPage()
         {
             InitializeComponent();
+        }
+
+        private void Image_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (sender is Image img && img.Tag is string imageName)
+            {
+                string colorImagePath = $"pack://application:,,,/Assets/{imageName}.jpg";
+                img.Source = new BitmapImage(new Uri(colorImagePath));
+            }
+        }
+
+        private void Image_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (sender is Image img && img.Tag is string imageName)
+            {
+                string bwImagePath = $"pack://application:,,,/Assets/bw_{imageName}.jpg";
+                img.Source = new BitmapImage(new Uri(bwImagePath));
+            }
         }
     }
 }

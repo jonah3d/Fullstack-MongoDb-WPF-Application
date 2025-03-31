@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="StoreFrontUi.UserControls.UC_NewItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:StoreFrontUi.UserControls"
+             mc:Ignorable="d" 
+             BorderBrush="Black" 
+             BorderThickness="1.5"
+             x:Name="UC_newItemRoot"
+             d:DesignHeight="325" d:DesignWidth="282">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Image x:Name="Img_newitem" Height="270" 
+                   Source="/Assets/test_adidas_.png" Stretch="UniformToFill"/>
+            <Border Background="White" BorderBrush="Black" BorderThickness="1" 
+                    HorizontalAlignment="Left" VerticalAlignment="Bottom" 
+                    Margin="10" Padding="5">
+                <TextBlock Text="$99.99" FontFamily="Calibri" FontWeight="Bold" 
+                           Foreground="Black"/>
+            </Border>
+        </Grid>
+
+        <StackPanel Grid.Row="1" Background="WhiteSmoke" Orientation="Vertical">
+            <TextBlock x:Name="Txtb_newitem_name" Text="Superstar II Shoes" 
+                       FontFamily="Calibri" FontWeight="Black" FontStyle="Normal"/>
+            <TextBlock x:Name="Txtb_newitem_technology" Text="Originals" Margin="0,5,0,0" 
+                       FontFamily="Calibri Light" Foreground="Black"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

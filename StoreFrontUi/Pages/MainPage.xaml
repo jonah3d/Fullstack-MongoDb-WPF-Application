@@ -4,12 +4,111 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:StoreFrontUi.Pages"
+      xmlns:usercontrols="clr-namespace:StoreFrontUi.UserControls"
       mc:Ignorable="d" 
+      Background="White"
       d:DesignHeight="450" d:DesignWidth="800"
-      Background="Red"
+    
       Title="MainPage">
 
-    <Grid>
-        
-    </Grid>
+    <ScrollViewer VerticalScrollBarVisibility="Visible">
+        <Grid x:Name="mp_grid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Width="350" Height="120" 
+                    CornerRadius="5" Background="LightYellow" BorderBrush="Black" BorderThickness="1.5">
+            </Border>
+
+            <StackPanel Orientation="Vertical" Grid.Row="1" Margin="30,30,0,0">
+                <TextBlock Text="Novedades" FontSize="20"/>
+                <StackPanel Orientation="Horizontal" Margin="0,30,0,0">
+                    <usercontrols:UC_NewItem HorizontalAlignment="Left"/>
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel Orientation="Vertical" Grid.Row="2" Height="250" Margin="30,20,0,0">
+                <TextBlock Text="Comprar Por Categoria" FontSize="20"/>
+                <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden" Margin="0,30,0,0" Height="200">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+
+                        
+                        <Border Width="200" Height="200" Grid.Column="0"
+                                HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Grid>
+                                <Image Source="pack://application:,,,/Assets/bw_men_cat.jpg" 
+                                       Tag="men_cat" Stretch="UniformToFill"
+                                       Width="200" Height="200" 
+                                       MouseEnter="Image_MouseEnter"  
+                                       MouseLeave="Image_MouseLeave"/>
+                                <TextBlock Text="MEN" FontSize="22" FontWeight="Bold" Foreground="White"
+                                          
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                                           Padding="10"/>
+                            </Grid>
+                        </Border>
+
+                     
+                        <Border Width="200" Height="200" Grid.Column="1"
+                                HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Grid>
+                                <Image Source="pack://application:,,,/Assets/bw_women_cat.jpg" 
+                                       Tag="women_cat" Stretch="UniformToFill"
+                                       Width="200" Height="200" 
+                                       MouseEnter="Image_MouseEnter"  
+                                       MouseLeave="Image_MouseLeave"/>
+                                <TextBlock Text="WOMEN" FontSize="22" FontWeight="Bold" Foreground="White"
+                                 
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                                           Padding="10"/>
+                            </Grid>
+                        </Border>
+
+                   
+                        <Border Width="200" Height="200" Grid.Column="2"
+                                HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Grid>
+                                <Image Source="pack://application:,,,/Assets/bw_children_cat.jpg" 
+                                       Tag="children_cat" Stretch="UniformToFill"
+                                       Width="200" Height="200" 
+                                       MouseEnter="Image_MouseEnter"  
+                                       MouseLeave="Image_MouseLeave"/>
+                                <TextBlock Text="CHILDREN" FontSize="22" FontWeight="Bold" Foreground="White"
+                                          
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                                           Padding="10"/>
+                            </Grid>
+                        </Border>
+
+                     
+                        <Border Width="200" Height="200" Grid.Column="3"
+                                HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Grid>
+                                <Image Source="pack://application:,,,/Assets/bw_sports_cat.jpg" 
+                                       Tag="sports_cat" Stretch="UniformToFill"
+                                       Width="200" Height="200" 
+                                       MouseEnter="Image_MouseEnter"  
+                                       MouseLeave="Image_MouseLeave"/>
+                                <TextBlock Text="SPORTS" FontSize="22" FontWeight="Bold" Foreground="White"
+                                        
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                                           Padding="10"/>
+                            </Grid>
+                        </Border>
+
+                    </Grid>
+                </ScrollViewer>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
 </Page>
