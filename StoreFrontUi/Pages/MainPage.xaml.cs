@@ -22,22 +22,52 @@ namespace StoreFrontUi.Pages
             InitializeComponent();
         }
 
-        private void Image_MouseEnter(object sender, MouseEventArgs e)
+        private void Button_MouseEnter(object sender, MouseEventArgs e)
         {
-            if (sender is Image img && img.Tag is string imageName)
+            if (sender is Button btn && btn.Tag is string categoryName)
             {
-                string colorImagePath = $"pack://application:,,,/Assets/{imageName}.jpg";
-                img.Source = new BitmapImage(new Uri(colorImagePath));
+            
+                if (btn.Content is Grid grid &&
+                    grid.Children.OfType<Image>().FirstOrDefault() is Image img)
+                {
+                    string colorImagePath = $"pack://application:,,,/Assets/{categoryName}.jpg";
+                    img.Source = new BitmapImage(new Uri(colorImagePath));
+                }
             }
         }
 
-        private void Image_MouseLeave(object sender, MouseEventArgs e)
+        private void Button_MouseLeave(object sender, MouseEventArgs e)
         {
-            if (sender is Image img && img.Tag is string imageName)
+            if (sender is Button btn && btn.Tag is string categoryName)
             {
-                string bwImagePath = $"pack://application:,,,/Assets/bw_{imageName}.jpg";
-                img.Source = new BitmapImage(new Uri(bwImagePath));
+               
+                if (btn.Content is Grid grid &&
+                    grid.Children.OfType<Image>().FirstOrDefault() is Image img)
+                {
+                    string bwImagePath = $"pack://application:,,,/Assets/bw_{categoryName}.jpg";
+                    img.Source = new BitmapImage(new Uri(bwImagePath));
+                }
             }
+        }
+
+        private void Btn_men_Click(object sender, RoutedEventArgs e)
+        {
+      
+        }
+
+        private void Btn_women_Click(object sender, RoutedEventArgs e)
+        {
+          
+        }
+
+        private void Btn_children_Click(object sender, RoutedEventArgs e)
+        {
+           
+        }
+
+        private void Btn_sports_Click(object sender, RoutedEventArgs e)
+        {
+           
         }
     }
 }
