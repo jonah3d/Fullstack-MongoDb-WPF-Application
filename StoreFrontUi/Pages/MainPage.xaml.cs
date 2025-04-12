@@ -52,26 +52,38 @@ namespace StoreFrontUi.Pages
 
         private void Btn_men_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is Button btn && btn.Tag is string men_cat)
+            if (sender is Button btn && btn.Tag is string categoryName)
             {
                 var mainWindow = Application.Current.MainWindow as MainWindow;
-                mainWindow?.MainFramePage.Navigate(new ProductsFilterPage(men_cat));
+                mainWindow?.MainFramePage.Navigate(new ProductsFilterPage(categoryName));
             }
         }
 
         private void Btn_women_Click(object sender, RoutedEventArgs e)
         {
-          
+            if (sender is Button btn && btn.Tag is string categoryName)
+            {
+                var mainWindow = Application.Current.MainWindow as MainWindow;
+                mainWindow?.MainFramePage.Navigate(new ProductsFilterPage(categoryName));
+            }
         }
 
         private void Btn_children_Click(object sender, RoutedEventArgs e)
         {
-           
+            if (sender is Button btn && btn.Tag is string categoryName)
+            {
+                var mainWindow = Application.Current.MainWindow as MainWindow;
+                mainWindow?.MainFramePage.Navigate(new ProductsFilterPage(categoryName));
+            }
         }
 
         private void Btn_sports_Click(object sender, RoutedEventArgs e)
         {
-           
+            if (sender is Button btn && btn.Tag is string categoryName)
+            {
+                var mainWindow = Application.Current.MainWindow as MainWindow;
+                mainWindow?.MainFramePage.Navigate(new ProductsFilterPage(categoryName));
+            }
         }
     }
 }

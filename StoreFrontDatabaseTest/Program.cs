@@ -28,7 +28,7 @@ namespace StoreFrontDatabaseTest
         static async Task GetProduct()
         {
             IStoreFront storeFront = new StoreFrontRepository.StoreFrontRepository();
-            var product = await storeFront.GetProductByName("Nike Zoom Vomero 5");
+            var product = await storeFront.GetProductByName("Nike Air Force 1");
             Console.WriteLine("GetProduct() executed");
 
             if (product != null)
@@ -60,8 +60,12 @@ namespace StoreFrontDatabaseTest
                 {
                     Console.WriteLine($"\nTAG: {product.Tag.Name}");
                 }
+                else
+                {
+                    Console.WriteLine("\nNo tags found");
+                }
 
-               
+
                 if (product.Variants != null && product.Variants.Count > 0)
                 {
                     Console.WriteLine("\nVARIANTS:");
@@ -73,7 +77,7 @@ namespace StoreFrontDatabaseTest
                         if (variant.Discount != null)
                         {
                             Console.WriteLine($"    Discount: {variant.Discount.Percentage}%");
-                           
+
                         }
 
                         if (variant.Sizes != null && variant.Sizes.Count > 0)
@@ -85,7 +89,7 @@ namespace StoreFrontDatabaseTest
                             }
                         }
 
-                     
+
                         if (variant.Photos != null && variant.Photos.Count > 0)
                         {
                             Console.WriteLine("  Photos:");

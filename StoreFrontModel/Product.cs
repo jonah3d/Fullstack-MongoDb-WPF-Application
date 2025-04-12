@@ -49,5 +49,36 @@ namespace StoreFrontModel
         [BsonIgnore]
         public ProductTag Tag { get; set; }
 
+        [BsonIgnore]
+        public decimal Price
+        {
+            get
+            {
+               
+                return Variants?.FirstOrDefault()?.Price ?? 0;
+            }
+        }
+
+        [BsonIgnore]
+        public string FirstImageUrl
+        {
+            get
+            {
+                try
+                {
+                    if (Variants != null && Variants.Count > 0 &&
+                        Variants[0].Photos != null && Variants[0].Photos.Count > 0)
+                    {
+                        return Variants[0].Photos[0].Url;
+                    }
+                    return null;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+
     }
 }

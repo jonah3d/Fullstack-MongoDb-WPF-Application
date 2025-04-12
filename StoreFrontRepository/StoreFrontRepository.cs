@@ -59,11 +59,13 @@ namespace StoreFrontRepository
                     return new List<Product>();
                 }
 
-                // Use MongoDB's AnyEq filter builder for array elements
+                
                 var filter = Builders<Product>.Filter.AnyEq(p => p.CategoryIds, menCat.Id);
 
                 var menProducts = await mongoDatabase.GetCollection<Product>("products")
                     .FindAsync(filter);
+
+
 
                 var menProductsList = await menProducts.ToListAsync();
                    
@@ -72,8 +74,35 @@ namespace StoreFrontRepository
                 {
                     return new List<Product>();
                 }
+                else
+                {
+                    foreach (var product in menProductsList)
+                    {
+                        var categoriesCollection = mongoDatabase.GetCollection<Category>("category");
+                        product.Categories = new List<Category>();
+                        foreach (var categoryId in product.CategoryIds)
+                        {
+                            var categoryCursor = await categoriesCollection.FindAsync(c => c.Id == categoryId);
+                            var category = await categoryCursor.FirstOrDefaultAsync();
+                            if (category != null)
+                            {
+                                product.Categories.Add(category);
+                            }
+                        }
+                        if (product.IvaTypeId != ObjectId.Empty)
+                        {
+                            var vatCursor = await mongoDatabase.GetCollection<Vat>("vat").FindAsync(v => v.Id == product.IvaTypeId);
+                            product.IvaType = await vatCursor.FirstOrDefaultAsync();
+                        }
+                        if (product.TagId != ObjectId.Empty)
+                        {
+                            var tagCursor = await mongoDatabase.GetCollection<ProductTag>("tag").FindAsync(t => t.Id == product.TagId);
+                            product.Tag = await tagCursor.FirstOrDefaultAsync();
+                        }
+                    }
+                }
 
-                return menProductsList;
+                    return menProductsList;
             }
             catch (Exception ex)
             {
@@ -94,7 +123,7 @@ namespace StoreFrontRepository
                 var productCursor = await mongoDatabase.GetCollection<Product>("products")
                     .FindAsync(x => x.Name == name);
 
-                var product = await productCursor.FirstOrDefaultAsync(); // Ensure async
+                var product = await productCursor.FirstOrDefaultAsync(); 
 
                 if (product == null)
                 {
@@ -122,7 +151,7 @@ namespace StoreFrontRepository
 
                 if (product.TagId != ObjectId.Empty)
                 {
-                    var tagCursor = await mongoDatabase.GetCollection<ProductTag>("tags").FindAsync(t => t.Id == product.TagId);
+                    var tagCursor = await mongoDatabase.GetCollection<ProductTag>("tag").FindAsync(t => t.Id == product.TagId);
                     product.Tag = await tagCursor.FirstOrDefaultAsync();
                 }
 

@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:StoreFrontUi.Pages"
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+     xmlns:usercontrols="clr-namespace:StoreFrontUi.UserControls"
       mc:Ignorable="d" 
       Background="White"
         d:DesignHeight="450" d:DesignWidth="800"
@@ -29,9 +30,9 @@
                 <!-- Sexo Filter -->
                 <Expander Header="Sexo" IsExpanded="True" FontWeight="Bold">
                     <StackPanel Margin="10,5,0,0">
-                        <CheckBox Content="Hombre" IsChecked="True"/>
-                        <CheckBox Content="Mujer"/>
-                        <CheckBox Content="Niños"/>
+                        <CheckBox Content="Hombre" x:Name="ckb_men"/>
+                        <CheckBox Content="Mujer" x:Name="ckb_women"/>
+                        <CheckBox Content="Niños" x:Name="ckb_children"/>
                     </StackPanel>
                 </Expander>
 
@@ -59,8 +60,8 @@
                 </Expander>
 
                 <Separator Margin="0 10"/>
-                <!-- Category Filter -->
-                <Expander Header="Categoria" IsExpanded="True" FontWeight="Bold">
+
+                <Expander Header="Marca" IsExpanded="True" FontWeight="Bold">
                     <ComboBox>
                         
                     </ComboBox>
@@ -68,23 +69,33 @@
 
             </StackPanel>
 
-            <!-- Product Grid -->
+
             <ScrollViewer Grid.Column="1" Padding="10">
                 <ItemsControl x:Name="ProductsGrid" >
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <WrapPanel IsItemsHost="True" />
+                            <WrapPanel IsItemsHost="True" 
+                           Orientation="Horizontal"
+                           HorizontalAlignment="Left" />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <usercontrols:UC_ProoductInGrid GridProducts="{Binding}" Margin="10"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+
                 </ItemsControl>
             </ScrollViewer>
         </Grid>
 
 
         <StatusBar Grid.Row="1" Background="#DDD">
-            <StatusBarItem Width="auto">
-                <ProgressBar x:Name="LoadingProgressBar"
-                             Height="20"
+            <StatusBarItem Width="800">
+                <ProgressBar x:Name="LoadingProgressBar" Width="800"
+                             Background="Green"
+                             Height="10"
                              IsIndeterminate="True"
                              Visibility="Collapsed" />
             </StatusBarItem>
