@@ -14,8 +14,8 @@ namespace StoreFrontRepository
         public User LoginUser(string username, string password);
         // public User GetUser(string username);
 
-        public List<Product> GetAllMenProduct();
+        public Task<List<Product>> GetAllMenProduct();
 
-        public Product GetProductByName(string name);
+        public Task <Product> GetProductByName(string name);
     }
 }

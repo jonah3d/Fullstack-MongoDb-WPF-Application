@@ -25,10 +25,10 @@ namespace StoreFrontDatabaseTest
             }
         }
 
-        static void GetProduct()
+        static async Task GetProduct()
         {
             IStoreFront storeFront = new StoreFrontRepository.StoreFrontRepository();
-            var product = storeFront.GetProductByName("Air Jordan 1 Low Premium");
+            var product = await storeFront.GetProductByName("Nike Zoom Vomero 5");
             Console.WriteLine("GetProduct() executed");
 
             if (product != null)
@@ -104,10 +104,10 @@ namespace StoreFrontDatabaseTest
         }
 
 
-        static void GetAllMenProduct()
+        static async Task GetAllMenProduct()
         {
             IStoreFront storeFront = new StoreFrontRepository.StoreFrontRepository();
-            var menproducts = storeFront.GetAllMenProduct();
+            var menproducts = await storeFront.GetAllMenProduct();
 
 
             if (menproducts != null && menproducts.Any())
@@ -126,13 +126,13 @@ namespace StoreFrontDatabaseTest
         }
 
 
-        public static void  Main()
+        public static async Task  Main()
         {
             Program.loginClient();  
             Console.WriteLine("===================================\n");
-        Program.GetProduct();
+       await Program.GetProduct();
 
-          // Program.GetAllMenProduct();
+        // await  Program.GetAllMenProduct();
 
         }
 

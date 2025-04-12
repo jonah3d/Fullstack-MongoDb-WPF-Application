@@ -52,7 +52,11 @@ namespace StoreFrontUi.Pages
 
         private void Btn_men_Click(object sender, RoutedEventArgs e)
         {
-      
+            if (sender is Button btn && btn.Tag is string men_cat)
+            {
+                var mainWindow = Application.Current.MainWindow as MainWindow;
+                mainWindow?.MainFramePage.Navigate(new ProductsFilterPage(men_cat));
+            }
         }
 
         private void Btn_women_Click(object sender, RoutedEventArgs e)

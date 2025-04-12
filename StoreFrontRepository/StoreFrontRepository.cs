@@ -42,14 +42,16 @@ namespace StoreFrontRepository
                 throw new StoreFrontException($"Error Creating New User { ex.Message }");
             }
         }
-        public List<Product> GetAllMenProduct()
+        public async Task<List<Product>> GetAllMenProduct()
         {
             try
             {
-                
-                var menCat = mongoDatabase.GetCollection<Category>("category")
-                    .Find(x => x.Name == "Men")
-                    .FirstOrDefault();
+
+                var menCats = await mongoDatabase.GetCollection<Category>("category")
+                    .FindAsync(x => x.Name == "Men");
+
+                var menCat = menCats.FirstOrDefault();
+
 
                 if (menCat == null)
                 {
@@ -60,16 +62,18 @@ namespace StoreFrontRepository
                 // Use MongoDB's AnyEq filter builder for array elements
                 var filter = Builders<Product>.Filter.AnyEq(p => p.CategoryIds, menCat.Id);
 
-                var menProducts = mongoDatabase.GetCollection<Product>("products")
-                    .Find(filter)
-                    .ToList();
+                var menProducts = await mongoDatabase.GetCollection<Product>("products")
+                    .FindAsync(filter);
 
-                if (menProducts == null || menProducts.Count == 0)
+                var menProductsList = await menProducts.ToListAsync();
+                   
+
+                if (menProductsList == null || menProductsList.Count == 0)
                 {
                     return new List<Product>();
                 }
 
-                return menProducts;
+                return menProductsList;
             }
             catch (Exception ex)
             {
@@ -78,57 +82,55 @@ namespace StoreFrontRepository
             }
         }
 
-        public Product GetProductByName(string name)
+        public async Task<Product> GetProductByName(string name)
         {
-            Product product = null;
-            if (name == null)
+            if (string.IsNullOrEmpty(name))
             {
-                throw new StoreFrontException("Product Name cannot be null");
+                throw new StoreFrontException("Product Name cannot be null or empty");
             }
 
             try
             {
-           
-                product = mongoDatabase.GetCollection<Product>("products")
-                    .Find(x => x.Name == name).FirstOrDefault();
+                var productCursor = await mongoDatabase.GetCollection<Product>("products")
+                    .FindAsync(x => x.Name == name);
+
+                var product = await productCursor.FirstOrDefaultAsync(); // Ensure async
 
                 if (product == null)
                 {
                     throw new StoreFrontException("Product not found");
                 }
 
-          
                 var categoriesCollection = mongoDatabase.GetCollection<Category>("category");
                 product.Categories = new List<Category>();
 
                 foreach (var categoryId in product.CategoryIds)
                 {
-                    var category = categoriesCollection.Find(c => c.Id == categoryId).FirstOrDefault();
+                    var categoryCursor = await categoriesCollection.FindAsync(c => c.Id == categoryId);
+                    var category = await categoryCursor.FirstOrDefaultAsync();
                     if (category != null)
                     {
                         product.Categories.Add(category);
                     }
                 }
 
-              
                 if (product.IvaTypeId != ObjectId.Empty)
                 {
-                    product.IvaType = mongoDatabase.GetCollection<Vat>("vat")
-                        .Find(v => v.Id == product.IvaTypeId).FirstOrDefault();
+                    var vatCursor = await mongoDatabase.GetCollection<Vat>("vat").FindAsync(v => v.Id == product.IvaTypeId);
+                    product.IvaType = await vatCursor.FirstOrDefaultAsync();
                 }
 
-           
                 if (product.TagId != ObjectId.Empty)
                 {
-                    product.Tag = mongoDatabase.GetCollection<ProductTag>("tags")
-                        .Find(t => t.Id == product.TagId).FirstOrDefault();
+                    var tagCursor = await mongoDatabase.GetCollection<ProductTag>("tags").FindAsync(t => t.Id == product.TagId);
+                    product.Tag = await tagCursor.FirstOrDefaultAsync();
                 }
 
                 return product;
             }
             catch (Exception ex)
             {
-                throw new StoreFrontException($"Error Getting Product by Name {ex.Message}");
+                throw new StoreFrontException($"Error Getting Product by Name: {ex.Message}");
             }
         }
 

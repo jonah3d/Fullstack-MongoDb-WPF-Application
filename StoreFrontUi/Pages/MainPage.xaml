@@ -47,7 +47,7 @@
                         <!-- MEN Category -->
                         <Button Width="200" Height="200" Grid.Column="0" BorderBrush="Black" BorderThickness="2" Background="Transparent"
                                 HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="Btn_men" Click="Btn_men_Click"
-                                Tag="men_cat" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave">
+                                Tag="men_cat" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" >
                             <Grid>
                                 <Image Source="pack://application:,,,/Assets/bw_men_cat.jpg" 
                                        Stretch="UniformToFill"
