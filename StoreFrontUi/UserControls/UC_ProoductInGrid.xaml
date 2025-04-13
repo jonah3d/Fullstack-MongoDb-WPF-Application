@@ -10,6 +10,7 @@
              BorderBrush="Black"
              BorderThickness="2"
              x:Name="ucProductInGrid"
+             
              d:DesignHeight="450" d:DesignWidth="250">
 
     <UserControl.Resources>
@@ -27,9 +28,10 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
-            <Image x:Name="Img_newitem"
+            <Image Source="{Binding Variants[0].Photos[0].Url,Converter={StaticResource FilePathToImageConverter}}"
        Height="250"
-       Width="250"/>
+       Width="250"
+           />
         </Grid>
 
         <TextBlock Text="{Binding Tag.Name}" Grid.Row="1" Foreground="Red" FontSize="20" Margin="0,15,0,0"/>

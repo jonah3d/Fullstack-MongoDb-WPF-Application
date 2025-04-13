@@ -34,7 +34,7 @@ namespace StoreFrontUi.Pages
             storeFront = new StoreFrontRepository.StoreFrontRepository();
             this.DataContext = this;
 
-            // Use this pattern for async calls from constructor
+       
             Loaded += async (s, e) => {
                 await NavigatedFilter();
             };

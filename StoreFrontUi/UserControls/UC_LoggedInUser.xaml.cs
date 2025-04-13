@@ -38,7 +38,7 @@ namespace StoreFrontUi.UserControls
             if (e.NewValue is User user)
             {
                 var control = (UC_LoggedInUser)d;
-                //control.DataContext = user; 
+              
             }
         }
 

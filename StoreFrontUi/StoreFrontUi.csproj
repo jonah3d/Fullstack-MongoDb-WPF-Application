@@ -39,7 +39,9 @@
     <Resource Include="Assets\default_contact.png" />
     <Resource Include="Assets\men_cat.jpg" />
     <Resource Include="Assets\sports_cat.jpg" />
-    <Resource Include="Assets\test_adidas_.png" />
+    <Resource Include="Assets\test_adidas_.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\women_cat.jpg" />
   </ItemGroup>
 

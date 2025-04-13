@@ -6,29 +6,40 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using System.Windows.Media.Imaging;
 
 namespace StoreFrontUi.Utils
 {
     public class FilePathToImageSourceConverter : IValueConverter
     {
+        private static readonly BitmapImage DefaultImage = new BitmapImage(
+            new Uri("pack://application:,,,/Assets/test_adidas_.png"));
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null || !(value is string filePath) || string.IsNullOrEmpty(filePath))
-                return "/Assets/test_adidas_.png"; // Fallback image
+            string path = value as string;
+
+            if (string.IsNullOrWhiteSpace(path))
+                return DefaultImage;
+
+            path = path.Trim();
+
+            if (!File.Exists(path))
+                return DefaultImage;
 
             try
             {
-                // Check if file exists
-                if (File.Exists(filePath))
-                {
-                    // Create a URI from the file path
-                    return new Uri(filePath);
-                }
-                return "/Assets/test_adidas_.png"; // Fallback if file doesn't exist
+                var bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.UriSource = new Uri(path, UriKind.Absolute);
+                bitmap.EndInit();
+                bitmap.Freeze();
+                return bitmap;
             }
             catch
             {
-                return "/Assets/test_adidas_.png"; // Fallback for any errors
+                return DefaultImage;
             }
         }
 
