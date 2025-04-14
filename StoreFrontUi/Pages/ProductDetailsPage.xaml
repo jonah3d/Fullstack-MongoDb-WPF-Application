@@ -46,7 +46,9 @@
 
             <StackPanel Grid.Column="1" Margin="10">
                 <TextBlock Text="{Binding ElementName=pgeProductsPage,Path=StoreProduct.Name}" FontSize="26" FontWeight="Bold" Margin="0,15,0,0"/>
-                <TextBlock Text="{Binding ElementName=pgeProductsPage,Path=StoreProduct.Price}" FontSize="24" Foreground="Red" Margin="0,15,0,0"/>
+                <TextBlock Text="{Binding ElementName=pgeProductsPage,Path=Variant}" x:Name="Tb_color" FontSize="20" FontWeight="Bold" Foreground="Gray" Margin="0,15,0,0"/>
+                
+                <TextBlock Text="" x:Name="Tb_Price" FontSize="24" Foreground="Red" Margin="0,15,0,0"/>
                 <ListBox Width="Auto" ItemsSource="{Binding ElementName=pgeProductsPage,Path=StoreProduct.Variants}" x:Name="LB_ProductVariants" SelectionChanged="LB_ProductVariants_SelectionChanged">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>

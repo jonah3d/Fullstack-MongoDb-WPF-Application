@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,11 +22,12 @@ namespace StoreFrontUi.Pages
     /// </summary>
     public partial class ProductDetailsPage : Page
     {
-        
+        public ObservableCollection<ProductVariant> Variant { get; set; }
         public ProductDetailsPage(Product product)
         {
             InitializeComponent();
             StoreProduct = product;
+            Variant = new ObservableCollection<ProductVariant>(product.Variants);
 
             this.DataContext = this;
         }
@@ -44,7 +46,8 @@ namespace StoreFrontUi.Pages
 
         private void LB_ProductVariants_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            //Tb_color.Text = ((ProductVariant)LB_ProductVariants.SelectedItem).Color;
+           // Tb_Price.Text = ((ProductVariant)LB_ProductVariants.SelectedItem).Price.ToString();
         }
     }
 }
