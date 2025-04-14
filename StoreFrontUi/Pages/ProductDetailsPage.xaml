@@ -34,27 +34,39 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                
-                <Image Source="{Binding ElementName=pgeProductsPage,Path=StoreProduct.Variants[0].Photos[0].Url,Converter={StaticResource FilePathToImageConverter}}" 
-                       Width="250" 
-                       Height="250" 
-                       Grid.Row="0"
-                       Stretch="UniformToFill" 
-                       Margin="0,0,0,10"/>
+
+                <Image Source="{Binding ElementName=pgeProductsPage,Path=SelectedVariant.Photos[0].Url,Converter={StaticResource FilePathToImageConverter}}" 
+               Width="250" 
+               Height="250" 
+               Grid.Row="0"
+               Stretch="UniformToFill" 
+               Margin="0,0,0,10"/>
 
             </Grid>
 
             <StackPanel Grid.Column="1" Margin="10">
-                <TextBlock Text="{Binding ElementName=pgeProductsPage,Path=StoreProduct.Name}" FontSize="26" FontWeight="Bold" Margin="0,15,0,0"/>
+
+                <TextBlock Text="{Binding ElementName=pgeProductsPage,Path=StoreProduct.Name}" 
+           FontSize="26" FontWeight="Bold" Margin="0,15,0,0"/>
+
+           
+
                 <TextBlock Text="{Binding ElementName=pgeProductsPage,Path=SelectedVariant.Color}" 
            x:Name="Tb_color" FontSize="20" FontWeight="Bold" 
            Foreground="Gray" Margin="0,15,0,0"/>
 
-      
+
                 <TextBlock Text="{Binding ElementName=pgeProductsPage,Path=SelectedVariant.Price, StringFormat='€{0}'}" 
            x:Name="Tb_Price" FontSize="24" Foreground="Red" Margin="0,15,0,0"/>
-                <ListBox Width="Auto" ItemsSource="{Binding ElementName=pgeProductsPage,Path=StoreProduct.Variants}" 
-                         x:Name="LB_ProductVariants" SelectionChanged="LB_ProductVariants_SelectionChanged" SelectedItem="{Binding ElementName=pgeProductsPage,Path=SelectedVariant}">
+
+
+                
+                
+                        <ListBox Width="Auto" 
+                 ItemsSource="{Binding ElementName=pgeProductsPage,Path=StoreProduct.Variants}" 
+                 SelectedItem="{Binding ElementName=pgeProductsPage,Path=SelectedVariant, Mode=TwoWay}"
+                 x:Name="LB_ProductVariants"
+                 SelectionChanged="LB_ProductVariants_SelectionChanged">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left" />

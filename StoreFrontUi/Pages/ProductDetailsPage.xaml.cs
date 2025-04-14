@@ -17,60 +17,52 @@ using StoreFrontModel;
 
 namespace StoreFrontUi.Pages
 {
-    /// <summary>
-    /// Interaction logic for ProductDetailsPage.xaml
-    /// </summary>
-    public partial class ProductDetailsPage : Page
-    {
-        public ObservableCollection<ProductVariant> Variant { get; set; }
-        private ProductVariant _selectedVariant;
-        public ProductVariant SelectedVariant
-        {
-            get { return _selectedVariant; }
-            set
-            {
-                _selectedVariant = value;
-                // If you're using INotifyPropertyChanged, raise the property changed event here
-            }
-        }
-        public ProductDetailsPage(Product product)
-        {
-            InitializeComponent();
-            StoreProduct = product;
-            Variant = new ObservableCollection<ProductVariant>(product.Variants);
 
-            if (product.Variants != null && product.Variants.Count > 0)
+   
+        public partial class ProductDetailsPage : Page
+        {
+            public ObservableCollection<ProductVariant> Variant { get; set; }
+
+            public ProductDetailsPage(Product product)
             {
-                SelectedVariant = product.Variants[0];
+                InitializeComponent();
+                StoreProduct = product;
+                Variant = new ObservableCollection<ProductVariant>(product.Variants);
+
+
+                if (product.Variants != null && product.Variants.Count > 0)
+                {
+                    SelectedVariant = product.Variants[0];
+                }
+
+                this.DataContext = this;
             }
 
-
-            this.DataContext = this;
-        }
-
-
-
-        public Product StoreProduct
-        {
-            get { return (Product)GetValue(StoreProductProperty); }
-            set { SetValue(StoreProductProperty, value); }
-        }
-
-      
-        public static readonly DependencyProperty StoreProductProperty =
-            DependencyProperty.Register("StoreProduct", typeof(Product), typeof(ProductDetailsPage), new PropertyMetadata(null));
-
-        private void LB_ProductVariants_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (LB_ProductVariants.SelectedItem is ProductVariant selectedVariant)
+            public Product StoreProduct
             {
-                // Update the selected variant
-                SelectedVariant = selectedVariant;
+                get { return (Product)GetValue(StoreProductProperty); }
+                set { SetValue(StoreProductProperty, value); }
+            }
 
-                // Update the UI directly if not using data binding
-              //  Tb_color = selectedVariant.Color.ToString(); // Assuming Name contains the color/variant name
-               // Tb_Price.Text = $"€{selectedVariant.Price}"; // Format price with Euro symbol
+            public static readonly DependencyProperty StoreProductProperty =
+                DependencyProperty.Register("StoreProduct", typeof(Product), typeof(ProductDetailsPage), new PropertyMetadata(null));
+
+            public ProductVariant SelectedVariant
+            {
+                get { return (ProductVariant)GetValue(SelectedVariantProperty); }
+                set { SetValue(SelectedVariantProperty, value); }
+            }
+
+            public static readonly DependencyProperty SelectedVariantProperty =
+                DependencyProperty.Register("SelectedVariant", typeof(ProductVariant), typeof(ProductDetailsPage), new PropertyMetadata(null));
+
+            private void LB_ProductVariants_SelectionChanged(object sender, SelectionChangedEventArgs e)
+            {
+   
+                if (LB_ProductVariants.SelectedItem is ProductVariant selectedVariant)
+                {
+                    SelectedVariant = selectedVariant;
+                }
             }
         }
     }
-}
