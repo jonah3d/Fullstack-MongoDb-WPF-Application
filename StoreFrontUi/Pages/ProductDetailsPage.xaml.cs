@@ -23,11 +23,27 @@ namespace StoreFrontUi.Pages
     public partial class ProductDetailsPage : Page
     {
         public ObservableCollection<ProductVariant> Variant { get; set; }
+        private ProductVariant _selectedVariant;
+        public ProductVariant SelectedVariant
+        {
+            get { return _selectedVariant; }
+            set
+            {
+                _selectedVariant = value;
+                // If you're using INotifyPropertyChanged, raise the property changed event here
+            }
+        }
         public ProductDetailsPage(Product product)
         {
             InitializeComponent();
             StoreProduct = product;
             Variant = new ObservableCollection<ProductVariant>(product.Variants);
+
+            if (product.Variants != null && product.Variants.Count > 0)
+            {
+                SelectedVariant = product.Variants[0];
+            }
+
 
             this.DataContext = this;
         }
@@ -46,8 +62,15 @@ namespace StoreFrontUi.Pages
 
         private void LB_ProductVariants_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //Tb_color.Text = ((ProductVariant)LB_ProductVariants.SelectedItem).Color;
-           // Tb_Price.Text = ((ProductVariant)LB_ProductVariants.SelectedItem).Price.ToString();
+            if (LB_ProductVariants.SelectedItem is ProductVariant selectedVariant)
+            {
+                // Update the selected variant
+                SelectedVariant = selectedVariant;
+
+                // Update the UI directly if not using data binding
+              //  Tb_color = selectedVariant.Color.ToString(); // Assuming Name contains the color/variant name
+               // Tb_Price.Text = $"€{selectedVariant.Price}"; // Format price with Euro symbol
+            }
         }
     }
 }
