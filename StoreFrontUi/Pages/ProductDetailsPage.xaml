@@ -1,0 +1,84 @@
+﻿<Page x:Class="StoreFrontUi.Pages.ProductDetailsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:StoreFrontUi.Pages"
+      mc:Ignorable="d"
+      xmlns:converters="clr-namespace:StoreFrontUi.Utils"
+      x:Name="pgeProductsPage"
+      Background="White"
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="ProductDetailsPage">
+
+    <Page.Resources>
+        <converters:FilePathToImageSourceConverter x:Key="FilePathToImageConverter"/>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="350" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+
+            <Grid Grid.Column="0" Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                
+                <Image Source="{Binding ElementName=pgeProductsPage,Path=StoreProduct.Variants[0].Photos[0].Url,Converter={StaticResource FilePathToImageConverter}}" 
+                       Width="250" 
+                       Height="250" 
+                       Grid.Row="0"
+                       Stretch="UniformToFill" 
+                       Margin="0,0,0,10"/>
+
+            </Grid>
+
+            <StackPanel Grid.Column="1" Margin="10">
+                <TextBlock Text="{Binding ElementName=pgeProductsPage,Path=StoreProduct.Name}" FontSize="26" FontWeight="Bold" Margin="0,15,0,0"/>
+                <TextBlock Text="{Binding ElementName=pgeProductsPage,Path=StoreProduct.Price}" FontSize="24" Foreground="Red" Margin="0,15,0,0"/>
+                <ListBox Width="Auto" ItemsSource="{Binding ElementName=pgeProductsPage,Path=StoreProduct.Variants}" x:Name="LB_ProductVariants" SelectionChanged="LB_ProductVariants_SelectionChanged">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left" />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
+                                <Image Source="{Binding Photos[0].Url,Converter={StaticResource FilePathToImageConverter}}"
+                                       Width="50" Height="50" Stretch="UniformToFill"/>
+                                <TextBlock Text="{Binding Name}" FontSize="20" Margin="10,0,0,0"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    
+                </ListBox>
+            </StackPanel>
+            
+            
+        </Grid>
+
+
+        <StatusBar Grid.Row="1" Background="#DDD">
+            <StatusBarItem Width="800">
+                <ProgressBar x:Name="LoadingProgressBar" Width="800"
+                             Background="Green"
+                             Height="10"
+                             IsIndeterminate="True"
+                             Visibility="Collapsed" />
+            </StatusBarItem>
+        </StatusBar>
+
+    </Grid>
+</Page>

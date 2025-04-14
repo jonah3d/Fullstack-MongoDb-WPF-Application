@@ -69,7 +69,7 @@ namespace StoreFrontUi.Pages
                 var menShoes = await storeFront.GetAllMenProduct();
 
                 Shoes = new ObservableCollection<Product>(menShoes);
-                ProductsGrid.ItemsSource = Shoes;
+                ProductsList.ItemsSource = Shoes;
             }
             catch (Exception ex)
             {
@@ -81,6 +81,14 @@ namespace StoreFrontUi.Pages
             }
         }
 
+        private void ProductsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(ProductsList.SelectedItem is Product selectedProduct)
+            {
+                var productDetailsPage = new ProductDetailsPage(selectedProduct);
+                parentWindow.MainFramePage.Navigate(productDetailsPage);
+            }
+        }
     }
 }
 
