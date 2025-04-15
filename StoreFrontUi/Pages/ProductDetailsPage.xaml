@@ -13,14 +13,14 @@
 
     <Page.Resources>
         <converters:FilePathToImageSourceConverter x:Key="FilePathToImageConverter"/>
-    </Page.Resources>
 
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
+    </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-
 
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
@@ -28,46 +28,109 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-
+            <!-- Image Gallery with navigation buttons -->
             <Grid Grid.Column="0" Margin="20">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <Image Source="{Binding ElementName=pgeProductsPage,Path=SelectedVariant.Photos[0].Url,Converter={StaticResource FilePathToImageConverter}}" 
-               Width="250" 
-               Height="250" 
-               Grid.Row="0"
-               Stretch="UniformToFill" 
-               Margin="0,0,0,10"/>
+                <!-- Main product image -->
+                <Border Grid.Row="0" BorderBrush="#EEE" BorderThickness="1">
+                    <Grid>
+                        <Image Source="{Binding ElementName=pgeProductsPage,Path=CurrentImageUrl,Converter={StaticResource FilePathToImageConverter}}" 
+                               Width="250"
+                               x:Name="Product_Img"
+                               Height="250" 
+                               Stretch="UniformToFill" 
+                               Margin="0,0,0,0"/>
 
+                        <!-- Image navigation buttons -->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
 
+                            <!-- Previous image button -->
+                            <Button Grid.Column="0" Click="PreviousImage_Click" 
+                                    Width="30" Height="30" 
+                                    Background="#99000000" Foreground="White"
+                                    HorizontalAlignment="Left" VerticalAlignment="Center"
+                                    Margin="5,0,0,0" BorderThickness="0">
+                                <TextBlock Text="&lt;" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Button>
+
+                            <!-- Next image button -->
+                            <Button Grid.Column="2" Click="NextImage_Click" 
+                                    Width="30" Height="30" 
+                                    Background="#99000000" Foreground="White"
+                                    HorizontalAlignment="Right" VerticalAlignment="Center"
+                                    Margin="0,0,5,0" BorderThickness="0">
+                                <TextBlock Text="&gt;" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </Border>
             </Grid>
 
+            <!-- Product details, variants, sizes, and stock -->
             <StackPanel Grid.Column="1" Margin="10">
-
+                <!-- Product name -->
                 <TextBlock Text="{Binding ElementName=pgeProductsPage,Path=StoreProduct.Name}" 
-           FontSize="26" FontWeight="Bold" Margin="0,15,0,0"/>
+                           FontSize="26" FontWeight="Bold" Margin="0,15,0,0"/>
 
-           
-
+                <!-- Variant color -->
                 <TextBlock Text="{Binding ElementName=pgeProductsPage,Path=SelectedVariant.Color}" 
-           x:Name="Tb_color" FontSize="20" FontWeight="Bold" 
-           Foreground="Gray" Margin="0,15,0,0"/>
+                           x:Name="Tb_color" FontSize="20" FontWeight="Bold" 
+                           Foreground="Gray" Margin="0,15,0,0"/>
 
+                <!-- Price section -->
+                <Grid Margin="0,15,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
 
-                <TextBlock Text="{Binding ElementName=pgeProductsPage,Path=SelectedVariant.Price, StringFormat='€{0}'}" 
-           x:Name="Tb_Price" FontSize="24" Foreground="Red" Margin="0,15,0,0"/>
+                    <!-- Regular price -->
+                    <TextBlock Grid.Column="0" Grid.Row="0"
+                             Text="{Binding ElementName=pgeProductsPage,Path=SelectedVariant.Price, StringFormat='€{0}'}" 
+                             x:Name="Tb_Price" 
+                             FontSize="24" 
+                             Foreground="Red" 
+                             TextDecorations="{Binding ElementName=pgeProductsPage,Path=HasDiscount, Converter={StaticResource BoolToVisConverter}, ConverterParameter=Strikethrough}"/>
 
+                    <!-- Discount price (only visible when there's a discount) -->
+                    <TextBlock Grid.Column="1" Grid.Row="0"
+                             Text="{Binding ElementName=pgeProductsPage,Path=DiscountedPrice, StringFormat=' €{0}'}" 
+                             FontSize="24" 
+                             Foreground="Green" 
+                             FontWeight="Bold"
+                             Margin="10,0,0,0"
+                             Visibility="{Binding ElementName=pgeProductsPage,Path=HasDiscount, Converter={StaticResource BoolToVisConverter}}"/>
 
-                
-                
-                        <ListBox Width="Auto" 
-                 ItemsSource="{Binding ElementName=pgeProductsPage,Path=StoreProduct.Variants}" 
-                 SelectedItem="{Binding ElementName=pgeProductsPage,Path=SelectedVariant, Mode=TwoWay}"
-                 x:Name="LB_ProductVariants"
-                 SelectionChanged="LB_ProductVariants_SelectionChanged">
+                    <!-- Stock information -->
+                    <TextBlock Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"
+                             Text="{Binding ElementName=pgeProductsPage,Path=SelectedSize.Stock, StringFormat='Stock disponible: {0}'}" 
+                             FontSize="16" 
+                             Foreground="DarkGray" 
+                             Margin="0,5,0,0"
+                             Visibility="{Binding ElementName=pgeProductsPage,Path=SelectedSize, Converter={StaticResource BoolToVisConverter}}"/>
+                </Grid>
+
+                <!-- Variant selection -->
+                <TextBlock Text="Colores disponibles:" FontSize="16" FontWeight="Bold" Margin="0,20,0,5"/>
+                <ListBox Width="Auto" 
+                         ItemsSource="{Binding ElementName=pgeProductsPage,Path=StoreProduct.Variants}" 
+                         SelectedItem="{Binding ElementName=pgeProductsPage,Path=SelectedVariant, Mode=TwoWay}"
+                         x:Name="LB_ProductVariants"
+                         SelectionChanged="LB_ProductVariants_SelectionChanged"
+                         BorderThickness="0">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left" />
@@ -78,17 +141,59 @@
                             <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
                                 <Image Source="{Binding Photos[0].Url,Converter={StaticResource FilePathToImageConverter}}"
                                        Width="50" Height="50" Stretch="UniformToFill"/>
-                                <TextBlock Text="{Binding Name}" FontSize="20" Margin="10,0,0,0"/>
+                                <TextBlock Text="{Binding Color}" FontSize="16" Margin="10,0,0,0" VerticalAlignment="Center"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
-                    
+                </ListBox>
+
+                <!-- Size selection -->
+                <TextBlock Text="Tallas disponibles:" FontSize="16" FontWeight="Bold" Margin="0,20,0,5"/>
+                <ListBox x:Name="LB_Sizes" 
+                         ItemsSource="{Binding ElementName=pgeProductsPage,Path=AvailableSizes}" 
+                         SelectedItem="{Binding ElementName=pgeProductsPage,Path=SelectedSize, Mode=TwoWay}"
+                         SelectionChanged="LB_Sizes_SelectionChanged"
+                         BorderThickness="0">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left" />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border Width="50" Height="40" 
+                                    BorderBrush="LightGray" BorderThickness="1" 
+                                    Margin="5">
+                                <TextBlock Text="{Binding Size}" 
+                                           HorizontalAlignment="Center" 
+                                           VerticalAlignment="Center"
+                                           FontSize="16"
+                                           Foreground="{Binding Stock, Converter={StaticResource BoolToVisConverter}, ConverterParameter=Black:LightGray}"/>
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Stock}" Value="0">
+                                                <Setter Property="Background" Value="#F3F3F3"/>
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Stock}" Value="0">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
                 </ListBox>
             </StackPanel>
-            
-            
         </Grid>
-
 
         <StatusBar Grid.Row="1" Background="#DDD">
             <StatusBarItem Width="800">
@@ -99,6 +204,6 @@
                              Visibility="Collapsed" />
             </StatusBarItem>
         </StatusBar>
-
     </Grid>
 </Page>
+
