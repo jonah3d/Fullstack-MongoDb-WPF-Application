@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,7 +21,7 @@ namespace StoreFrontUi.Pages
 
    
         public partial class ProductDetailsPage : Page
-        {
+    {
         public ObservableCollection<ProductVariant> Variant { get; set; }
         private int _currentImageIndex = 0;
         private SizeStock _selectedSize;
@@ -47,6 +48,24 @@ namespace StoreFrontUi.Pages
                     // Set default selected size
                     SelectedSize = value.Sizes.FirstOrDefault(s => s.Stock > 0);
                 }
+
+
+
+                Product_Img?.GetBindingExpression(Image.SourceProperty)?.UpdateTarget();
+                    
+               // Tb_discountPrice?.GetBindingExpression(TextBlock.TextProperty)?.UpdateTarget();
+                if(HasDiscount)
+                {
+                   Tb_discountPrice.Text = string.Format("{0:C}", DiscountedPrice);
+                
+                }
+                else
+                {
+                    Tb_discountPrice.TextDecorations = null;
+                    Tb_discountPrice.Text = string.Empty;
+                }
+                Tb_Price.GetBindingExpression(TextBlock.TextDecorationsProperty)?.UpdateTarget();
+
 
             }
         }
@@ -75,6 +94,8 @@ namespace StoreFrontUi.Pages
         public static readonly DependencyProperty SelectedSizeProperty =
             DependencyProperty.Register("SelectedSize", typeof(SizeStock), typeof(ProductDetailsPage), new PropertyMetadata(null));
 
+
+
         public string CurrentImageUrl
         {
             get
@@ -97,7 +118,7 @@ namespace StoreFrontUi.Pages
             }
         }
 
-        // Discounted price property
+  
         public decimal DiscountedPrice
         {
             get
@@ -137,11 +158,13 @@ namespace StoreFrontUi.Pages
                 if (LB_ProductVariants.SelectedItem is ProductVariant selectedVariant)
                 {
                     SelectedVariant = selectedVariant;
+                    _currentImageIndex = 0; // Reset image index when variant changes
+   
                 }
             }
         private void LB_Sizes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Update selected size when size is selected
+
             if (LB_Sizes.SelectedItem is SizeStock selectedSize)
             {
                 SelectedSize = selectedSize;
@@ -176,7 +199,7 @@ namespace StoreFrontUi.Pages
 
         private void UpdateImageSource()
         {
-            // Update image source using binding
+
             Product_Img.GetBindingExpression(Image.SourceProperty)?.UpdateTarget();
         }
     }
