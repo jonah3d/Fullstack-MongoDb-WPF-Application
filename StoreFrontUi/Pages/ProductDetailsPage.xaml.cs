@@ -41,19 +41,17 @@ namespace StoreFrontUi.Pages
             set { SetValue(SelectedVariantProperty, value);
                 _currentImageIndex = 0;
 
-                // Update available sizes when variant changes
                 if (value != null && value.Sizes != null)
                 {
                     AvailableSizes = new ObservableCollection<SizeStock>(value.Sizes);
-                    // Set default selected size
+
                     SelectedSize = value.Sizes.FirstOrDefault(s => s.Stock > 0);
                 }
 
 
 
                 Product_Img?.GetBindingExpression(Image.SourceProperty)?.UpdateTarget();
-                    
-               // Tb_discountPrice?.GetBindingExpression(TextBlock.TextProperty)?.UpdateTarget();
+
                 if(HasDiscount)
                 {
                    Tb_discountPrice.Text = string.Format("{0:C}", DiscountedPrice);
@@ -147,7 +145,14 @@ namespace StoreFrontUi.Pages
                     SelectedSize = SelectedVariant.Sizes.FirstOrDefault(s => s.Stock > 0);
                 }
 
-
+                this.Loaded += async (s, e) =>
+                {
+                    await WebView_Description.EnsureCoreWebView2Async(null);
+                    if (!string.IsNullOrWhiteSpace(StoreProduct.Description))
+                    {
+                        WebView_Description.NavigateToString($"<html><body style='font-family:sans-serif;color:gray;font-size:14px'>{StoreProduct.Description}</body></html>");
+                    }
+                };
                 this.DataContext = this;
             }
 
@@ -201,6 +206,11 @@ namespace StoreFrontUi.Pages
         {
 
             Product_Img.GetBindingExpression(Image.SourceProperty)?.UpdateTarget();
+        }
+
+        private void Btn_AddToCart_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
     }
