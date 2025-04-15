@@ -311,5 +311,63 @@ namespace StoreFrontRepository
             return user;
 
         }
+
+        public async Task<List<Product>> GetAllChildrenProduct()
+        {
+            try
+            {
+
+                var childrenCats = await mongoDatabase.GetCollection<Category>("category")
+                .FindAsync(x => x.Name == "Children");
+                var children = childrenCats.FirstOrDefault();
+                if (children == null)
+                {
+                    return new List<Product>();
+                }
+                var filter = Builders<Product>.Filter.AnyEq(p => p.CategoryIds, children.Id);
+
+                var childrenProducts = await mongoDatabase.GetCollection<Product>("products")
+                    .FindAsync(filter);
+                var childrenProductList = await childrenProducts.ToListAsync();
+
+                if (childrenProductList == null)
+                {
+                    return new List<Product>();
+                }
+                else
+                {
+                    foreach (var product in childrenProductList)
+                    {
+                        var categoriesCollection = mongoDatabase.GetCollection<Category>("category");
+                        product.Categories = new List<Category>();
+                        foreach (var categoryId in product.CategoryIds)
+                        {
+                            var categoryCursor = categoriesCollection.Find(c => c.Id == categoryId);
+                            var category = categoryCursor.FirstOrDefault();
+                            if (category != null)
+                            {
+                                product.Categories.Add(category);
+                            }
+                        }
+                        if (product.IvaTypeId != ObjectId.Empty)
+                        {
+                            var vatCursor = mongoDatabase.GetCollection<Vat>("vat").Find(v => v.Id == product.IvaTypeId);
+                            product.IvaType = vatCursor.FirstOrDefault();
+                        }
+                        if (product.TagId != ObjectId.Empty)
+                        {
+                            var tagCursor = mongoDatabase.GetCollection<ProductTag>("tag").Find(t => t.Id == product.TagId);
+                            product.Tag = tagCursor.FirstOrDefault();
+                        }
+                    }
+                }
+
+                return childrenProductList;
+            }
+            catch (Exception ex)
+            {
+                throw new StoreFrontException($"Error Getting All Children Shoes: {ex.Message}");
+            }
+        }
     }
 }

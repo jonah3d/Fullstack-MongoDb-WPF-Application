@@ -55,6 +55,7 @@ namespace StoreFrontUi.Pages
                     break;
                 case "children_cat":
                     ckb_children.IsChecked = true;
+                    await LoadChildrenShoes();
                     break;
                 case "sports_cat":
                     ckb_sport.IsChecked = true;
@@ -115,6 +116,27 @@ namespace StoreFrontUi.Pages
                 LoadingProgressBar.IsIndeterminate = true;
                 var sportsShoes = await storeFront.GetAllSportsProduct();
                 Shoes = new ObservableCollection<Product>(sportsShoes);
+                ProductsList.ItemsSource = Shoes;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading shoes: {ex.Message}");
+            }
+            finally
+            {
+                LoadingProgressBar.Visibility = Visibility.Collapsed;
+            }
+        }
+
+
+        public async Task LoadChildrenShoes()
+        {
+            try
+            {
+                LoadingProgressBar.Visibility = Visibility.Visible;
+                LoadingProgressBar.IsIndeterminate = true;
+                var childrenShoes = await storeFront.GetAllChildrenProduct();
+                Shoes = new ObservableCollection<Product>(childrenShoes);
                 ProductsList.ItemsSource = Shoes;
             }
             catch (Exception ex)
