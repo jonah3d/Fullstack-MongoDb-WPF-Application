@@ -42,6 +42,7 @@
                Stretch="UniformToFill" 
                Margin="0,0,0,10"/>
 
+
             </Grid>
 
             <StackPanel Grid.Column="1" Margin="10">
