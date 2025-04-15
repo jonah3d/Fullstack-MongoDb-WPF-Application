@@ -341,7 +341,7 @@ namespace StoreFrontRepository
                         var categoriesCollection = mongoDatabase.GetCollection<Category>("category");
                         product.Categories = new List<Category>();
                         foreach (var categoryId in product.CategoryIds)
-                        {
+                        {           
                             var categoryCursor = categoriesCollection.Find(c => c.Id == categoryId);
                             var category = categoryCursor.FirstOrDefault();
                             if (category != null)
@@ -367,6 +367,64 @@ namespace StoreFrontRepository
             catch (Exception ex)
             {
                 throw new StoreFrontException($"Error Getting All Children Shoes: {ex.Message}");
+            }
+        }
+
+        public async Task<List<Product>> GetNewProducts()
+        {
+            try
+            {
+             var tag =   await mongoDatabase.GetCollection<ProductTag>("tag")
+                    .FindAsync(x => x.Name == "NEW");
+
+              var tagRes = await tag.FirstOrDefaultAsync();
+                if (tagRes == null)
+                {
+                    return new List<Product>();
+                }
+
+                var filter = Builders<Product>.Filter.Eq(p => p.TagId, tagRes.Id);
+
+                var products = await mongoDatabase.GetCollection<Product>("products")
+                    .FindAsync(filter);
+                var productList = await products.ToListAsync();
+
+                if(productList == null)
+                {
+                    return new List<Product>();
+                }
+                else
+                {
+                    foreach (var product in productList)
+                    {
+                        var categoriesCollection = mongoDatabase.GetCollection<Category>("category");
+                        product.Categories = new List<Category>();
+                        foreach (var categoryId in product.CategoryIds)
+                        {
+                            var categoryCursor = await categoriesCollection.FindAsync(c => c.Id == categoryId);
+                            var category = await categoryCursor.FirstOrDefaultAsync();
+                            if (category != null)
+                            {
+                                product.Categories.Add(category);
+                            }
+                        }
+                        if (product.IvaTypeId != ObjectId.Empty)
+                        {
+                            var vatCursor = await mongoDatabase.GetCollection<Vat>("vat").FindAsync(v => v.Id == product.IvaTypeId);
+                            product.IvaType = await vatCursor.FirstOrDefaultAsync();
+                        }
+                        if (product.TagId != ObjectId.Empty)
+                        {
+                            var tagCursor = await mongoDatabase.GetCollection<ProductTag>("tag").FindAsync(t => t.Id == product.TagId);
+                            product.Tag = await tagCursor.FirstOrDefaultAsync();
+                        }
+                    }
+                }
+                return productList;
+            }
+            catch (Exception ex)
+            {
+                throw new StoreFrontException($"Error Getting New Products: {ex.Message}");
             }
         }
     }

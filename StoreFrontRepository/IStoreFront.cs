@@ -19,6 +19,8 @@ namespace StoreFrontRepository
         public Task<List<Product>> GetAllSportsProduct();
 
         public Task<List<Product>> GetAllChildrenProduct();
+
+        public Task<List<Product>> GetNewProducts();
         public Task <Product> GetProductByName(string name);
     }
 }

@@ -15,14 +15,26 @@ using System.Windows.Shapes;
 
 namespace StoreFrontUi.UserControls
 {
-    /// <summary>
-    /// Interaction logic for UC_NewItem.xaml
-    /// </summary>
+
     public partial class UC_NewItem : UserControl
     {
         public UC_NewItem()
         {
             InitializeComponent();
         }
+
+
+
+        public StoreFrontModel.Product NewProducts
+        {
+            get { return (StoreFrontModel.Product)GetValue(NewProductsProperty); }
+            set { SetValue(NewProductsProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for NewProducts.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty NewProductsProperty =
+            DependencyProperty.Register("NewProducts", typeof(StoreFrontModel.Product), typeof(UC_NewItem), new PropertyMetadata(null));
+
+
     }
 }

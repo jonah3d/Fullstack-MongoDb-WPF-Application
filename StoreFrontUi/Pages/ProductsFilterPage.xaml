@@ -80,22 +80,7 @@
 
 
             <ScrollViewer Grid.Column="1" Padding="10">
-           <!--   <ItemsControl x:Name="ProductsGrid">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel IsItemsHost="True" 
-                           Orientation="Horizontal"
-                           HorizontalAlignment="Left" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
 
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <usercontrols:UC_ProoductInGrid GridProducts="{Binding}" Margin="10"/>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-
-                </ItemsControl>  -->
 
                 <ListBox x:Name="ProductsList" SelectionChanged="ProductsList_SelectionChanged">
                     <ListBox.ItemsPanel>
