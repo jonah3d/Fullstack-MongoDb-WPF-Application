@@ -111,6 +111,135 @@ namespace StoreFrontRepository
             }
         }
 
+        public async Task<List<Product>> GetAllWomenProduct()
+        {
+            try
+            {
+
+                var womenCats= await mongoDatabase.GetCollection<Category>("category")
+                .FindAsync(x => x.Name == "Women");
+
+                var women = womenCats.FirstOrDefault();
+
+                if(women == null)
+                {
+                    return new List<Product>();
+                }
+
+                var filter = Builders<Product>.Filter.AnyEq(p => p.CategoryIds, women.Id);
+
+
+                var womenProducts = await mongoDatabase.GetCollection<Product>("products")
+                    .FindAsync(filter);
+
+              var womenProductList =  await womenProducts.ToListAsync();
+                if(womenProductList == null)
+                {
+                    return new List<Product>();
+                }
+                else
+                {
+                    foreach (var product in womenProductList)
+                    {
+                        var categoriesCollection = mongoDatabase.GetCollection<Category>("category");
+                        product.Categories = new List<Category>();
+                        foreach (var categoryId in product.CategoryIds)
+                        {
+                            var categoryCursor = await categoriesCollection.FindAsync(c => c.Id == categoryId);
+                            var category = await categoryCursor.FirstOrDefaultAsync();
+                            if (category != null)
+                            {
+                                product.Categories.Add(category);
+                            }
+                        }
+                        if (product.IvaTypeId != ObjectId.Empty)
+                        {
+                            var vatCursor = await mongoDatabase.GetCollection<Vat>("vat").FindAsync(v => v.Id == product.IvaTypeId);
+                            product.IvaType = await vatCursor.FirstOrDefaultAsync();
+                        }
+                        if (product.TagId != ObjectId.Empty)
+                        {
+                            var tagCursor = await mongoDatabase.GetCollection<ProductTag>("tag").FindAsync(t => t.Id == product.TagId);
+                            product.Tag = await tagCursor.FirstOrDefaultAsync();
+                        }
+                    }
+                }
+
+                return womenProductList;
+            }
+
+            catch (Exception ex)
+            {
+                throw new StoreFrontException($"Error Getting All Women Shoes: {ex.Message}");
+            }
+        }
+
+
+        public async Task<List<Product>> GetAllSportsProduct()
+        {
+            try
+            {
+
+                var sportsCats = await mongoDatabase.GetCollection<Category>("category")
+                .FindAsync(x => x.Name == "Sports");
+
+                var sports = sportsCats.FirstOrDefault();
+
+                if (sports == null)
+                {
+                    return new List<Product>();
+                }
+
+                var filter = Builders<Product>.Filter.AnyEq(p => p.CategoryIds, sports.Id);
+
+
+                var sportsProducts = await mongoDatabase.GetCollection<Product>("products")
+                    .FindAsync(filter);
+
+                var sportsproductList = await sportsProducts.ToListAsync();
+                if (sportsproductList == null)
+                {
+                    return new List<Product>();
+                }
+                else
+                {
+                    foreach (var product in sportsproductList)
+                    {
+                        var categoriesCollection = mongoDatabase.GetCollection<Category>("category");
+                        product.Categories = new List<Category>();
+                        foreach (var categoryId in product.CategoryIds)
+                        {
+                            var categoryCursor = await categoriesCollection.FindAsync(c => c.Id == categoryId);
+                            var category = await categoryCursor.FirstOrDefaultAsync();
+                            if (category != null)
+                            {
+                                product.Categories.Add(category);
+                            }
+                        }
+                        if (product.IvaTypeId != ObjectId.Empty)
+                        {
+                            var vatCursor = await mongoDatabase.GetCollection<Vat>("vat").FindAsync(v => v.Id == product.IvaTypeId);
+                            product.IvaType = await vatCursor.FirstOrDefaultAsync();
+                        }
+                        if (product.TagId != ObjectId.Empty)
+                        {
+                            var tagCursor = await mongoDatabase.GetCollection<ProductTag>("tag").FindAsync(t => t.Id == product.TagId);
+                            product.Tag = await tagCursor.FirstOrDefaultAsync();
+                        }
+                    }
+                }
+
+                return sportsproductList;
+            }
+
+            catch (Exception ex)
+            {
+                throw new StoreFrontException($"Error Getting All Sports Shoes: {ex.Message}");
+            }
+        }
+
+      
+
         public async Task<Product> GetProductByName(string name)
         {
             if (string.IsNullOrEmpty(name))

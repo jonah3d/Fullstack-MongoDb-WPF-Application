@@ -51,9 +51,14 @@ namespace StoreFrontUi.Pages
                     break;
                 case "women_cat":
                     ckb_women.IsChecked = true;
+                    await LoadWomenShoes();
                     break;
                 case "children_cat":
                     ckb_children.IsChecked = true;
+                    break;
+                case "sports_cat":
+                    ckb_sport.IsChecked = true;
+                    await LoadSportsShoes();
                     break;
 
             }
@@ -69,6 +74,47 @@ namespace StoreFrontUi.Pages
                 var menShoes = await storeFront.GetAllMenProduct();
 
                 Shoes = new ObservableCollection<Product>(menShoes);
+                ProductsList.ItemsSource = Shoes;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading shoes: {ex.Message}");
+            }
+            finally
+            {
+                LoadingProgressBar.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        public async Task LoadWomenShoes()
+        {
+            try
+            {
+                LoadingProgressBar.Visibility = Visibility.Visible;
+                LoadingProgressBar.IsIndeterminate = true;
+                var womenShoes = await storeFront.GetAllWomenProduct();
+                Shoes = new ObservableCollection<Product>(womenShoes);
+                ProductsList.ItemsSource = Shoes;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading shoes: {ex.Message}");
+            }
+            finally
+            {
+                LoadingProgressBar.Visibility = Visibility.Collapsed;
+            }
+        }
+
+
+        public async Task LoadSportsShoes()
+        {
+            try
+            {
+                LoadingProgressBar.Visibility = Visibility.Visible;
+                LoadingProgressBar.IsIndeterminate = true;
+                var sportsShoes = await storeFront.GetAllSportsProduct();
+                Shoes = new ObservableCollection<Product>(sportsShoes);
                 ProductsList.ItemsSource = Shoes;
             }
             catch (Exception ex)
