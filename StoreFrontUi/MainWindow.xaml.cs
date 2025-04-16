@@ -1,4 +1,5 @@
 ﻿using StoreFrontModel;
+using StoreFrontRepository;
 using StoreFrontUi.Utils;
 using System.Text;
 using System.Windows;
@@ -27,6 +28,7 @@ namespace StoreFrontUi
             DependencyProperty.Register("CurrentUser", typeof(User), typeof(MainWindow), new PropertyMetadata(null));
 
 
+        private IStoreFront storeFront;
 
         public MainWindow()
         {
@@ -34,6 +36,9 @@ namespace StoreFrontUi
             MainFramePage.NavigationUIVisibility = NavigationUIVisibility.Hidden;
             NavigateToMainPage();
             Popup_Login.StaysOpen = false;
+
+            storeFront = new StoreFrontRepository.StoreFrontRepository();
+        
 
             this.DataContext = this;
         }
@@ -129,5 +134,20 @@ namespace StoreFrontUi
 
             
         }
+
+        public event Func<string, Task> GlobalSearchChanged;
+
+        private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string search = Tb_search.Text.Trim();
+
+            if (GlobalSearchChanged != null)
+            {
+                await GlobalSearchChanged.Invoke(search);
+            }
+
+          
+        }
+
     }
 }

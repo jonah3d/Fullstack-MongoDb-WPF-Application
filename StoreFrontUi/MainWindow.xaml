@@ -52,7 +52,9 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                     <TextBox Width="200" Height="30" Background="Transparent" BorderThickness="1.5" BorderBrush="Black" Grid.Column="0"
-                                 VerticalAlignment="Center" TextAlignment="Center" HorizontalAlignment="Left" Margin="-23,0,0,0"/>
+                                 VerticalAlignment="Center" TextAlignment="Center" HorizontalAlignment="Left" Margin="-23,0,0,0"
+                             TextChanged="Tb_search_TextChanged" x:Name="Tb_search"/>
+
                     <Button Grid.Column="1" Width="30" Height="30"  Background="Transparent" BorderThickness="1.5" BorderBrush="Black"
                                 VerticalAlignment="Center" Margin="20,0,0,0" >
                             <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="16"  Text="&#xE721;" 

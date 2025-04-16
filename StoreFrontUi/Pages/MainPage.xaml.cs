@@ -22,6 +22,8 @@ namespace StoreFrontUi.Pages
     {
 
         public ObservableCollection<Product> NewProducts { get; set; }
+        public ObservableCollection<Product> FilteredProducts { get; set; } = new();
+
         private IStoreFront storeFront;
         public MainPage()
         {

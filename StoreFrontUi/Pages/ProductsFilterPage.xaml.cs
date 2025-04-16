@@ -30,15 +30,29 @@ namespace StoreFrontUi.Pages
         {
             InitializeComponent();
             selectedCategory = category;
-            parentWindow = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-            storeFront = new StoreFrontRepository.StoreFrontRepository();
-            this.DataContext = this;
+           
 
+            storeFront = new StoreFrontRepository.StoreFrontRepository();
+            parentWindow = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+            if (parentWindow != null)
+            {
+                parentWindow.GlobalSearchChanged += async (searchText) =>
+                {
+                    await FilteredName(searchText);
+                };
+            }
+            this.DataContext = this;
+            
        
             Loaded += async (s, e) => {
                 await NavigatedFilter();
+             //   await FilteredName();
             };
+
+            
         }
+
+        
 
         public async Task NavigatedFilter()
         {
@@ -64,6 +78,42 @@ namespace StoreFrontUi.Pages
 
             }
         }
+
+
+        public async Task FilteredName(string searchText)
+        {
+            try
+            {
+                LoadingProgressBar.Visibility = Visibility.Visible;
+                LoadingProgressBar.IsIndeterminate = true;
+
+                if (string.IsNullOrWhiteSpace(searchText))
+                {
+                    ProductsList.ItemsSource = null;
+                    return;
+                }
+
+                var searchbyname = await storeFront.SearchProductsByNameAsync(searchText);
+                if (searchbyname != null && searchbyname.Count > 0)
+                {
+                    Shoes = new ObservableCollection<Product>(searchbyname);
+                    ProductsList.ItemsSource = Shoes;
+                }
+                else
+                {
+                    Shoes?.Clear();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error filtering shoes: {ex.Message}");
+            }
+            finally
+            {
+                LoadingProgressBar.Visibility = Visibility.Collapsed;
+            }
+        }
+
 
         public async Task LoadMenShoes()
         {
