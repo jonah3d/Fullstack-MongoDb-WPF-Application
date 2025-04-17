@@ -11,13 +11,13 @@
              BorderThickness="2"
              x:Name="ucProductInGrid"
              
-             d:DesignHeight="450" d:DesignWidth="250">
+             d:DesignHeight="520" d:DesignWidth="350">
 
     <UserControl.Resources>
         <converters:FilePathToImageSourceConverter x:Key="FilePathToImageConverter"/>
     </UserControl.Resources>
 
-    <Grid Margin="10">
+    <Grid Margin="10" HorizontalAlignment="Center">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>

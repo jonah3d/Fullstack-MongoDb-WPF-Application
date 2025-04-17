@@ -207,6 +207,11 @@ namespace StoreFrontUi.Pages
                 parentWindow.MainFramePage.Navigate(productDetailsPage);
             }
         }
+
+        private void UC_Pagination_PageChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 
