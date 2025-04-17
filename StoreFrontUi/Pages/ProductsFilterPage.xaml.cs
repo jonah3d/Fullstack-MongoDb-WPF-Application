@@ -264,7 +264,7 @@ namespace StoreFrontUi.Pages
         private void ApplyPagination()
         {
             int currentPage = PaginationControl.CurrentPage;
-            int itemsPerPage = 10;
+            int itemsPerPage = 12;
 
             if (Shoes != null)
             {
