@@ -18,7 +18,7 @@
 
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
     </Page.Resources>
-    <Grid>
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />

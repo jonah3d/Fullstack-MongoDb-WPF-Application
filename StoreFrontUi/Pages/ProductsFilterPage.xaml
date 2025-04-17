@@ -26,75 +26,80 @@
             </Grid.ColumnDefinitions>
 
 
-            <StackPanel Grid.Column="0" Background="#EEE">
-                <!-- Sexo Filter -->
-                <Expander Header="Sexo" IsExpanded="True" FontWeight="Bold">
-                    <StackPanel Margin="10,5,0,0">
-                        <CheckBox Content="Hombre" x:Name="ckb_men"/>
-                        <CheckBox Content="Mujer" x:Name="ckb_women"/>
-                        <CheckBox Content="Niños" x:Name="ckb_children"/>
-                    </StackPanel>
-                </Expander>
-
-                <Separator Margin="0 10"/>
+            <Border Grid.Column="0" Background="Transparent" BorderBrush="Black" BorderThickness="2" Margin="2">
+                <StackPanel>
 
 
-                <Expander Header="Filtrar por precio" IsExpanded="True" FontWeight="Bold" Padding="5">
-                    <StackPanel Margin="10,5,0,0">
+                    <Expander Header="Sexo" IsExpanded="True" FontWeight="Bold">
+                        <StackPanel Margin="10,5,0,0">
+                            <CheckBox Content="Hombre" x:Name="ckb_men"/>
+                            <CheckBox Content="Mujer" x:Name="ckb_women"/>
+                            <CheckBox Content="Niños" x:Name="ckb_children"/>
+                        </StackPanel>
+                    </Expander>
 
-                        <TextBlock Text="{Binding ElementName=PriceRangeSlider, Path=LowerValue, StringFormat='€{0}'}" 
-                   FontWeight="SemiBold" Margin="0 0 5 0"/>
-                        <TextBlock Text="{Binding ElementName=PriceRangeSlider, Path=HigherValue, StringFormat=' - €{0}'}" 
-                   FontWeight="SemiBold" Margin="0 0 0 10"/>
-
-                        <xctk:RangeSlider x:Name="PriceRangeSlider"
-                          Minimum="0"
-                          Maximum="1000"
-                          LowerValue="0"
-                           HigherValue="1000"
-                          TickFrequency="10"
-                          IsSnapToTickEnabled="True"
-                          Orientation="Horizontal"
-                          Height="30"/>
-                    </StackPanel>
-                </Expander>
+                    <Separator Margin="0 10"/>
 
 
-                <Separator Margin="0 10"/>
+                    <Expander Header="Filtrar por precio" IsExpanded="True" FontWeight="Bold" Padding="5">
+                        <StackPanel Margin="10,5,0,0">
 
-                <Expander Header="Actividad" IsEnabled="True" FontWeight="Bold">
-                    <StackPanel Margin="10,5,0,0">
-                        <CheckBox Content="Deporte" x:Name="ckb_sport"/>
-                        <CheckBox Content="Trabajo" x:Name="ckb_work"/>
-                    </StackPanel>
-                </Expander>
+                            <TextBlock Text="{Binding ElementName=PriceRangeSlider, Path=LowerValue, StringFormat='€{0}'}" 
+        FontWeight="SemiBold" Margin="0 0 5 0"/>
+                            <TextBlock Text="{Binding ElementName=PriceRangeSlider, Path=HigherValue, StringFormat=' - €{0}'}" 
+        FontWeight="SemiBold" Margin="0 0 0 10"/>
 
-                <Separator Margin="0 10"/>
+                            <xctk:RangeSlider x:Name="PriceRangeSlider"
+               Minimum="0"
+               Maximum="1000"
+               LowerValue="0"
+                HigherValue="1000"
+               TickFrequency="10"
+               IsSnapToTickEnabled="True"
+               Orientation="Horizontal"
+               Height="30"/>
+                        </StackPanel>
+                    </Expander>
 
-                <Expander Header="Tamaños" IsEnabled="True" FontWeight="Bold">
-                    <UniformGrid Columns="5" Rows="4" Margin="5">
-                        <!-- Checkboxes for sizes 35 to 50 -->
-                        <CheckBox Content="35" Margin="5"/>
-                        <CheckBox Content="36" Margin="5"/>
-                        <CheckBox Content="37" Margin="5"/>
-                        <CheckBox Content="38" Margin="5"/>
-                        <CheckBox Content="39" Margin="5"/>
-                        <CheckBox Content="40" Margin="5"/>
-                        <CheckBox Content="41" Margin="5"/>
-                        <CheckBox Content="42" Margin="5"/>
-                        <CheckBox Content="43" Margin="5"/>
-                        <CheckBox Content="44" Margin="5"/>
-                        <CheckBox Content="45" Margin="5"/>
-                        <CheckBox Content="46" Margin="5"/>
-                        <CheckBox Content="47" Margin="5"/>
-                        <CheckBox Content="48" Margin="5"/>
-                        <CheckBox Content="49" Margin="5"/>
-                        <CheckBox Content="50" Margin="5"/>
-                    </UniformGrid>
 
-                </Expander>
+                    <Separator Margin="0 10"/>
 
-            </StackPanel>
+                    <Expander Header="Actividad" IsEnabled="True" FontWeight="Bold">
+                        <StackPanel Margin="10,5,0,0">
+                            <CheckBox Content="Deporte" x:Name="ckb_sport"/>
+                            <CheckBox Content="Trabajo" x:Name="ckb_work"/>
+                        </StackPanel>
+                    </Expander>
+
+                    <Separator Margin="0 10"/>
+
+                    <Expander Header="Tamaños" IsEnabled="True" FontWeight="Bold">
+                        <UniformGrid Columns="5" Rows="4" Margin="5">
+
+                            <CheckBox Content="35" Margin="5" x:Name="ckb_35"/>
+                            <CheckBox Content="36" Margin="5" x:Name="ckb_36"/>
+                            <CheckBox Content="37" Margin="5" x:Name="ckb_37"/>
+                            <CheckBox Content="38" Margin="5" x:Name="ckb_38"/>
+                            <CheckBox Content="39" Margin="5" x:Name="ckb_39"/>
+                            <CheckBox Content="40" Margin="5" x:Name="ckb_40"/>
+                            <CheckBox Content="41" Margin="5" x:Name="ckb_41"/>
+                            <CheckBox Content="42" Margin="5" x:Name="ckb_42"/>
+                            <CheckBox Content="43" Margin="5" x:Name="ckb_43"/>
+                            <CheckBox Content="44" Margin="5" x:Name="ckb_44"/>
+                            <CheckBox Content="45" Margin="5" x:Name="ckb_45"/>
+                            <CheckBox Content="46" Margin="5" x:Name="ckb_46"/>
+                            <CheckBox Content="47" Margin="5" x:Name="ckb_47"/>
+                            <CheckBox Content="48" Margin="5" x:Name="ckb_48"/>
+                            <CheckBox Content="49" Margin="5" x:Name="ckb_49"/>
+                            <CheckBox Content="50" Margin="5" x:Name="ckb_50"/>
+                        </UniformGrid>
+
+                    </Expander>
+
+                </StackPanel>
+            </Border>
+
+           
 
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
@@ -102,7 +107,7 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <!-- ScrollViewer moved into Row 0 -->
+                
                 <ScrollViewer Grid.Row="0" Padding="10"
         VerticalScrollBarVisibility="Auto"
         HorizontalScrollBarVisibility="Disabled">

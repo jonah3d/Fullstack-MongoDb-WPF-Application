@@ -479,6 +479,52 @@ namespace StoreFrontRepository
             }
         }
 
-      
+        public async Task<List<Product>> GetAllProducts()
+        {
+            try
+            {
+                var products = await mongoDatabase.GetCollection<Product>("products")
+                    .FindAsync(_ => true);
+                var productList = await products.ToListAsync();
+
+                if(productList == null || productList.Count<0) 
+                {
+                    return new List<Product>();
+                }
+                else
+                {
+                    foreach (var product in productList)
+                    {
+                        var categoriesCollection = mongoDatabase.GetCollection<Category>("category");
+                        product.Categories = new List<Category>();
+                        foreach (var categoryId in product.CategoryIds)
+                        {
+                            var categoryCursor = await categoriesCollection.FindAsync(c => c.Id == categoryId);
+                            var category = await categoryCursor.FirstOrDefaultAsync();
+                            if (category != null)
+                            {
+                                product.Categories.Add(category);
+                            }
+                        }
+                        if (product.IvaTypeId != ObjectId.Empty)
+                        {
+                            var vatCursor = await mongoDatabase.GetCollection<Vat>("vat").FindAsync(v => v.Id == product.IvaTypeId);
+                            product.IvaType = await vatCursor.FirstOrDefaultAsync();
+                        }
+                        if (product.TagId != ObjectId.Empty)
+                        {
+                            var tagCursor = await mongoDatabase.GetCollection<ProductTag>("tag").FindAsync(t => t.Id == product.TagId);
+                            product.Tag = await tagCursor.FirstOrDefaultAsync();
+                        }
+                    }
+                }
+                return productList;
+
+            }
+            catch (Exception ex)
+            {
+                throw new StoreFrontException($"Error Getting All Products: {ex.Message}");
+            }
+        }
     }
 }

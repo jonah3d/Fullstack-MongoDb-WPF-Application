@@ -24,6 +24,8 @@ namespace StoreFrontRepository
         public Task <Product> GetProductByName(string name);
         public  Task<List<Product>> SearchProductsByNameAsync(string name);
 
- 
+
+        public Task<List<Product>> GetAllProducts();
+
     }
 }
