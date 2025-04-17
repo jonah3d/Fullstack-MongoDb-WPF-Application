@@ -14,23 +14,19 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using StoreFrontModel;
 
 namespace StoreFrontUi.UserControls
 {
-  
+
     public partial class UC_ImageCarousel : UserControl, INotifyPropertyChanged
     {
-       
         public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
 
-  
+        // Dependency property for binding a product
         public static readonly DependencyProperty ProductProperty =
             DependencyProperty.Register("Product", typeof(Product), typeof(UC_ImageCarousel),
-                new PropertyMetadata(null, OnProductChanged));
+                new PropertyMetadata(null, new PropertyChangedCallback(OnProductChanged)));
 
         public Product Product
         {
@@ -38,54 +34,21 @@ namespace StoreFrontUi.UserControls
             set { SetValue(ProductProperty, value); }
         }
 
-
-        private ObservableCollection<ImageSource> _images = new ObservableCollection<ImageSource>();
-        public ObservableCollection<ImageSource> Images
+        // Current image to display
+        private BitmapImage _currentImage;
+        public BitmapImage CurrentImage
         {
-            get { return _images; }
+            get { return _currentImage; }
             set
             {
-                _images = value;
-                OnPropertyChanged(nameof(Images));
-                CurrentIndex = 0;
-                UpdateIndicators();
-            }
-        }
-
-     
-        private int _currentIndex = 0;
-        public int CurrentIndex
-        {
-            get { return _currentIndex; }
-            set
-            {
-                if (value < 0)
-                    _currentIndex = Images.Count - 1;
-                else if (value >= Images.Count)
-                    _currentIndex = 0;
-                else
-                    _currentIndex = value;
-
-                OnPropertyChanged(nameof(CurrentIndex));
+                _currentImage = value;
                 OnPropertyChanged(nameof(CurrentImage));
-                UpdateIndicators();
             }
         }
 
-       
-        public ImageSource CurrentImage
-        {
-            get
-            {
-                if (Images.Count > 0 && CurrentIndex >= 0 && CurrentIndex < Images.Count)
-                    return Images[CurrentIndex];
-                return null;
-            }
-        }
-
-  
-        private ObservableCollection<IndicatorModel> _indicators = new ObservableCollection<IndicatorModel>();
-        public ObservableCollection<IndicatorModel> Indicators
+        // Collection of image indicators
+        private ObservableCollection<ImageIndicator> _indicators;
+        public ObservableCollection<ImageIndicator> Indicators
         {
             get { return _indicators; }
             set
@@ -95,88 +58,143 @@ namespace StoreFrontUi.UserControls
             }
         }
 
+        // Current image index
+        private int _currentIndex = 0;
+        private List<string> _imagePaths;
+
         public UC_ImageCarousel()
         {
             InitializeComponent();
-            this.DataContext = this;
+            DataContext = this;
+            _indicators = new ObservableCollection<ImageIndicator>();
+            _imagePaths = new List<string>();
         }
 
+        // Called when the Product property changes
         private static void OnProductChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is UC_ImageCarousel carousel && e.NewValue is Product product)
+            UC_ImageCarousel carousel = d as UC_ImageCarousel;
+            if (carousel != null)
             {
-                carousel.LoadImagesFromProduct(product);
+                carousel.LoadProductImages();
             }
         }
 
-        private void LoadImagesFromProduct(Product product)
+        // Load images from the product
+        private void LoadProductImages()
         {
-            Images.Clear();
-
- 
-            if (product != null && product.ImagePaths != null)
+            try
             {
-                foreach (string imagePath in product.ImagePaths)
+                _imagePaths.Clear();
+                Indicators.Clear();
+                _currentIndex = 0;
+
+                if (Product != null && Product.Variants != null && Product.Variants.Count > 0)
                 {
-                    try
+                 
+                    foreach (var variant in Product.Variants)
                     {
-                        var image = new BitmapImage(new Uri(imagePath, UriKind.RelativeOrAbsolute));
-                        Images.Add(image);
+                        if (variant.Photos != null && variant.Photos.Count > 0)
+                        {
+                            foreach (var photo in variant.Photos)
+                            {
+                                if (!string.IsNullOrEmpty(photo.Url) && !_imagePaths.Contains(photo.Url))
+                                {
+                                    _imagePaths.Add(photo.Url);
+                                }
+                            }
+                        }
                     }
-                    catch (Exception ex)
+
+                   
+                    for (int i = 0; i < _imagePaths.Count; i++)
                     {
-                      
-                        Console.WriteLine($"Error loading image: {ex.Message}");
+                        Indicators.Add(new ImageIndicator { Index = i, IsActive = i == 0 });
+                    }
+
+                   
+                    if (_imagePaths.Count > 0)
+                    {
+                        LoadImageAtIndex(0);
                     }
                 }
             }
-
-     
-            if (Images.Count == 0)
+            catch (Exception ex)
             {
-                var defaultImage = new BitmapImage(new Uri("pack://application:,,,/Assets/placeholder_image.jpg", UriKind.Absolute));
-                Images.Add(defaultImage);
+                MessageBox.Show($"Error loading product images: {ex.Message}");
             }
-
-            CurrentIndex = 0;
-            UpdateIndicators();
         }
 
-        private void UpdateIndicators()
+
+        private void LoadImageAtIndex(int index)
         {
-            Indicators.Clear();
-            for (int i = 0; i < Images.Count; i++)
+            if (index >= 0 && index < _imagePaths.Count)
             {
-                Indicators.Add(new IndicatorModel
+                try
                 {
-                    Index = i,
-                    IsActive = i == CurrentIndex
-                });
+                    _currentIndex = index;
+
+                  
+                    for (int i = 0; i < Indicators.Count; i++)
+                    {
+                        Indicators[i].IsActive = i == index;
+                    }
+
+                    BitmapImage bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmap.UriSource = new Uri(_imagePaths[index]);
+                    bitmap.EndInit();
+                    CurrentImage = bitmap;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error loading image: {ex.Message}");
+                }
             }
         }
 
+ 
         private void PrevButton_Click(object sender, RoutedEventArgs e)
         {
-            CurrentIndex--;
+            if (_imagePaths.Count > 0)
+            {
+                int newIndex = (_currentIndex - 1 + _imagePaths.Count) % _imagePaths.Count;
+                LoadImageAtIndex(newIndex);
+            }
         }
 
+    
         private void NextButton_Click(object sender, RoutedEventArgs e)
         {
-            CurrentIndex++;
+            if (_imagePaths.Count > 0)
+            {
+                int newIndex = (_currentIndex + 1) % _imagePaths.Count;
+                LoadImageAtIndex(newIndex);
+            }
         }
 
+        
         private void IndicatorButton_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is Button button && button.Tag is int index)
+            Button button = sender as Button;
+            if (button != null && button.Tag is int index)
             {
-                CurrentIndex = index;
+                LoadImageAtIndex(index);
             }
+        }
+
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 
-
-    public class IndicatorModel : INotifyPropertyChanged
+ 
+    public class ImageIndicator : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
         private int _index;
         public int Index
         {
@@ -199,19 +217,9 @@ namespace StoreFrontUi.UserControls
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
+        protected void OnPropertyChanged(string name)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
-    }
-
-
-    public class Product
-    {
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public decimal Price { get; set; }
-        public List<string> ImagePaths { get; set; } = new List<string>();
     }
 }

@@ -21,6 +21,7 @@ namespace StoreFrontRepository
         public Task<List<Product>> GetAllChildrenProduct();
 
         public Task<List<Product>> GetNewProducts();
+        public Task<List<Product>> GetReleasedProducts();
         public Task <Product> GetProductByName(string name);
         public  Task<List<Product>> SearchProductsByNameAsync(string name);
 

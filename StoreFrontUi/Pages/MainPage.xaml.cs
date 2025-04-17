@@ -23,6 +23,7 @@ namespace StoreFrontUi.Pages
 
         public ObservableCollection<Product> NewProducts { get; set; }
         public ObservableCollection<Product> FilteredProducts { get; set; } = new();
+        public ObservableCollection<Product> ReleasedProducts { get; set; }
 
         private IStoreFront storeFront;
         public MainPage()
@@ -34,6 +35,7 @@ namespace StoreFrontUi.Pages
             Loaded += async (s, e) =>
             {
                 await LoadNewProducts();
+                await LoadReleasedProducts();
             };
 
             this.DataContext = this;
@@ -70,6 +72,29 @@ namespace StoreFrontUi.Pages
             catch (Exception ex)
             {
                 MessageBox.Show($"Error loading new products: {ex.Message}");
+            }
+            finally
+            {
+                LoadingProgressBar.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        public async Task LoadReleasedProducts()
+        {
+            try
+            {
+                LoadingProgressBar.Visibility = Visibility.Visible;
+                LoadingProgressBar.IsIndeterminate = true;
+                var releasedShoes = await storeFront.GetReleasedProducts();
+                if (releasedShoes != null)
+                {
+                    ReleasedProducts = new ObservableCollection<Product>(releasedShoes);
+                    //LB_NewProducts.ItemsSource = ReleasedProducts;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading released products: {ex.Message}");
             }
             finally
             {
