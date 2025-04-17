@@ -23,16 +23,73 @@ namespace StoreFrontUi.UserControls
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        // Dependency property for binding a product
-        public static readonly DependencyProperty ProductProperty =
-            DependencyProperty.Register("Product", typeof(Product), typeof(UC_ImageCarousel),
-                new PropertyMetadata(null, new PropertyChangedCallback(OnProductChanged)));
+        public static readonly DependencyProperty ProductsProperty =
+         DependencyProperty.Register("Products", typeof(IEnumerable<Product>), typeof(UC_ImageCarousel),
+             new PropertyMetadata(null, OnProductsChanged));
 
-        public Product Product
+
+
+
+        private static void OnProductsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            get { return (Product)GetValue(ProductProperty); }
-            set { SetValue(ProductProperty, value); }
+            var carousel = d as UC_ImageCarousel;
+            if (carousel != null)
+            {
+                carousel.LoadImagesFromProducts();
+            }
         }
+
+        private void LoadImagesFromProducts()
+        {
+            try
+            {
+                _imagePaths.Clear();
+                Indicators.Clear();
+                _currentIndex = 0;
+
+                if (Products != null)
+                {
+                    foreach (var product in Products)
+                    {
+                        if (product.Variants != null)
+                        {
+                            foreach (var variant in product.Variants)
+                            {
+                                if (variant.Photos != null && variant.Photos.Count > 0)
+                                {
+                                    string url = variant.Photos[0].Url;
+                                    if (!string.IsNullOrEmpty(url) && !_imagePaths.Contains(url))
+                                    {
+                                        _imagePaths.Add(url);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    for (int i = 0; i < _imagePaths.Count; i++)
+                    {
+                        Indicators.Add(new ImageIndicator { Index = i, IsActive = i == 0 });
+                    }
+
+                    if (_imagePaths.Count > 0)
+                    {
+                        LoadImageAtIndex(0);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading images from products: {ex.Message}");
+            }
+        }
+
+        public IEnumerable<Product> Products
+        {
+            get { return (IEnumerable<Product>)GetValue(ProductsProperty); }
+            set { SetValue(ProductsProperty, value); }
+        }
+
 
         // Current image to display
         private BitmapImage _currentImage;
@@ -70,60 +127,9 @@ namespace StoreFrontUi.UserControls
             _imagePaths = new List<string>();
         }
 
-        // Called when the Product property changes
-        private static void OnProductChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            UC_ImageCarousel carousel = d as UC_ImageCarousel;
-            if (carousel != null)
-            {
-                carousel.LoadProductImages();
-            }
-        }
 
-        // Load images from the product
-        private void LoadProductImages()
-        {
-            try
-            {
-                _imagePaths.Clear();
-                Indicators.Clear();
-                _currentIndex = 0;
 
-                if (Product != null && Product.Variants != null && Product.Variants.Count > 0)
-                {
-                 
-                    foreach (var variant in Product.Variants)
-                    {
-                        if (variant.Photos != null && variant.Photos.Count > 0)
-                        {
-                            foreach (var photo in variant.Photos)
-                            {
-                                if (!string.IsNullOrEmpty(photo.Url) && !_imagePaths.Contains(photo.Url))
-                                {
-                                    _imagePaths.Add(photo.Url);
-                                }
-                            }
-                        }
-                    }
-
-                   
-                    for (int i = 0; i < _imagePaths.Count; i++)
-                    {
-                        Indicators.Add(new ImageIndicator { Index = i, IsActive = i == 0 });
-                    }
-
-                   
-                    if (_imagePaths.Count > 0)
-                    {
-                        LoadImageAtIndex(0);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error loading product images: {ex.Message}");
-            }
-        }
+ 
 
 
         private void LoadImageAtIndex(int index)

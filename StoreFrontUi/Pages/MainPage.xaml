@@ -30,7 +30,9 @@
                                    Height="300" 
                                    HorizontalAlignment="Center" 
                                    VerticalAlignment="Center"
-                                   Product="{Binding ReleasedProducts}"/>
+                                               Products="{Binding ReleasedProducts}"/>
+
+               
 
                 <StackPanel Orientation="Vertical" Grid.Row="1" Margin="30,30,0,0">
                     <TextBlock Text="Novedades" FontSize="20"/>

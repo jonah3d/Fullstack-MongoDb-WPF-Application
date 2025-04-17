@@ -89,7 +89,7 @@ namespace StoreFrontUi.Pages
                 if (releasedShoes != null)
                 {
                     ReleasedProducts = new ObservableCollection<Product>(releasedShoes);
-                    //LB_NewProducts.ItemsSource = ReleasedProducts;
+                  // ProductCarousel.ItemsSource = ReleasedProducts;
                 }
             }
             catch (Exception ex)
