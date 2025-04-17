@@ -35,6 +35,11 @@ namespace StoreFrontRepository
         {
             try
             {
+
+                
+                var hashpassword = BCrypt.Net.BCrypt.HashPassword(user.Password);
+                user.Password = hashpassword;
+
                 mongoDatabase.GetCollection<User>("users").InsertOne(user);
                 return true;
             }catch(Exception ex)
@@ -294,22 +299,31 @@ namespace StoreFrontRepository
 
         public User LoginUser(string username, string password)
         {
-
-            if(username == null || password == null)
+            if (username == null || password == null)
             {
                 throw new StoreFrontException("Username or Password cannot be null");
             }
 
-          var user =  mongoDatabase.GetCollection<User>("users").Find
-                (x => x.Username == username && x.Password == password).FirstOrDefault();
+         
+            var user = mongoDatabase.GetCollection<User>("users")
+                .Find(x => x.Username == username)
+                .FirstOrDefault();
 
-            if (user == null)
+        
+            if (user == null || !VerifyPassword(user.Password, password))
             {
                 return null;
             }
 
             return user;
+        }
 
+        
+
+        private bool VerifyPassword(string storedPasswordHash, string enteredPassword)
+        {
+      
+            return BCrypt.Net.BCrypt.Verify(enteredPassword, storedPasswordHash);
         }
 
         public async Task<List<Product>> GetAllChildrenProduct()
