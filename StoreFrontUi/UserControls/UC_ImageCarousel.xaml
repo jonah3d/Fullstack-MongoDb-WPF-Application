@@ -8,9 +8,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="500">
 
-    <!-- UserControl resources -->
+
     <UserControl.Resources>
         <converters:BooleanToColorConverter x:Key="BoolToColorConverter"/>
+        <converters:FilePathToImageSourceConverter x:Key="FilePathToImageConverter">
+            
+        </converters:FilePathToImageSourceConverter>
         
 
         <Style x:Key="RoundButtonStyle" TargetType="Button">
@@ -54,8 +57,8 @@
   
         <Border Grid.Row="0" BorderBrush="LightGray" BorderThickness="1" Margin="5">
             <Grid>
-          
-                <Image x:Name="MainImage" Stretch="Uniform" Source="{Binding CurrentImage}"/>
+
+                <Image x:Name="MainImage" Stretch="UniformToFill" Source="{Binding CurrentImage ,Converter={StaticResource FilePathToImageConverter}}"/>
 
               
                 <Button x:Name="PrevButton" 
