@@ -13,100 +13,209 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using StoreFrontDb;
 using StoreFrontModel;
 using StoreFrontRepository;
 
 namespace StoreFrontUi.Pages
 {
-
     public partial class ProductsFilterPage : Page
     {
         private IStoreFront storeFront;
         private MainWindow parentWindow;
         private string selectedCategory;
+        private string currentSearchText = ""; 
         public ObservableCollection<Product> Shoes { get; set; }
+        private List<Product> allShoes;
 
         public ProductsFilterPage(string category)
         {
             InitializeComponent();
             selectedCategory = category;
-           
 
             storeFront = new StoreFrontRepository.StoreFrontRepository();
             parentWindow = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
             if (parentWindow != null)
             {
+         
                 parentWindow.GlobalSearchChanged += async (searchText) =>
                 {
-                    await FilteredName(searchText);
+                  
+                    currentSearchText = searchText;
+                    ApplyFilters();
+                   // return Task.CompletedTask; // Return a completed task to satisfy the async signature
                 };
             }
             this.DataContext = this;
-            
-       
-            Loaded += async (s, e) => {
-                await NavigatedFilter();
-             //   await FilteredName();
-            };
 
-            
+         
+            AttachFilterEvents();
+
+            Loaded += async (s, e) =>
+            {
+                await NavigatedFilter();
+            };
         }
 
-        
+        private void AttachFilterEvents()
+        {
+          
+            ckb_men.Checked += (s, e) => ApplyFilters();
+            ckb_men.Unchecked += (s, e) => ApplyFilters();
+            ckb_women.Checked += (s, e) => ApplyFilters();
+            ckb_women.Unchecked += (s, e) => ApplyFilters();
+            ckb_children.Checked += (s, e) => ApplyFilters();
+            ckb_children.Unchecked += (s, e) => ApplyFilters();
+
+         
+            ckb_sport.Checked += (s, e) => ApplyFilters();
+            ckb_sport.Unchecked += (s, e) => ApplyFilters();
+            ckb_work.Checked += (s, e) => ApplyFilters();
+            ckb_work.Unchecked += (s, e) => ApplyFilters();
+
+            PriceRangeSlider.LowerValueChanged += (s, e) => ApplyFilters();
+            PriceRangeSlider.HigherValueChanged += (s, e) => ApplyFilters();
+
+          
+            ckb_35.Checked += (s, e) => ApplyFilters();
+            ckb_35.Unchecked += (s, e) => ApplyFilters();
+            ckb_36.Checked += (s, e) => ApplyFilters();
+            ckb_36.Unchecked += (s, e) => ApplyFilters();
+            ckb_37.Checked += (s, e) => ApplyFilters();
+            ckb_37.Unchecked += (s, e) => ApplyFilters();
+            ckb_38.Checked += (s, e) => ApplyFilters();
+            ckb_38.Unchecked += (s, e) => ApplyFilters();
+            ckb_39.Checked += (s, e) => ApplyFilters();
+            ckb_39.Unchecked += (s, e) => ApplyFilters();
+            ckb_40.Checked += (s, e) => ApplyFilters();
+            ckb_40.Unchecked += (s, e) => ApplyFilters();
+            ckb_41.Checked += (s, e) => ApplyFilters();
+            ckb_41.Unchecked += (s, e) => ApplyFilters();
+            ckb_42.Checked += (s, e) => ApplyFilters();
+            ckb_42.Unchecked += (s, e) => ApplyFilters();
+            ckb_43.Checked += (s, e) => ApplyFilters();
+            ckb_43.Unchecked += (s, e) => ApplyFilters();
+            ckb_44.Checked += (s, e) => ApplyFilters();
+            ckb_44.Unchecked += (s, e) => ApplyFilters();
+            ckb_45.Checked += (s, e) => ApplyFilters();
+            ckb_45.Unchecked += (s, e) => ApplyFilters();
+            ckb_46.Checked += (s, e) => ApplyFilters();
+            ckb_46.Unchecked += (s, e) => ApplyFilters();
+            ckb_47.Checked += (s, e) => ApplyFilters();
+            ckb_47.Unchecked += (s, e) => ApplyFilters();
+            ckb_48.Checked += (s, e) => ApplyFilters();
+            ckb_48.Unchecked += (s, e) => ApplyFilters();
+            ckb_49.Checked += (s, e) => ApplyFilters();
+            ckb_49.Unchecked += (s, e) => ApplyFilters();
+            ckb_50.Checked += (s, e) => ApplyFilters();
+            ckb_50.Unchecked += (s, e) => ApplyFilters();
+        }
 
         public async Task NavigatedFilter()
         {
-
-            switch (selectedCategory)
-            {
-                case "men_cat":
-                    ckb_men.IsChecked = true;
-                    await LoadMenShoes();
-                    break;
-                case "women_cat":
-                    ckb_women.IsChecked = true;
-                    await LoadWomenShoes();
-                    break;
-                case "children_cat":
-                    ckb_children.IsChecked = true;
-                    await LoadChildrenShoes();
-                    break;
-                case "sports_cat":
-                    ckb_sport.IsChecked = true;
-                    await LoadSportsShoes();
-                    break;
-
-            }
-        }
-
-
-        public async Task FilteredName(string searchText)
-        {
             try
             {
                 LoadingProgressBar.Visibility = Visibility.Visible;
-                LoadingProgressBar.IsIndeterminate = true;
 
-                if (string.IsNullOrWhiteSpace(searchText))
+          
+                allShoes = await storeFront.GetAllProducts();
+
+     
+                switch (selectedCategory)
                 {
-                    ProductsList.ItemsSource = null;
-                    return;
+                    case "men_cat":
+                        ckb_men.IsChecked = true;
+                        break;
+                    case "women_cat":
+                        ckb_women.IsChecked = true;
+                        break;
+                    case "children_cat":
+                        ckb_children.IsChecked = true;
+                        break;
+                    case "sports_cat":
+                        ckb_sport.IsChecked = true;
+                        break;
                 }
 
-                var searchbyname = await storeFront.SearchProductsByNameAsync(searchText);
-                if (searchbyname != null && searchbyname.Count > 0)
+              
+                ApplyFilters();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading products: {ex.Message}");
+            }
+            finally
+            {
+                LoadingProgressBar.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void ApplyFilters()
+        {
+            if (allShoes == null || allShoes.Count == 0)
+                return;
+
+            try
+            {
+                LoadingProgressBar.Visibility = Visibility.Visible;
+
+                IEnumerable<Product> filteredShoes = allShoes;
+
+                if (!string.IsNullOrWhiteSpace(currentSearchText))
                 {
-                    Shoes = new ObservableCollection<Product>(searchbyname);
-                    ProductsList.ItemsSource = Shoes;
+                    filteredShoes = filteredShoes.Where(p =>
+                        p.Name.IndexOf(currentSearchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                        (p.Description != null && p.Description.IndexOf(currentSearchText, StringComparison.OrdinalIgnoreCase) >= 0));
                 }
-                else
+
+                var genderFilters = new List<Func<Product, bool>>();
+                if (ckb_men.IsChecked == true)
+                    genderFilters.Add(p => IsMenProduct(p));
+                if (ckb_women.IsChecked == true)
+                    genderFilters.Add(p => IsWomenProduct(p));
+                if (ckb_children.IsChecked == true)
+                    genderFilters.Add(p => IsChildrenProduct(p));
+
+                if (genderFilters.Any())
                 {
-                    Shoes?.Clear();
+                    filteredShoes = filteredShoes.Where(p => genderFilters.Any(filter => filter(p)));
                 }
+
+             
+                var activityFilters = new List<Func<Product, bool>>();
+                if (ckb_sport.IsChecked == true)
+                    activityFilters.Add(p => IsSportProduct(p));
+                if (ckb_work.IsChecked == true)
+                    activityFilters.Add(p => IsWorkProduct(p));
+
+                if (activityFilters.Any())
+                {
+                    filteredShoes = filteredShoes.Where(p => activityFilters.Any(filter => filter(p)));
+                }
+
+               
+                decimal minPrice = (decimal)PriceRangeSlider.LowerValue;
+                decimal maxPrice = (decimal)PriceRangeSlider.HigherValue;
+                filteredShoes = filteredShoes.Where(p => p.Price >= minPrice && p.Price <= maxPrice);
+
+                var selectedSizes = GetSelectedSizes();
+                if (selectedSizes.Any())
+                {
+                    filteredShoes = filteredShoes.Where(p =>
+                        p.Variants.Any(v =>
+                            v.Sizes.Any(s => selectedSizes.Contains(s.Size))
+                        )
+                    );
+                }
+
+                Shoes = new ObservableCollection<Product>(filteredShoes);
+                ProductsList.ItemsSource = Shoes;
+
+                UpdatePagination(Shoes.Count);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error filtering shoes: {ex.Message}");
+                MessageBox.Show($"Error applying filters: {ex.Message}");
             }
             finally
             {
@@ -114,94 +223,86 @@ namespace StoreFrontUi.Pages
             }
         }
 
-
-        public async Task LoadMenShoes()
+        private List<string> GetSelectedSizes()
         {
-            try
-            {
-                LoadingProgressBar.Visibility = Visibility.Visible;
-                LoadingProgressBar.IsIndeterminate = true;
+            var sizes = new List<string>();
 
-                var menShoes = await storeFront.GetAllMenProduct();
+            if (ckb_35.IsChecked == true) sizes.Add("35");
+            if (ckb_36.IsChecked == true) sizes.Add("36");
+            if (ckb_37.IsChecked == true) sizes.Add("37");
+            if (ckb_38.IsChecked == true) sizes.Add("38");
+            if (ckb_39.IsChecked == true) sizes.Add("39");
+            if (ckb_40.IsChecked == true) sizes.Add("40");
+            if (ckb_41.IsChecked == true) sizes.Add("41");
+            if (ckb_42.IsChecked == true) sizes.Add("42");
+            if (ckb_43.IsChecked == true) sizes.Add("43");
+            if (ckb_44.IsChecked == true) sizes.Add("44");
+            if (ckb_45.IsChecked == true) sizes.Add("45");
+            if (ckb_46.IsChecked == true) sizes.Add("46");
+            if (ckb_47.IsChecked == true) sizes.Add("47");
+            if (ckb_48.IsChecked == true) sizes.Add("48");
+            if (ckb_49.IsChecked == true) sizes.Add("49");
+            if (ckb_50.IsChecked == true) sizes.Add("50");
 
-                Shoes = new ObservableCollection<Product>(menShoes);
-                ProductsList.ItemsSource = Shoes;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error loading shoes: {ex.Message}");
-            }
-            finally
-            {
-                LoadingProgressBar.Visibility = Visibility.Collapsed;
-            }
+            return sizes;
         }
 
-        public async Task LoadWomenShoes()
+        private void UpdatePagination(int totalItems)
         {
-            try
-            {
-                LoadingProgressBar.Visibility = Visibility.Visible;
-                LoadingProgressBar.IsIndeterminate = true;
-                var womenShoes = await storeFront.GetAllWomenProduct();
-                Shoes = new ObservableCollection<Product>(womenShoes);
-                ProductsList.ItemsSource = Shoes;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error loading shoes: {ex.Message}");
-            }
-            finally
-            {
-                LoadingProgressBar.Visibility = Visibility.Collapsed;
-            }
+      
+            int itemsPerPage = 12;
+            int maxPage = (int)Math.Ceiling((double)totalItems / itemsPerPage);
+            PaginationControl.MaxPage = maxPage > 0 ? maxPage : 1;
+
+      
+            PaginationControl.CurrentPage = 1;
+
+          
+            ApplyPagination();
         }
 
-
-        public async Task LoadSportsShoes()
+        private void ApplyPagination()
         {
-            try
+            int currentPage = PaginationControl.CurrentPage;
+            int itemsPerPage = 10;
+
+            if (Shoes != null)
             {
-                LoadingProgressBar.Visibility = Visibility.Visible;
-                LoadingProgressBar.IsIndeterminate = true;
-                var sportsShoes = await storeFront.GetAllSportsProduct();
-                Shoes = new ObservableCollection<Product>(sportsShoes);
-                ProductsList.ItemsSource = Shoes;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error loading shoes: {ex.Message}");
-            }
-            finally
-            {
-                LoadingProgressBar.Visibility = Visibility.Collapsed;
+                var displayedShoes = Shoes.Skip((currentPage - 1) * itemsPerPage).Take(itemsPerPage);
+                ProductsList.ItemsSource = new ObservableCollection<Product>(displayedShoes);
             }
         }
 
 
-        public async Task LoadChildrenShoes()
+        private bool IsMenProduct(Product product)
         {
-            try
-            {
-                LoadingProgressBar.Visibility = Visibility.Visible;
-                LoadingProgressBar.IsIndeterminate = true;
-                var childrenShoes = await storeFront.GetAllChildrenProduct();
-                Shoes = new ObservableCollection<Product>(childrenShoes);
-                ProductsList.ItemsSource = Shoes;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error loading shoes: {ex.Message}");
-            }
-            finally
-            {
-                LoadingProgressBar.Visibility = Visibility.Collapsed;
-            }
+    
+            return product.Categories?.Any(c => c.Name.Contains("Men") || c.Name.Contains("men")) ?? false;
+        }
+
+        private bool IsWomenProduct(Product product)
+        {
+            return product.Categories?.Any(c => c.Name.Contains("Women") || c.Name.Contains("women")) ?? false;
+        }
+
+        private bool IsChildrenProduct(Product product)
+        {
+            return product.Categories?.Any(c => c.Name.Contains("Children") || c.Name.Contains("children") || c.Name.Contains("Kids") || c.Name.Contains("kids")) ?? false;
+        }
+
+        private bool IsSportProduct(Product product)
+        {
+            return product.Categories?.Any(c => c.Name.Contains("Sport") || c.Name.Contains("sport") || c.Name.Contains("Athletic") || c.Name.Contains("athletic")) ?? false;
+        }
+
+        private bool IsWorkProduct(Product product)
+        {
+            return product.Categories?.Any(c => c.Name.Contains("Work") || c.Name.Contains("work") || c.Name.Contains("Formal") || c.Name.Contains("formal") || c.Name.Contains("Business") || c.Name.Contains("business")) ?? false;
         }
 
         private void ProductsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(ProductsList.SelectedItem is Product selectedProduct)
+            if (ProductsList.SelectedItem is Product selectedProduct)
             {
                 var productDetailsPage = new ProductDetailsPage(selectedProduct);
                 parentWindow.MainFramePage.Navigate(productDetailsPage);
@@ -210,8 +311,8 @@ namespace StoreFrontUi.Pages
 
         private void UC_Pagination_PageChanged(object sender, EventArgs e)
         {
-
+            ApplyPagination();
         }
     }
-}
+    }
 
