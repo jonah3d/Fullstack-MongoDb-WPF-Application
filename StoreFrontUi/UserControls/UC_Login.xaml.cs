@@ -44,7 +44,7 @@ namespace StoreFrontUi.UserControls
                 string.IsNullOrEmpty(Txt_Password.Password) ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        private void Btn_Login_Click(object sender, RoutedEventArgs e)
+        private async void Btn_Login_Click(object sender, RoutedEventArgs e)
         {
             string username = Txt_Username.Text;
             string password = Txt_Password.Password;
@@ -63,6 +63,7 @@ namespace StoreFrontUi.UserControls
                     MessageBox.Show("Login Successful");
                     parentWindow.CurrentUser = loggedUser;
                     parentWindow.SetUpCurrentUser();
+                   await parentWindow.loadusercart();
                     Txt_Password.Password = string.Empty;
                     Txt_Username.Text = string.Empty;
 

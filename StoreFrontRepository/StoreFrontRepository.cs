@@ -599,9 +599,30 @@ namespace StoreFrontRepository
             }
         }
 
-        public Task<Cart> GetCartByUserId(ObjectId userId)
+        public async Task<Cart> GetCartByUserId(ObjectId userId)
         {
-            throw new NotImplementedException();
+            try
+            {
+
+                var cat = await mongoDatabase.GetCollection<Cart>("cart")
+                    .FindAsync(x => x.UserId == userId && x.Purchased== false);
+
+                var userCat = await cat.FirstOrDefaultAsync();
+                if(userCat == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    return userCat;
+                }
+
+               
+            }
+            catch(Exception ex)
+            {
+                throw new StoreFrontException($"Error Getting Cart by UserId: {ex.Message}");
+            }
         }
 
         public async Task AddOrUpdateCart(Cart cart, ObjectId userId)

@@ -242,7 +242,7 @@ namespace StoreFrontUi.Pages
                         Size = size,
                         Quantity = 1
                     };
-
+                    
                     parentWindow.StoreCart.AddItem(cartItem);
                     parentWindow.StoreCart.UserId = parentWindow.CurrentUser.Id;
                     parentWindow.StoreCart.CreatedAt = DateTime.UtcNow;

@@ -55,6 +55,8 @@ namespace StoreFrontUi
 
             storeFront = new StoreFrontRepository.StoreFrontRepository();
             StoreCart = new Cart();
+           
+              
 
             StoreCart.Items.CollectionChanged += (s, e) => CartStatus();
 
@@ -65,6 +67,43 @@ namespace StoreFrontUi
 
             this.DataContext = this;
         }
+
+        public async Task loadusercart()
+        {
+            try
+            {
+                if (CurrentUser != null)
+                {
+                    var loadedCart = await storeFront.GetCartByUserId(CurrentUser.Id);
+
+                    if (loadedCart != null)
+                    {
+                        // Update existing cart instead of replacing it
+                        StoreCart.UserId = loadedCart.UserId;
+                        StoreCart.CartId = loadedCart.CartId;
+                        StoreCart.CreatedAt = loadedCart.CreatedAt;
+                        StoreCart.UpdatedAt = loadedCart.UpdatedAt;
+                        StoreCart.Purchased = loadedCart.Purchased;
+
+                        // Clear and copy items
+                        StoreCart.Items.Clear();
+                        foreach (var item in loadedCart.Items)
+                        {
+                            StoreCart.Items.Add(item);
+                        }
+                    }
+                    else
+                    {
+                        StoreCart = new Cart { UserId = CurrentUser.Id };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error loading cart: " + ex.Message);
+            }
+        }
+
 
         public void NavigateToMainPage()
         {
