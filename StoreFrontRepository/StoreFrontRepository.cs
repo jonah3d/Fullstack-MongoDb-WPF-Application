@@ -598,5 +598,43 @@ namespace StoreFrontRepository
                 throw new StoreFrontException($"Error Getting Released Products: {ex.Message}");
             }
         }
+
+        public Task<Cart> GetCartByUserId(ObjectId userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task AddOrUpdateCart(Cart cart, ObjectId userId)
+        {
+            try
+            {
+                if(cart == null)
+                {
+                    throw new StoreFrontException("Cart cannot be null");
+                }
+
+                if(userId == null)
+                {
+                    throw new StoreFrontException("UserId cannot be null");
+                }
+
+                var filter = Builders<Cart>.Filter.Eq(c => c.UserId, cart.UserId);
+                var update = Builders<Cart>.Update
+                    .SetOnInsert(c => c.CreatedAt, cart.CreatedAt)
+                    .Set(c => c.Items, cart.Items)
+                    .Set(c => c.Purchased, cart.Purchased)
+                    .Set(c => c.UpdatedAt, DateTime.Now);
+
+
+                var options = new UpdateOptions { IsUpsert = true }; 
+
+                await mongoDatabase.GetCollection<Cart>("cart").UpdateOneAsync(filter, update, options);
+
+            }
+            catch (Exception ex)
+            {
+                throw new StoreFrontException($"Error Adding/Updating Cart: {ex.Message}");
+            }
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using StoreFrontModel;
 using StoreFrontRepository;
 using StoreFrontUi.Utils;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,12 +24,27 @@ namespace StoreFrontUi
             set { SetValue(CurrentUserProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for CurrentUser.  This enables animation, styling, binding, etc...
+
+
+        public Cart StoreCart
+        {
+            get { return (Cart)GetValue(StoreCartProperty); }
+            set { SetValue(StoreCartProperty, value); }
+        }
+
+       
+        public static readonly DependencyProperty StoreCartProperty =
+            DependencyProperty.Register("StoreCart", typeof(Cart), typeof(MainWindow), new PropertyMetadata(null));
+
+
+
+
         public static readonly DependencyProperty CurrentUserProperty =
             DependencyProperty.Register("CurrentUser", typeof(User), typeof(MainWindow), new PropertyMetadata(null));
 
 
         private IStoreFront storeFront;
+        public ObservableCollection<CartItem> CartItems { get; set; } = new ObservableCollection<CartItem>();
 
         public MainWindow()
         {
@@ -38,7 +54,14 @@ namespace StoreFrontUi
             Popup_Login.StaysOpen = false;
 
             storeFront = new StoreFrontRepository.StoreFrontRepository();
-        
+            StoreCart = new Cart();
+
+            StoreCart.Items.CollectionChanged += (s, e) => CartStatus();
+
+
+
+
+
 
             this.DataContext = this;
         }
@@ -147,6 +170,34 @@ namespace StoreFrontUi
             }
 
           
+        }
+
+    /*    public void addCartToDb()
+        {
+            if (StoreCart != null)
+            {
+                StoreCart.UserId = CurrentUser.Id;
+                StoreCart.CreatedAt = DateTime.UtcNow;
+                StoreCart.UpdatedAt = DateTime.UtcNow;
+
+                // storeFront.AddCartToDb(StoreCart);
+            }
+        }*/
+
+
+        public void CartStatus()
+        {
+            if (StoreCart?.Items?.Count > 0)
+            {
+                CartEclipse.Visibility = Visibility.Visible;
+                Tb_QtItems.Text = StoreCart.Items.Count.ToString();
+            }
+            else
+            {
+                CartEclipse.Visibility = Visibility.Collapsed;
+              //  Tb_QtItems.Text = StoreCart.Items.Count.ToString();
+            }
+
         }
 
     }

@@ -1,4 +1,5 @@
-﻿using StoreFrontModel;
+﻿using MongoDB.Bson;
+using StoreFrontModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,8 @@ namespace StoreFrontRepository
         public Task<List<Product>> GetReleasedProducts();
         public Task <Product> GetProductByName(string name);
         public  Task<List<Product>> SearchProductsByNameAsync(string name);
-
+        public Task<Cart> GetCartByUserId(ObjectId userId);
+        public Task AddOrUpdateCart(Cart cart, ObjectId userId);
 
         public Task<List<Product>> GetAllProducts();
 

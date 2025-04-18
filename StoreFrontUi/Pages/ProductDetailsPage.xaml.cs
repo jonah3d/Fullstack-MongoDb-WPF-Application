@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using StoreFrontModel;
+using StoreFrontRepository;
 
 namespace StoreFrontUi.Pages
 {
@@ -129,10 +131,15 @@ namespace StoreFrontUi.Pages
             }
         }
 
+        private MainWindow parentWindow;
+        private IStoreFront storeFront;
+
         public ProductDetailsPage(Product product)
         {
             InitializeComponent();
+            storeFront = new StoreFrontRepository.StoreFrontRepository();
             StoreProduct = product;
+            parentWindow = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
             Variant = new ObservableCollection<ProductVariant>(product.Variants);
 
 
@@ -170,11 +177,12 @@ namespace StoreFrontUi.Pages
         private void LB_Sizes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
-            if (LB_Sizes.SelectedItem is SizeStock selectedSize)
+            if (LB_Sizes.SelectedItem is SizeStock size)
             {
-                SelectedSize = selectedSize;
+                SelectedSize = size;
             }
         }
+
 
         private void PreviousImage_Click(object sender, RoutedEventArgs e)
         {
@@ -211,6 +219,61 @@ namespace StoreFrontUi.Pages
         private void Btn_AddToCart_Click(object sender, RoutedEventArgs e)
         {
 
+            if (parentWindow.CurrentUser == null)
+            {
+                MessageBox.Show("You must be logged in to add items to the cart.", "Not Logged In", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            try
+            {
+                var product = StoreProduct.Id;
+                var variant = SelectedVariant.Id;
+                var size = SelectedSize.Size;
+
+
+
+                if (StoreProduct != null && SelectedVariant != null && SelectedSize != null)
+                {
+                    var cartItem = new CartItem
+                    {
+                        ProductId = product,
+                        VariantId = variant,
+                        Size = size,
+                        Quantity = 1
+                    };
+
+                    parentWindow.StoreCart.AddItem(cartItem);
+                    parentWindow.StoreCart.UserId = parentWindow.CurrentUser.Id;
+                    parentWindow.StoreCart.CreatedAt = DateTime.UtcNow;
+                    parentWindow.StoreCart.UpdatedAt = DateTime.UtcNow;
+                    parentWindow.StoreCart.Purchased = false;
+
+                    storeFront.AddOrUpdateCart(parentWindow.StoreCart,parentWindow.CurrentUser.Id);
+
+
+
+                    MessageBox.Show("Item Successfully Added");
+                    /*  MessageBox.Show($"Item added to cart successfully! \n ProductID: {cartItem.ProductId}," +
+                          $" VariantId {cartItem.VariantId}, SelectedSize {cartItem.Size}");*/
+
+                    /*     foreach(var item in parentWindow.StoreCart.Items)
+                         {
+                             //Console.WriteLine($"\nProductID: {item.ProductId}, VariantId: {item.VariantId}, Size: {item.Size}, Quantity: {item.Quantity}");
+                             File.AppendAllText("debug_log.txt", $"\nProductID: {item.ProductId}, VariantId: {item.VariantId}, Size: {item.Size}, Quantity: {item.Quantity}\n");
+
+                         }*/
+
+                }
+                else
+                {
+                    MessageBox.Show("Please select a variant and size before adding to cart.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while adding the item to the cart: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
-    }
+        }
     }

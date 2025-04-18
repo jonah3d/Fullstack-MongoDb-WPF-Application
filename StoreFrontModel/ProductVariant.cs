@@ -10,7 +10,7 @@ namespace StoreFrontModel
 {
     public class ProductVariant
     {
-        [BsonId]
+        [BsonElement("_id")]
         [BsonRepresentation(BsonType.ObjectId)]
         public ObjectId Id{ get; set; }
 
