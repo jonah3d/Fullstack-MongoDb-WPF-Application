@@ -240,7 +240,13 @@ namespace StoreFrontUi.Pages
                         ProductId = product,
                         VariantId = variant,
                         Size = size,
-                        Quantity = 1
+                        Quantity = 1,
+                        Color = SelectedVariant.Color,
+                        ProductName = StoreProduct.Name,
+                        BasePrice = SelectedVariant.Price,
+                        DiscountPercentage = SelectedVariant.Discount != null ? (decimal)SelectedVariant.Discount.Percentage : 0,
+                        ProductImage = SelectedVariant.Photos[2].Url,
+                        VatPercentage = StoreProduct.IvaType.Percentage
                     };
                     
                     parentWindow.StoreCart.AddItem(cartItem);

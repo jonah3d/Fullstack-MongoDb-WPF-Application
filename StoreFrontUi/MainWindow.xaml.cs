@@ -239,5 +239,9 @@ namespace StoreFrontUi
 
         }
 
+        private void Btn_Cart_Click(object sender, RoutedEventArgs e)
+        {
+            MainFramePage.Navigate(new Pages.CartPage());
+        }
     }
 }
