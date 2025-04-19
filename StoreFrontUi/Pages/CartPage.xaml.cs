@@ -58,6 +58,9 @@ namespace StoreFrontUi.Pages
                         {
                             ucCartItem.QuantityChanged -= UcCartItem_QuantityChanged; // avoid duplicates
                             ucCartItem.QuantityChanged += UcCartItem_QuantityChanged;
+
+                            ucCartItem.RemoveItem -= UcCartItem_RemoveItem;
+                            ucCartItem.RemoveItem += UcCartItem_RemoveItem;
                         }
                     }
                 }
@@ -92,7 +95,24 @@ namespace StoreFrontUi.Pages
             }
         }
 
-      async  void loadShippingMethods()
+        private async void UcCartItem_RemoveItem(object sender, CartItem itemToRemove)
+        {
+            try
+            {
+                // Remove from collection
+                UserCart.Items.Remove(itemToRemove);
+
+                // Update cart in database
+                UserCart.UpdatedAt = DateTime.UtcNow;
+                await storeFront.AddOrUpdateCart(UserCart, parentWindow.CurrentUser.Id);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error removing item from cart: {ex.Message}", "Cart Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        async  void loadShippingMethods()
         {
             // Load shipping methods from the repository
             var shippingMethods = await storeFront.GetShippingMethods();

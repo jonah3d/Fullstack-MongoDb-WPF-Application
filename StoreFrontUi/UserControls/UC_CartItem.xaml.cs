@@ -33,6 +33,7 @@ namespace StoreFrontUi.UserControls
             DependencyProperty.Register("Item", typeof(CartItem), typeof(UC_CartItem), new PropertyMetadata(null));
 
         public event EventHandler QuantityChanged;
+        public event EventHandler<CartItem> RemoveItem;
 
         private void BtnIncrease_Click(object sender, RoutedEventArgs e)
         {
@@ -45,12 +46,21 @@ namespace StoreFrontUi.UserControls
 
         private void BtnDecrease_Click(object sender, RoutedEventArgs e)
         {
-            if (Item != null && Item.Quantity > 1)
+            if (Item != null)
             {
-                Item.Quantity--;
-                QuantityChanged?.Invoke(this, EventArgs.Empty);
+                if (Item.Quantity > 1)
+                {
+                    Item.Quantity--;
+                    QuantityChanged?.Invoke(this, EventArgs.Empty);
+                }
+                else
+                {
+                    // Quantity is 1 and about to be decreased to 0
+                    // Signal to remove the item
+                    RemoveItem?.Invoke(this, Item);
+                }
             }
         }
-    }
+        }
 
 }
