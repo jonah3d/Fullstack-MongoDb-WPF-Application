@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using StoreFrontModel;
 
+
 namespace StoreFrontUi.UserControls
 {
     public partial class UC_CartItem : UserControl
@@ -21,6 +22,15 @@ namespace StoreFrontUi.UserControls
         public UC_CartItem()
         {
             InitializeComponent();
+          TextBlock icon = new  TextBlock()
+            {
+                Text = "\uE74D",
+                FontFamily = new FontFamily("Segoe MDL2 Assets"),
+                Foreground = new SolidColorBrush(Colors.Black)
+            };
+
+            // Assuming btn_deleteBtn is a Button
+            btn_deleteBtn.Content = icon;
         }
 
         public CartItem Item
@@ -61,6 +71,27 @@ namespace StoreFrontUi.UserControls
                 }
             }
         }
+
+
+
+        private void btn_deleteBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (Item != null)
+            {
+               
+                MessageBoxResult result = MessageBox.Show(
+                    $"Remove '{Item.ProductName}' from your cart?",
+                    "Confirm Removal",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    
+                    RemoveItem?.Invoke(this, Item);
+                }
+            }
         }
+    }
 
 }

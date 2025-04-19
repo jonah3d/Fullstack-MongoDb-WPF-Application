@@ -133,6 +133,21 @@ namespace StoreFrontModel
             }
         }
 
+        private async void UcCartItem_RemoveItem(object sender, CartItem itemToRemove)
+        {
+            try
+            {
+                // Remove from collection
+                Items.Remove(itemToRemove);
+
+              
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error removing item from cart: {ex.Message}");
+            }
+        }
+
         private void Items_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
