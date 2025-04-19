@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -44,13 +45,19 @@ namespace StoreFrontUi.Pages
       
         private void PayNow_Click(object sender, RoutedEventArgs e)
         {
+
+            if (!ValidateCardDetails())
+                return;
+
+
             if (!ValidateCardNumber(txtCardNumber.Text))
             {
                 System.Windows.MessageBox.Show("Invalid card number.");
                 return;
             }
 
-            // Handle payment logic
+        
+       
         }
 
         private bool ValidateCardNumber(string number)
@@ -74,5 +81,49 @@ namespace StoreFrontUi.Pages
 
             return (sum % 10 == 0);
         }
+
+        private bool ValidateCardDetails()
+        {
+           
+            string expDate = txtExpDate.Text.Trim();
+            if (!Regex.IsMatch(expDate, @"^(0[1-9]|1[0-2])\/\d{2}$"))
+            {
+                System.Windows.MessageBox.Show("Expiration date must be in MM/YY format.", "Invalid Input", System.Windows.MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
+          
+            var parts = expDate.Split('/');
+            int month = int.Parse(parts[0]);
+            int year = 2000 + int.Parse(parts[1]); 
+            var exp = new DateTime(year, month, 1).AddMonths(1).AddDays(-1);
+            if (DateTime.Now > exp)
+            {
+                System.Windows.MessageBox.Show("Card is expired.", "Invalid Input", System.Windows.MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
+            string cvv = txtCVV.Text.Trim();
+            if (!Regex.IsMatch(cvv, @"^\d{3,4}$"))
+            {
+                System.Windows.MessageBox.Show("CVV must be 3 or 4 digits.", "Invalid Input", System.Windows.MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(txtCardName.Text.Trim()))
+            {
+                System.Windows.MessageBox.Show("You Must Enter A Card Holder");
+                return false;
+            }
+
+            if(string.IsNullOrEmpty(txtCardNumber.Text.Trim()))
+            {
+                System.Windows.MessageBox.Show("You Must Enter A Card Number");
+                return false;
+            }
+
+            return true;
+        }
+
     }
 }
