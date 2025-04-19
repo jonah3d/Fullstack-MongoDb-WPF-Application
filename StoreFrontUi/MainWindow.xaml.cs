@@ -43,7 +43,7 @@ namespace StoreFrontUi
             DependencyProperty.Register("CurrentUser", typeof(User), typeof(MainWindow), new PropertyMetadata(null));
 
 
-        private IStoreFront storeFront;
+        public IStoreFront storeFront;
         public ObservableCollection<CartItem> CartItems { get; set; } = new ObservableCollection<CartItem>();
 
         public MainWindow()

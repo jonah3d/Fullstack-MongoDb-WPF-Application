@@ -29,6 +29,8 @@ namespace StoreFrontRepository
         public Task AddOrUpdateCart(Cart cart, ObjectId userId);
 
         public Task<List<Product>> GetAllProducts();
+    
+        public Task<List<ShippingMethod>> GetShippingMethods();
 
     }
 }

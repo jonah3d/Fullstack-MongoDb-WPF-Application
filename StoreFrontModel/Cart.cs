@@ -168,7 +168,7 @@ namespace StoreFrontModel
             }
         }
 
-        private void RecalculateTotals()
+        public void RecalculateTotals()
         {
             SubTotal = Items.Sum(item => item.NetAmount);   // Already includes quantity
             TotalVat = Items.Sum(item => item.VatAmount);   // Already includes quantity

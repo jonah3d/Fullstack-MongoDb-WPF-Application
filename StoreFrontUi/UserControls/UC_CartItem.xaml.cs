@@ -16,7 +16,6 @@ using StoreFrontModel;
 
 namespace StoreFrontUi.UserControls
 {
-
     public partial class UC_CartItem : UserControl
     {
         public UC_CartItem()
@@ -24,20 +23,34 @@ namespace StoreFrontUi.UserControls
             InitializeComponent();
         }
 
-
-
         public CartItem Item
         {
-            get { return (CartItem)GetValue(ItemProperty); }
-            set { SetValue(ItemProperty, value); 
-            
-            }
+            get => (CartItem)GetValue(ItemProperty);
+            set => SetValue(ItemProperty, value);
         }
 
-        // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ItemProperty =
             DependencyProperty.Register("Item", typeof(CartItem), typeof(UC_CartItem), new PropertyMetadata(null));
 
+        public event EventHandler QuantityChanged;
 
+        private void BtnIncrease_Click(object sender, RoutedEventArgs e)
+        {
+            if (Item != null)
+            {
+                Item.Quantity++;
+                QuantityChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        private void BtnDecrease_Click(object sender, RoutedEventArgs e)
+        {
+            if (Item != null && Item.Quantity > 1)
+            {
+                Item.Quantity--;
+                QuantityChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
     }
+
 }

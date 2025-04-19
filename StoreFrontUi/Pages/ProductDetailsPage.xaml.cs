@@ -260,16 +260,7 @@ namespace StoreFrontUi.Pages
 
 
                     MessageBox.Show("Item Successfully Added");
-                    /*  MessageBox.Show($"Item added to cart successfully! \n ProductID: {cartItem.ProductId}," +
-                          $" VariantId {cartItem.VariantId}, SelectedSize {cartItem.Size}");*/
-
-                    /*     foreach(var item in parentWindow.StoreCart.Items)
-                         {
-                             //Console.WriteLine($"\nProductID: {item.ProductId}, VariantId: {item.VariantId}, Size: {item.Size}, Quantity: {item.Quantity}");
-                             File.AppendAllText("debug_log.txt", $"\nProductID: {item.ProductId}, VariantId: {item.VariantId}, Size: {item.Size}, Quantity: {item.Quantity}\n");
-
-                         }*/
-
+               
                 }
                 else
                 {

@@ -51,6 +51,7 @@
                 <TextBlock Text=" | IVA: " Margin="10,0,0,0"/>
                 <TextBlock Text="{Binding VatPercentage, StringFormat={}{0}%}" Margin="5,0"/>
                 <TextBlock Text=" | Discount: €" Margin="10,0,0,0"/>
+                <TextBlock Text="{Binding DiscountAmount, StringFormat={}{0:F2}}" Margin="5,0"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
@@ -66,10 +67,12 @@
         <!-- Quantity Control -->
         <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right">
             <Button Content="+" Width="24" Height="24" Margin="0,0,0,5"
-                    Command="{Binding IncreaseQuantityCommand}" />
+            Click="BtnIncrease_Click" />
             <TextBlock Text="{Binding Quantity}" HorizontalAlignment="Center" FontSize="14" FontWeight="Bold" />
             <Button Content="-" Width="24" Height="24" Margin="0,5,0,0"
-                    Command="{Binding DecreaseQuantityCommand}" />
+            Click="BtnDecrease_Click" />
         </StackPanel>
+
+
     </Grid>
 </UserControl>

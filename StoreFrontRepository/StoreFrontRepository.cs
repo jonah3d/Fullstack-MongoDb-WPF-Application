@@ -643,6 +643,10 @@ namespace StoreFrontRepository
                 var update = Builders<Cart>.Update
                     .SetOnInsert(c => c.CreatedAt, cart.CreatedAt)
                     .Set(c => c.Items, cart.Items)
+                    .Set(c => c.SubTotal, cart.SubTotal)
+                    .Set(c => c.ShippingCost, cart.ShippingCost)
+                    .Set(c => c.TotalVat, cart.TotalVat)
+                    .Set(c => c.Total, cart.Total)
                     .Set(c => c.Purchased, cart.Purchased)
                     .Set(c => c.UpdatedAt, DateTime.Now);
 
@@ -655,6 +659,29 @@ namespace StoreFrontRepository
             catch (Exception ex)
             {
                 throw new StoreFrontException($"Error Adding/Updating Cart: {ex.Message}");
+            }
+        }
+
+        public async Task<List<ShippingMethod>> GetShippingMethods()
+        {
+            try
+            {
+
+                var shippingMethods = await mongoDatabase.GetCollection<ShippingMethod>("shippingMethods")
+                    .FindAsync(_ => true);
+                var shippingMethodList = await shippingMethods.ToListAsync();
+
+                if (shippingMethodList == null || shippingMethodList.Count < 0)
+                {
+                    return new List<ShippingMethod>();
+                }
+               
+                return shippingMethodList;
+
+            }
+            catch (Exception ex)
+            {
+                throw new StoreFrontException($"Error Getting Shipping Methods: {ex.Message}");
             }
         }
     }
