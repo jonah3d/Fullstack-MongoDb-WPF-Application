@@ -245,7 +245,7 @@ namespace StoreFrontUi.Pages
                         ProductName = StoreProduct.Name,
                         BasePrice = SelectedVariant.Price,
                         DiscountPercentage = SelectedVariant.Discount != null ? (decimal)SelectedVariant.Discount.Percentage : 0,
-                        ProductImage = SelectedVariant.Photos[2].Url,
+                        ProductImage = SelectedVariant.Photos[2].Url.ToString().Trim(),
                         VatPercentage = StoreProduct.IvaType.Percentage
                     };
                     
