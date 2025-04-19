@@ -118,7 +118,8 @@ namespace StoreFrontModel
                 item.VatPercentage == newItem.VatPercentage &&
                 item.NetAmount == newItem.NetAmount &&
                 item.VatAmount == newItem.VatAmount  &&
-                item.ProductName == newItem.ProductName 
+                item.ProductName == newItem.ProductName &&
+                item.ProductImage == newItem.ProductImage
 
 
                 );
