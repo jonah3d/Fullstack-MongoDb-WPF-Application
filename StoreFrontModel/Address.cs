@@ -20,5 +20,8 @@ namespace StoreFrontModel
 
         [BsonElement("postalcode")]
         public string PostalCode { get; set; }
+
+        [BsonElement("country")]
+        public string Country { get; set; }
     }
 }

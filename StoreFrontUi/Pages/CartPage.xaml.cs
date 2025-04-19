@@ -38,7 +38,7 @@ namespace StoreFrontUi.Pages
             Lv_CartItems.ItemsSource = parentWindow.StoreCart.Items;
             UserCart = parentWindow.StoreCart;
 
-            // Load shipping methods
+          
             loadShippingMethods();
 
             this.DataContext = this;
@@ -87,7 +87,7 @@ namespace StoreFrontUi.Pages
             {
                 parentWindow.StoreCart.UpdatedAt = DateTime.UtcNow;
                 await storeFront.AddOrUpdateCart(parentWindow.StoreCart, parentWindow.CurrentUser.Id);
-                // Optionally: refresh checkout totals here
+                
             }
             catch (Exception ex)
             {
@@ -99,10 +99,10 @@ namespace StoreFrontUi.Pages
         {
             try
             {
-                // Remove from collection
+              
                 UserCart.Items.Remove(itemToRemove);
 
-                // Update cart in database
+                
                 UserCart.UpdatedAt = DateTime.UtcNow;
                 await storeFront.AddOrUpdateCart(UserCart, parentWindow.CurrentUser.Id);
             }
@@ -114,7 +114,7 @@ namespace StoreFrontUi.Pages
 
         async  void loadShippingMethods()
         {
-            // Load shipping methods from the repository
+           
             var shippingMethods = await storeFront.GetShippingMethods();
             if (shippingMethods != null)
             {
@@ -128,11 +128,11 @@ namespace StoreFrontUi.Pages
         {
             if (cmbshippingcost.SelectedItem is ShippingMethod selected)
             {
-                // Calculate cost including VAT
+            
                 decimal vatAmount = selected.BasePrice * (selected.VatPercentage / (decimal)100.00);
                 decimal totalShipping = selected.BasePrice + vatAmount;
 
-                // Check for free shipping
+               
                 if (UserCart.SubTotal >= selected.MinimumOrderForFreeShipping)
                 {
                     totalShipping = 0;
@@ -140,14 +140,33 @@ namespace StoreFrontUi.Pages
 
                 UserCart.ShippingCost = (decimal)totalShipping;
 
-                // Recalculate other totals
+      
                 UserCart.RecalculateTotals();
 
-                // Optional: update to database
+             
                 _ = storeFront.AddOrUpdateCart(UserCart, parentWindow.CurrentUser.Id);
             }
         }
 
+        private void btn_checkout_Click(object sender, RoutedEventArgs e)
+        {
+            if(UserCart.Items.Count == 0)
+            {
+                MessageBox.Show("Your cart is empty. Please add items to your cart before checking out.", "Empty Cart", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if(parentWindow.CurrentUser != null && UserCart != null)
+            {
+               var paymentPage = new PaymentPage(UserCart,parentWindow.CurrentUser);
+                parentWindow.MainFramePage.Navigate(paymentPage);
+            }
+            else
+            {
+                MessageBox.Show("Please log in to proceed to checkout.", "Login Required", MessageBoxButton.OK, MessageBoxImage.Warning);
+                
+            }
+        }
     }
 
 

@@ -86,6 +86,7 @@ namespace StoreFrontUi.Pages
                         Password = Tb_password.Password,
                         Username = Tb_username.Text,
                         Phone = Tb_phone.Text,
+                       
                         ProfileImage = selectedImageBytes,
               
                         Addresses = new List<Address>
@@ -95,7 +96,8 @@ namespace StoreFrontUi.Pages
                             Street = Tb_street.Text,
                             City = Tb_city.Text,
                             Provincia = Tb_province.Text,
-                            PostalCode = Tb_postalcode.Text
+                            PostalCode = Tb_postalcode.Text,
+                             Country = Tb_country.Text
                         }
                     }
                     };
@@ -226,6 +228,11 @@ namespace StoreFrontUi.Pages
                 return false;
             }
 
+            if (string.IsNullOrEmpty(Tb_country.Text))
+            {
+                MessageBox.Show("Please enter a country.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
 
             return true;
         }

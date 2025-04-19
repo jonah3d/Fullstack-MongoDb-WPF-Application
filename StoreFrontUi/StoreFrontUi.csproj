@@ -15,9 +15,11 @@
     <None Remove="Assets\bw_women_cat.jpg" />
     <None Remove="Assets\children_cat.jpg" />
     <None Remove="Assets\default_contact.png" />
+    <None Remove="Assets\mastercard.png" />
     <None Remove="Assets\men_cat.jpg" />
     <None Remove="Assets\sports_cat.jpg" />
     <None Remove="Assets\test_adidas_.png" />
+    <None Remove="Assets\visa.png" />
     <None Remove="Assets\women_cat.jpg" />
   </ItemGroup>
 
@@ -40,11 +42,13 @@
     <Resource Include="Assets\bw_women_cat.jpg" />
     <Resource Include="Assets\children_cat.jpg" />
     <Resource Include="Assets\default_contact.png" />
+    <Resource Include="Assets\mastercard.png" />
     <Resource Include="Assets\men_cat.jpg" />
     <Resource Include="Assets\sports_cat.jpg" />
     <Resource Include="Assets\test_adidas_.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\visa.png" />
     <Resource Include="Assets\women_cat.jpg" />
   </ItemGroup>
 

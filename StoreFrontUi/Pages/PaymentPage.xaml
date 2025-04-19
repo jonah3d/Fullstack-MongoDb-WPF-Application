@@ -1,0 +1,102 @@
+﻿<Page x:Class="StoreFrontUi.Pages.PaymentPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:StoreFrontUi.Pages"
+      mc:Ignorable="d" 
+      Background="White"
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="PaymentPage">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+
+           
+            <StackPanel Grid.Column="0" Margin="0,0,20,0">
+
+                <!-- Personal Info -->
+                <GroupBox Header="Personal Info" Margin="0,0,0,10" BorderBrush="Black" BorderThickness="2">
+                    <StackPanel Margin="10">
+                        <TextBlock Text="Name:" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding User.FirstName}" />
+
+                        <TextBlock Text="Email:" FontWeight="Bold" Margin="0,10,0,0"/>
+                        <TextBlock Text="{Binding User.Email}" />
+
+                        <TextBlock Text="Phone:" FontWeight="Bold" Margin="0,10,0,0"/>
+                        <TextBlock Text="{Binding User.Phone}" />
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- Shipping Info -->
+                <GroupBox Header="Shipping Address" Margin="0,0,0,10" BorderBrush="Black" BorderThickness="2">
+                    <StackPanel Margin="10">
+                        <TextBlock Text="Street:" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding User.Addresses[0].Street}" />
+
+                        <TextBlock Text="City:" FontWeight="Bold" Margin="0,10,0,0"/>
+                        <TextBlock Text="{Binding User.Addresses[0].City}" />
+
+                        <TextBlock Text="Province:" FontWeight="Bold" Margin="0,10,0,0"/>
+                        <TextBlock Text="{Binding User.Addresses[0].Provincia}" />
+
+                        <TextBlock Text="Postal Code:" FontWeight="Bold" Margin="0,10,0,0"/>
+                        <TextBlock Text="{Binding User.Addresses[0].PostalCode}" />
+
+                        <TextBlock Text="Country:" FontWeight="Bold" Margin="0,10,0,0"/>
+                        <TextBlock Text="{Binding User.Addresses[0].Country}" />
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- Payment Form -->
+                <GroupBox Header="Payment Information" BorderBrush="Black" BorderThickness="2">
+                    <StackPanel Margin="10">
+                        <TextBlock Text="Cardholder Name:" FontWeight="Bold"/>
+                        <TextBox x:Name="txtCardName" Margin="0,5"/>
+
+                        <TextBlock Text="Card Number:" FontWeight="Bold" Margin="10,10,0,0"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,5">
+                            <TextBox x:Name="txtCardNumber" Width="200" TextChanged="txtCardNumber_TextChanged"/>
+                            <Image x:Name="imgCardType" Width="40" Height="25" Margin="10,0,0,0" Stretch="Uniform"/>
+                        </StackPanel>
+
+                        <TextBlock Text="Expiration Date (MM/YY):" FontWeight="Bold" Margin="10,10,0,0"/>
+                        <TextBox x:Name="txtExpDate" Width="100" Margin="0,5"/>
+
+                        <TextBlock Text="CVV:" FontWeight="Bold" Margin="10,10,0,0"/>
+                        <TextBox x:Name="txtCVV" Width="100" Margin="0,5"/>
+
+                    </StackPanel>
+                </GroupBox>
+            </StackPanel>
+
+            <!-- RIGHT COLUMN - Cart Summary -->
+            <GroupBox Header="Order Summary" Grid.Column="1" BorderBrush="Black" BorderThickness="2">
+                <StackPanel Margin="10">
+                    <TextBlock Text="Subtotal:" FontWeight="Bold" />
+                    <TextBlock Text="{Binding Cart.SubTotal, StringFormat=C}" Margin="0,5"/>
+
+                    <TextBlock Text="Shipping:" FontWeight="Bold" Margin="10,10,0,0"/>
+                    <TextBlock Text="{Binding Cart.ShippingCost, StringFormat=C}" Margin="0,5"/>
+
+                    <TextBlock Text="VAT:" FontWeight="Bold" Margin="10,10,0,0"/>
+                    <TextBlock Text="{Binding Cart.TotalVat, StringFormat=C}" Margin="0,5"/>
+
+                    <Separator Margin="0,10" BorderBrush="Black" BorderThickness="2"/>
+
+                    <TextBlock Text="Total:" FontSize="16" FontWeight="Bold"/>
+                    <TextBlock Text="{Binding Cart.Total, StringFormat=C}" FontSize="16" Margin="0,5"/>
+
+
+                    <Button Content="Pay Now" Width="200" Height="50" BorderBrush="Black" BorderThickness="2"
+                            Background="Wheat"
+                            Margin="0,50,0,0" Click="PayNow_Click"/>
+                </StackPanel>
+            </GroupBox>
+        </Grid>
+    </ScrollViewer>
+</Page>
