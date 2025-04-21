@@ -38,62 +38,73 @@
 
                 <!-- Personal Info -->
                 <StackPanel Orientation="Horizontal" Margin="0,5">
-                    <TextBlock Text="First Name:" Width="120"/>
-                    <TextBox x:Name="Tb_Name"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
+                        <TextBlock Text="First Name:" Width="120"/>
+                        <TextBox x:Name="Tb_Name"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Last Name:" Width="120"/>
+                        <TextBox x:Name="Tb_LastName"/>
+                    </StackPanel>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Last Name:" Width="120"/>
-                    <TextBox x:Name="Tb_LastName"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
+                        <TextBlock Text="Email:" Width="120"/>
+                        <TextBox x:Name="Tb_Email"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Username:" Width="120"/>
+                        <TextBox x:Name="Tb_username"/>
+                    </StackPanel>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Email:" Width="120"/>
-                    <TextBox x:Name="Tb_Email"/>
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Username:" Width="120"/>
-                    <TextBox x:Name="Tb_username"/>
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Phone:" Width="120"/>
-                    <TextBox x:Name="Tb_phone"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
+                        <TextBlock Text="Phone:" Width="120"/>
+                        <TextBox x:Name="Tb_phone"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="NIF:" Width="120"/>
+                        <TextBox x:Name="Tb_nif"/>
+                    </StackPanel>
                 </StackPanel>
 
                 <!-- Password -->
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Password:" Width="120"/>
-                    <PasswordBox x:Name="Tb_password" Width="200"
-                                 Background="Transparent" BorderBrush="Black" BorderThickness="1.5"/>
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Confirm Password:" Width="120"/>
-                    <PasswordBox x:Name="Tb_confpassword" Width="200"
-                                 Background="Transparent" BorderBrush="Black" BorderThickness="1.5"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
+                        <TextBlock Text="Password:" Width="120"/>
+                        <PasswordBox x:Name="Tb_password" Width="200"
+                                     Background="Transparent" BorderBrush="Black" BorderThickness="1.5"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Confirm Password:" Width="120"/>
+                        <PasswordBox x:Name="Tb_confpassword" Width="200"
+                                     Background="Transparent" BorderBrush="Black" BorderThickness="1.5"/>
+                    </StackPanel>
                 </StackPanel>
 
                 <!-- Address -->
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Street:" Width="120"/>
-                    <TextBox x:Name="Tb_street"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
+                        <TextBlock Text="Street:" Width="120"/>
+                        <TextBox x:Name="Tb_street"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="City:" Width="120"/>
+                        <TextBox x:Name="Tb_city"/>
+                    </StackPanel>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="City:" Width="120"/>
-                    <TextBox x:Name="Tb_city"/>
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Province:" Width="120"/>
-                    <TextBox x:Name="Tb_province"/>
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Postal Code:" Width="120"/>
-                    <TextBox x:Name="Tb_postalcode"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
+                        <TextBlock Text="Province:" Width="120"/>
+                        <TextBox x:Name="Tb_province"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Postal Code:" Width="120"/>
+                        <TextBox x:Name="Tb_postalcode"/>
+                    </StackPanel>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal">

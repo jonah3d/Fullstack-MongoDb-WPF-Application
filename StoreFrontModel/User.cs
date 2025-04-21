@@ -25,6 +25,10 @@ namespace StoreFrontModel
         public string Username { get; set; }
 
         [BsonRequired]
+        [BsonElement("nif")]
+        public string Nif { get; set; }
+
+        [BsonRequired]
         [BsonElement("password")]
         public string Password { get; set; }
 

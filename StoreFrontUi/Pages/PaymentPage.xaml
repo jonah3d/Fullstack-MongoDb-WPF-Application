@@ -91,10 +91,20 @@
                     <TextBlock Text="Total:" FontSize="16" FontWeight="Bold"/>
                     <TextBlock Text="{Binding Cart.Total, StringFormat=C}" FontSize="16" Margin="0,5"/>
 
+                    <StackPanel Margin="0,50,0,0" HorizontalAlignment="Center">
+                        <Button x:Name="PayNowButton" Content="Pay Now" Width="200" Height="50" BorderBrush="Black" BorderThickness="2"
+            Background="Wheat"
+            Click="PayNow_Click"/>
 
-                    <Button Content="Pay Now" Width="200" Height="50" BorderBrush="Black" BorderThickness="2"
-                            Background="Wheat"
-                            Margin="0,50,0,0" Click="PayNow_Click"/>
+                        <ProgressBar x:Name="ProgressBar" Height="20" Margin="0,10,0,0"
+                 Width="200"
+                 Visibility="Collapsed"
+                 Minimum="0" Maximum="100" Value="0"/>
+                    </StackPanel>
+
+
+
+
                 </StackPanel>
             </GroupBox>
         </Grid>

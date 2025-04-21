@@ -25,6 +25,31 @@ namespace StoreFrontDatabaseTest
             }
         }
 
+
+        static async Task GetCompanyInfo()
+        {
+            IStoreFront storeFront = new StoreFrontRepository.StoreFrontRepository();
+            var company = await storeFront.GetCompanyInfo();
+
+            if(company != null)
+            {
+                Console.WriteLine("Company Id: " + company.Id);
+                Console.WriteLine("Company Name: " + company.Name);
+                Console.WriteLine("Company NIF: " + company.Nif);
+                Console.WriteLine("Company Registro Mercantil: " + company.RegistroMercantil);
+                Console.WriteLine("Company Phone: " + company.Phone);
+                Console.WriteLine("Company Email: " + company.Email);
+                foreach (var address in company.Addresses)
+                {
+                    Console.WriteLine("Company Address: " + address.Street + ", " + address.City + ", " + address.PostalCode + ", " + address.Provincia + ", " + address.Country);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Company not found");
+            }
+        }
+
         static async Task GetProduct()
         {
             IStoreFront storeFront = new StoreFrontRepository.StoreFrontRepository();
@@ -134,9 +159,11 @@ namespace StoreFrontDatabaseTest
         {
             Program.loginClient();  
             Console.WriteLine("===================================\n");
-       await Program.GetProduct();
+     //  await Program.GetProduct();
 
         // await  Program.GetAllMenProduct();
+
+            await GetCompanyInfo();
 
         }
 

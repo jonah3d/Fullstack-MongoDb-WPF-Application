@@ -44,6 +44,8 @@ namespace StoreFrontUi.Pages
             this.DataContext = this;
         }
 
+        public String SelectedShippingMethod { get; set; }
+
         private void ItemContainerGenerator_StatusChanged(object sender, EventArgs e)
         {
             if (Lv_CartItems.ItemContainerGenerator.Status == System.Windows.Controls.Primitives.GeneratorStatus.ContainersGenerated)
@@ -132,7 +134,9 @@ namespace StoreFrontUi.Pages
                 decimal vatAmount = selected.BasePrice * (selected.VatPercentage / (decimal)100.00);
                 decimal totalShipping = selected.BasePrice + vatAmount;
 
-               
+              //  SelectedShippingMethod = selected.Name;
+                UserCart.ShippingMethod = selected.Name;
+
                 if (UserCart.SubTotal >= selected.MinimumOrderForFreeShipping)
                 {
                     totalShipping = 0;

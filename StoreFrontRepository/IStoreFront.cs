@@ -30,7 +30,12 @@ namespace StoreFrontRepository
 
         public Task<List<Product>> GetAllProducts();
     
+        public Task<Company> GetCompanyInfo();
         public Task<List<ShippingMethod>> GetShippingMethods();
+        public  Task<string> GenerateInvoiceNumberAsync();
 
+
+        public Task<bool> DeleteCart(ObjectId userId,ObjectId cartId);
+        public Task<bool> DeleteStock(ObjectId productId, ObjectId variantId, string size, int quantity);
     }
 }

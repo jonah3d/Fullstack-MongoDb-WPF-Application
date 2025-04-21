@@ -86,7 +86,8 @@ namespace StoreFrontUi.Pages
                         Password = Tb_password.Password,
                         Username = Tb_username.Text,
                         Phone = Tb_phone.Text,
-                       
+                        Nif = Tb_nif.Text,
+
                         ProfileImage = selectedImageBytes,
               
                         Addresses = new List<Address>
@@ -192,7 +193,20 @@ namespace StoreFrontUi.Pages
                 return false;
             }
 
-            if(Tb_phone.Text.Length < 9)
+            if (string.IsNullOrWhiteSpace(Tb_nif.Text))
+            {
+                MessageBox.Show("Please enter your NIF/NIE.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            if (!IsValidDniOrNie(Tb_nif.Text))
+            {
+                MessageBox.Show("The NIF/NIE is invalid. Make sure it follows the correct format and letter.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+
+            if (Tb_phone.Text.Length < 9)
             {
                 MessageBox.Show("Phone number must be at least 10 characters long.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
@@ -236,5 +250,34 @@ namespace StoreFrontUi.Pages
 
             return true;
         }
+        private bool IsValidDniOrNie(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+                return false;
+
+            input = input.ToUpper().Trim();
+
+            if (!System.Text.RegularExpressions.Regex.IsMatch(input, @"^[XYZ]?\d{7,8}[A-Z]$"))
+                return false;
+
+            string dniLetters = "TRWAGMYFPDXBNJZSQVHLCKE";
+            string numberPartStr = input;
+
+            
+            if (input.StartsWith("X"))
+                numberPartStr = "0" + input.Substring(1);
+            else if (input.StartsWith("Y"))
+                numberPartStr = "1" + input.Substring(1);
+            else if (input.StartsWith("Z"))
+                numberPartStr = "2" + input.Substring(1);
+
+            if (!int.TryParse(numberPartStr.Substring(0, 8), out int numberPart))
+                return false;
+
+            char expectedLetter = dniLetters[numberPart % 23];
+
+            return input[^1] == expectedLetter;
+        }
+
     }
 }

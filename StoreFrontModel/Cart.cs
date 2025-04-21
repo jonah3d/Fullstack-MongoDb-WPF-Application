@@ -98,6 +98,9 @@ namespace StoreFrontModel
         [BsonIgnore]
         public User User { get; set; }
 
+        [BsonElement("shippingMethod")]
+        public string ShippingMethod { get; set; }
+
         public Cart()
         {
             ShippingCost = 0m; // Set default shipping cost here if needed

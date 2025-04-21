@@ -180,6 +180,37 @@ namespace StoreFrontRepository
         }
 
 
+        public async Task<string> GenerateInvoiceNumberAsync()
+        {
+            try
+            {
+                int currentYear = DateTime.Now.Year;
+                string counterName = $"invoice-{currentYear}";
+
+                var counters = mongoDatabase.GetCollection<Counter>("invoiceCounter");
+
+                var filter = Builders<Counter>.Filter.Eq(c => c.Name, counterName);
+                var update = Builders<Counter>.Update.Inc(c => c.Value, 1);
+
+                var options = new FindOneAndUpdateOptions<Counter>
+                {
+                    IsUpsert = true,
+                    ReturnDocument = ReturnDocument.After
+                };
+
+                var counter = await counters.FindOneAndUpdateAsync(filter, update, options);
+
+            
+                return $"{currentYear}-{counter.Value:D6}";
+            }
+            catch (Exception ex)
+            {
+                throw new StoreFrontException($"Error generating invoice number: {ex.Message}");
+            }
+        }
+
+
+
         public async Task<List<Product>> GetAllSportsProduct()
         {
             try
@@ -684,5 +715,82 @@ namespace StoreFrontRepository
                 throw new StoreFrontException($"Error Getting Shipping Methods: {ex.Message}");
             }
         }
+
+        public async Task<Company> GetCompanyInfo()
+        {
+            try
+            {
+
+
+                var company = await mongoDatabase.GetCollection<Company>("store").FindAsync(x=>x.Name == "Xapatos Wearables");
+                var companyInfo = await company.FirstOrDefaultAsync();
+
+                if(companyInfo == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    return companyInfo;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw new StoreFrontException($"Error Getting Company Info: {ex.Message}");
+            }
+        }
+
+        public async Task<bool> DeleteCart(ObjectId userId, ObjectId cartid)
+        {
+            bool ans = false;
+
+            try
+            {
+                var cartsCollection = mongoDatabase.GetCollection<Cart>("cart");
+                var deleteResult = await cartsCollection.DeleteOneAsync(c => c.UserId == userId && c.CartId == cartid);
+                ans = true;
+                
+            }
+            catch (Exception ex)
+            {
+                throw new StoreFrontException($"Error deleting cart: {ex.Message}");
+               
+            }
+
+            return ans;
+        }
+
+   public async Task<bool> DeleteStock(ObjectId productId, ObjectId variantId, string size, int quantity)
+{
+    try
+    {
+        var products = mongoDatabase.GetCollection<Product>("products");
+
+        var filter = Builders<Product>.Filter.And(
+            Builders<Product>.Filter.Eq(p => p.Id, productId),
+            Builders<Product>.Filter.ElemMatch(p => p.Variants, v => v.Id == variantId)
+        );
+
+        var update = Builders<Product>.Update.Inc("variants.$[variant].sizes.$[size].stock", -quantity);
+
+        var arrayFilters = new List<ArrayFilterDefinition>
+        {
+            new JsonArrayFilterDefinition<BsonDocument>("{ 'variant._id': ObjectId('" + variantId + "') }"),
+            new JsonArrayFilterDefinition<BsonDocument>("{ 'size.size': '" + size + "' }")
+        };
+
+        var updateOptions = new UpdateOptions { ArrayFilters = arrayFilters };
+
+        var result = await products.UpdateOneAsync(filter, update, updateOptions);
+
+        return result.ModifiedCount > 0;
+    }
+    catch (Exception ex)
+    {
+        throw new StoreFrontException($"Error deleting stock: {ex.Message}");
+    }
+}
+
     }
 }
