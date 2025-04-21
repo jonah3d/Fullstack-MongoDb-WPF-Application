@@ -14,8 +14,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using QuestPDF.Fluent;
 using StoreFrontModel;
 using StoreFrontRepository;
+using StoreFrontUi.Document;
 
 
 namespace StoreFrontUi.Pages
@@ -190,6 +192,15 @@ namespace StoreFrontUi.Pages
                 // Save to file
                 File.AppendAllText("invoices.txt", GenerateInvoiceText(invoice));
                 await StoreFront.SaveInvoice(invoice);
+
+
+                // STEP 2: Save the invoice (includes file writing and PDF)
+                string pdfPath = System.IO.Path.Combine("Invoices", $"{invoice.InvoiceNumber}.pdf");
+                Directory.CreateDirectory("Invoices"); // Ensure folder exists
+                var document = new InvoiceDocument(invoice);
+                document.GeneratePdf(pdfPath);
+
+
                 ProgressBar.Value = 100;
 
                 await Task.Delay(300); // Pause at 100 for feedback
