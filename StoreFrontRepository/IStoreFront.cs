@@ -37,5 +37,7 @@ namespace StoreFrontRepository
 
         public Task<bool> DeleteCart(ObjectId userId,ObjectId cartId);
         public Task<bool> DeleteStock(ObjectId productId, ObjectId variantId, string size, int quantity);
+
+        public Task<bool> SaveInvoice(Invoice invoice);
     }
 }

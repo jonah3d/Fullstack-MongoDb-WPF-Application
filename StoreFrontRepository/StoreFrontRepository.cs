@@ -792,5 +792,25 @@ namespace StoreFrontRepository
     }
 }
 
+        public async Task<bool> SaveInvoice(Invoice invoice)
+        {
+            bool ans = false;
+
+            try
+            {
+
+                var invoicesCollection =  mongoDatabase.GetCollection<Invoice>("invoice");
+                await invoicesCollection.InsertOneAsync(invoice);
+                  ans = false;
+
+            }
+            catch (Exception ex)
+            {
+                throw new StoreFrontException($"Error Saving Invoice: {ex.Message}");
+
+            }
+
+            return ans;
+        }
     }
 }
