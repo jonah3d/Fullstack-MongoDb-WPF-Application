@@ -39,5 +39,7 @@ namespace StoreFrontRepository
         public Task<bool> DeleteStock(ObjectId productId, ObjectId variantId, string size, int quantity);
 
         public Task<bool> SaveInvoice(Invoice invoice);
+
+        public Task<bool> ResetPassword(string email, string username, string newPassword);
     }
 }

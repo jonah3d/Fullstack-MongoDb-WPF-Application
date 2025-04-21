@@ -812,5 +812,42 @@ namespace StoreFrontRepository
 
             return ans;
         }
+
+        public async Task<bool> ResetPassword(string email, string username, string newPassword)
+        {
+            bool ans = false;
+
+            try
+            {
+
+                var usercon = await mongoDatabase.GetCollection<User>("users")
+                    .FindAsync(x => x.Username == username && x.Email == email);
+
+                var user = await usercon.FirstOrDefaultAsync();
+
+                if (user == null)
+                {
+
+                    return false;
+                }
+                else
+                {
+                    var hashpassword = BCrypt.Net.BCrypt.HashPassword(newPassword);
+                    user.Password = hashpassword;
+                    var filter = Builders<User>.Filter.Eq(u => u.Id, user.Id);
+                    var update = Builders<User>.Update.Set(u => u.Password, user.Password);
+                    await mongoDatabase.GetCollection<User>("users").UpdateOneAsync(filter, update);
+                    ans = true;
+                }
+
+
+                }
+            catch(Exception ex)
+            {
+                throw new StoreFrontException($"Error Resetting Password: {ex.Message}");
+            }
+
+            return ans;
+        }
     }
 }

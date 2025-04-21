@@ -92,8 +92,14 @@ namespace StoreFrontUi.UserControls
 
         private void ForgotPassword_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Redirecting to Forgot Password page...");
-           
+            var resetWindow = new ResetPasswordWindow
+            {
+                Owner = Window.GetWindow(this)
+            };
+            resetWindow.ShowDialog(); 
+
+
+
         }
     }
 }

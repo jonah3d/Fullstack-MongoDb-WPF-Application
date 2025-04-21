@@ -25,6 +25,8 @@
             <TextBlock Text="{Binding ElementName=ucLoginUser,Path=LoginUser.Username}" 
                        x:Name="Txt_UserName" Margin="10,0,0,0"/>
         </StackPanel>
+        
+        
 
     
         <Grid Grid.Row="3" Margin="0,95,0,0">

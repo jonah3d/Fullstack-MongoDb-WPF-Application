@@ -78,14 +78,12 @@ namespace StoreFrontUi
 
                     if (loadedCart != null)
                     {
-                        // Update existing cart instead of replacing it
                         StoreCart.UserId = loadedCart.UserId;
                         StoreCart.CartId = loadedCart.CartId;
                         StoreCart.CreatedAt = loadedCart.CreatedAt;
                         StoreCart.UpdatedAt = loadedCart.UpdatedAt;
                         StoreCart.Purchased = loadedCart.Purchased;
 
-                        // Clear and copy items
                         StoreCart.Items.Clear();
                         foreach (var item in loadedCart.Items)
                         {
@@ -234,7 +232,7 @@ namespace StoreFrontUi
             else
             {
                 CartEclipse.Visibility = Visibility.Collapsed;
-              //  Tb_QtItems.Text = StoreCart.Items.Count.ToString();
+              
             }
 
         }
