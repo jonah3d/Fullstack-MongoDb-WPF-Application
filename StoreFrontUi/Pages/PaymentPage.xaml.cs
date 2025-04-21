@@ -93,6 +93,7 @@ namespace StoreFrontUi.Pages
 
                 // STEP 2: Save the invoice (includes file writing)
                 bool invoiceSaved = await saveInvoiceWithProgress();
+               
                 if (!invoiceSaved)
                 {
                     ProgressBar.Visibility = Visibility.Collapsed;
@@ -106,6 +107,7 @@ namespace StoreFrontUi.Pages
                 parentWindow.StoreCart.Purchased = true;
                 parentWindow.StoreCart.Items.Clear();
                 parentWindow.StoreCart.UpdatedAt = DateTime.Now;
+                parentWindow.StoreCart.ShippingCost = 0;
                 parentWindow.CartStatus();
 
 
@@ -116,6 +118,7 @@ namespace StoreFrontUi.Pages
 
                 MessageBox.Show("Payment successful!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 // Optionally navigate to another page
+                parentWindow.MainFramePage.Navigate(new Pages.MainPage());
             }
             catch (Exception ex)
             {
@@ -186,6 +189,7 @@ namespace StoreFrontUi.Pages
 
                 // Save to file
                 File.AppendAllText("invoices.txt", GenerateInvoiceText(invoice));
+                await StoreFront.SaveInvoice(invoice);
                 ProgressBar.Value = 100;
 
                 await Task.Delay(300); // Pause at 100 for feedback
