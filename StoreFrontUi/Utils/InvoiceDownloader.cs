@@ -17,7 +17,7 @@ namespace StoreFrontUi.Utils
 
         public InvoiceDownloader(string serverUrl, string username, string password)
         {
-            // Remove any trailing slashes from the server URL
+          
             _baseUrl = serverUrl.TrimEnd('/');
 
             _client = new HttpClient();
@@ -29,12 +29,12 @@ namespace StoreFrontUi.Utils
         {
             try
             {
-                // Ensure reportUri starts with a slash but doesn't have extra slashes
+          
                 reportUri = "/" + reportUri.Trim('/');
 
                 string encodedValue = Uri.EscapeDataString(paramValue);
 
-                // Using a single slash between baseUrl and rest_v2
+          
                 var url = $"{_baseUrl}/rest_v2/reports{reportUri}.pdf?{paramName}={encodedValue}";
                 Console.WriteLine($"Requesting: {url}");
 
@@ -42,7 +42,7 @@ namespace StoreFrontUi.Utils
 
                 if (response.IsSuccessStatusCode)
                 {
-                    // Ensure directory exists
+                  
                     Directory.CreateDirectory(Path.GetDirectoryName(outputPath));
 
                     using (var fileStream = File.Create(outputPath))

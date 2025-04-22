@@ -205,14 +205,56 @@ namespace StoreFrontUi.Pages
 
                 // When calling the method:
                 bool reportDownloaded = await downloader.DownloadReport(
-      reportUri: "/StoreFrontReports/storefrontInvoice", // Fixed case
-      outputPath: @$"C:\Users\Public\Documents\{invoice.InvoiceNumber}.pdf",
-      paramName: "invoiceNum", // Using the ID from your parameter control
-      paramValue: invoice.InvoiceNumber
-  );
+                      reportUri: "/StoreFrontReports/storefrontInvoice", // Fixed case
+                      outputPath: @$"C:\Users\Public\Documents\{invoice.InvoiceNumber}.pdf",
+                      paramName: "invoiceNum", // Using the ID from your parameter control
+                      paramValue: invoice.InvoiceNumber
+                  );
                 if (reportDownloaded)
                 {
-                    Console.WriteLine("PDF was successfully created");
+                    MessageBox.Show("PDF was successfully created");
+
+                    var emailSender = new EmailSender(
+                        "smtp.gmail.com",  // Gmail SMTP server
+                        587,               // Gmail SMTP port
+                        "jarthur@milaifontanals.org",  // Your Gmail address
+                        "hdsliecvbbaonxbv",     // Your Gmail app password (not your regular password)
+                        true               // Enable SSL
+                    );
+
+                    string emailSubject = $"Your Invoice #{invoice.InvoiceNumber} from Xapatos Wearables";
+                    string emailBody = $@"
+                <html>
+                <body>
+                    <h2>Thank you for your purchase!</h2>
+                    <p>Dear {User.FirstName} {User.LastName},</p>
+                    <p>Please find attached your invoice #{invoice.InvoiceNumber} dated {invoice.InvoiceDate.ToString("dd/MM/yyyy")}.</p>
+                    <p>Total amount: €{invoice.Total}</p>
+                    <br>
+                    <p>If you have any questions regarding your purchase, please don't hesitate to contact us.</p>
+                    <br>
+                    <p>Best regards,</p>
+                    <p>Xapatos Wearables Team</p>
+                </body>
+                </html>";
+
+                    bool emailSent = await emailSender.SendInvoiceEmailAsync(
+                          User.Email,
+                          emailSubject,
+                          emailBody,
+                          @$"C:\Users\Public\Documents\{invoice.InvoiceNumber}.pdf"
+                      );
+
+
+                    if (emailSent)
+                    {
+                        MessageBox.Show("Invoice email sent successfully");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Failed to send invoice email");
+                    }
+
                     // Maybe even try to open it automatically to verify
                     try
                     {
@@ -224,12 +266,12 @@ namespace StoreFrontUi.Pages
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"Could not open PDF: {ex.Message}");
+                        MessageBox.Show($"Could not open PDF: {ex.Message}");
                     }
                 }
                 else
                 {
-                    Console.WriteLine("PDF download failed");
+                    MessageBox.Show("PDF download failed");
                 }
 
                 /*
