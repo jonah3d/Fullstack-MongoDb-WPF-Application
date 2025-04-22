@@ -59,7 +59,7 @@
         <Border Grid.Row="0" BorderBrush="LightGray" BorderThickness="1" Margin="5">
             <Grid>
 
-                <Image x:Name="MainImage" Stretch="UniformToFill" Source="{Binding ElementName=ucRoot,Path= CurrentImage ,Converter={StaticResource FilePathToImageConverter}}"/>
+                <Image x:Name="MainImage" Stretch="UniformToFill" Source="{Binding CurrentImage}"/>
 
               
                 <Button x:Name="PrevButton" 
@@ -98,10 +98,10 @@
                     <Button Width="15" Height="15" 
                             Margin="5,0,5,0" 
                             Click="IndicatorButton_Click"
-                            Tag="{Binding ElementName=ucRoot,Path=  Index}"
+                            Tag="{Binding Index}"
                             Style="{StaticResource DotButtonStyle}">
                         <Ellipse Width="10" Height="10" 
-                                Fill="{Binding ElementName=ucRoot,Path=  IsActive, Converter={StaticResource BoolToColorConverter}}"/>
+                                Fill="{Binding IsActive, Converter={StaticResource BoolToColorConverter}}"/>
                     </Button>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

@@ -91,7 +91,6 @@ namespace StoreFrontUi.UserControls
         }
 
 
-        // Current image to display
         private BitmapImage _currentImage;
         public BitmapImage CurrentImage
         {
@@ -103,7 +102,6 @@ namespace StoreFrontUi.UserControls
             }
         }
 
-        // Collection of image indicators
         private ObservableCollection<ImageIndicator> _indicators;
         public ObservableCollection<ImageIndicator> Indicators
         {
@@ -115,7 +113,7 @@ namespace StoreFrontUi.UserControls
             }
         }
 
-        // Current image index
+   
         private int _currentIndex = 0;
         private List<string> _imagePaths;
 

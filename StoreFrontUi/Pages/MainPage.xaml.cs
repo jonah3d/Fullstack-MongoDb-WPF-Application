@@ -40,21 +40,6 @@ namespace StoreFrontUi.Pages
 
             this.DataContext = this;
         }
-
-        private void Button_MouseEnter(object sender, MouseEventArgs e)
-        {
-            if (sender is Button btn && btn.Tag is string categoryName)
-            {
-            
-                if (btn.Content is Grid grid &&
-                    grid.Children.OfType<Image>().FirstOrDefault() is Image img)
-                {
-                    string colorImagePath = $"pack://application:,,,/Assets/{categoryName}.jpg";
-                    img.Source = new BitmapImage(new Uri(colorImagePath));
-                }
-            }
-        }
-
         public async Task LoadNewProducts()
         {
             try
@@ -78,6 +63,22 @@ namespace StoreFrontUi.Pages
                 LoadingProgressBar.Visibility = Visibility.Collapsed;
             }
         }
+
+        private void Button_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is string categoryName)
+            {
+            
+                if (btn.Content is Grid grid &&
+                    grid.Children.OfType<Image>().FirstOrDefault() is Image img)
+                {
+                    string colorImagePath = $"pack://application:,,,/Assets/{categoryName}.jpg";
+                    img.Source = new BitmapImage(new Uri(colorImagePath));
+                }
+            }
+        }
+
+
 
         public async Task LoadReleasedProducts()
         {
