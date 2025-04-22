@@ -196,6 +196,9 @@ namespace StoreFrontUi.Pages
                 // Save to file
             /*    File.AppendAllText("invoices.txt", GenerateInvoiceText(invoice));*/
                 await StoreFront.SaveInvoice(invoice);
+                User.Invoices.Add(invoice.InvoiceNumber);
+                await StoreFront.UpdateUser(User);
+
 
 
                 var downloader = new InvoiceDownloader(

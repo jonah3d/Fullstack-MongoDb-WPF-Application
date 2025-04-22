@@ -18,10 +18,12 @@ namespace StoreFrontUi.UserControls
 {
     public partial class UC_LoggedInUser : UserControl
     {
-    
+        private MainWindow parentWindow;
+
         public UC_LoggedInUser()
         {
             InitializeComponent();
+            parentWindow = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
         }
 
         public User LoginUser
@@ -50,6 +52,14 @@ namespace StoreFrontUi.UserControls
             mainWindow.CurrentUser = null;  
             mainWindow.SetUpCurrentUser();
           
+        }
+
+        private void Btn_userdownloadinvoices_Click(object sender, RoutedEventArgs e)
+        {
+            var userInvoicesWindow = new UserInvoicesWindow(LoginUser);
+            userInvoicesWindow.Owner = parentWindow;
+            userInvoicesWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            userInvoicesWindow.ShowDialog();
         }
     }
 }

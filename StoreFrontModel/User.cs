@@ -49,6 +49,9 @@ namespace StoreFrontModel
 
         [BsonElement("profileImage")]
         public byte[] ProfileImage { get; set; }
+
+        [BsonElement("userInvoices")]
+        public List<string> Invoices { get; set; } = new(); 
     }
 
 

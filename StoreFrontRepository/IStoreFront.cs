@@ -40,6 +40,10 @@ namespace StoreFrontRepository
 
         public Task<bool> SaveInvoice(Invoice invoice);
 
+        public Task<List<Invoice>> GetUserInvoice(ObjectId userId);
+
         public Task<bool> ResetPassword(string email, string username, string newPassword);
+
+        public Task<bool> UpdateUser(User user);
     }
 }

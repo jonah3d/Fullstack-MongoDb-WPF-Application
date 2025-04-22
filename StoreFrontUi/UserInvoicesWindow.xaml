@@ -1,0 +1,23 @@
+﻿<Window x:Class="StoreFrontUi.UserInvoicesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StoreFrontUi"
+        mc:Ignorable="d"
+        Title="UserInvoicesWindow" Height="500" Width="700">
+    <Grid Margin="10" Background="Transparent">
+        <ListView x:Name="InvoiceListView" SelectionChanged="InvoiceListView_SelectionChanged" BorderBrush="Black" BorderThickness="2"> 
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Invoice Number" DisplayMemberBinding="{Binding InvoiceNumber}" Width="150"/>
+                    <GridViewColumn Header="Date" DisplayMemberBinding="{Binding InvoiceDate}" Width="150"/>
+                    <GridViewColumn Header="Total" DisplayMemberBinding="{Binding Total}" Width="100"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <Button x:Name="Btn_Download" Content="Download Invoice" Click="Btn_Download_Click"  BorderBrush="Black" BorderThickness="2" Background="Transparent"
+                HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10"/>
+    </Grid>
+</Window>

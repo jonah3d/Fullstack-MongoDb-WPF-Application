@@ -4,6 +4,7 @@ using StoreFrontDb;
 using StoreFrontModel;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -849,5 +850,53 @@ namespace StoreFrontRepository
 
             return ans;
         }
+
+        public async Task<List<Invoice>> GetUserInvoice(ObjectId userId)
+        {
+            try
+            {
+                var userCursor = await mongoDatabase
+                    .GetCollection<User>("users")
+                    .FindAsync(x => x.Id == userId);
+
+                var user = await userCursor.FirstOrDefaultAsync();
+
+                if (user?.Invoices == null || user.Invoices.Count == 0)
+                {
+                    return new List<Invoice>();
+                }
+
+                var filter = Builders<Invoice>.Filter.In(i => i.InvoiceNumber, user.Invoices);
+                var invoiceCursor = await mongoDatabase
+                    .GetCollection<Invoice>("invoice")
+                    .FindAsync(filter);
+
+                return await invoiceCursor.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new StoreFrontException($"Error Getting User Invoices: {ex.Message}");
+            }
+        }
+
+        public async Task<bool> UpdateUser(User user)
+        {
+            try
+            {
+                var collection = mongoDatabase.GetCollection<User>("users");
+                var result = await collection.ReplaceOneAsync(
+                    Builders<User>.Filter.Eq(u => u.Id, user.Id),
+                    user
+                );
+
+                return result.ModifiedCount > 0;
+            }
+            catch (Exception ex)
+            {
+                throw new StoreFrontException($"Error Updating User: {ex.Message}");
+            }
+        }
+
+
     }
 }
