@@ -1,5 +1,6 @@
 ﻿using StoreFrontModel;
 using StoreFrontRepository;
+using StoreFrontUi.Pages;
 using StoreFrontUi.Utils;
 using System.Collections.ObjectModel;
 using System.Text;
@@ -61,8 +62,7 @@ namespace StoreFrontUi
             StoreCart.Items.CollectionChanged += (s, e) => CartStatus();
 
 
-
-
+            MainFramePage.Navigated += MainFramePage_Navigated;
 
 
             this.DataContext = this;
@@ -119,11 +119,23 @@ namespace StoreFrontUi
         private void MainFramePage_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
         {
             BackButton.GetBindingExpression(Button.VisibilityProperty)?.UpdateTarget();
+
+            Tb_search.Visibility = Visibility.Collapsed;
+            Tb_search.IsEnabled = false;
+
+            // If the new page is ProductsFilterPage, show it
+            if (e.Content is ProductsFilterPage)
+            {
+                Tb_search.Visibility = Visibility.Visible;
+                Tb_search.IsEnabled = true;
+            }
         }
 
         public void NavigateToCreateUserPage()
         {
             MainFramePage.Navigate(new Pages.CreateUserPage());
+
+
         }
 
 

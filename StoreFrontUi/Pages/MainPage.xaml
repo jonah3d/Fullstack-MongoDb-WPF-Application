@@ -25,14 +25,18 @@
                     <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
 
-                <usercontrols:UC_ImageCarousel x:Name="ProductCarousel" Grid.Row="0"
-                                   Width="500" 
-                                   Height="300" 
-                                   HorizontalAlignment="Center" 
-                                   VerticalAlignment="Center"
-                                   Products="{Binding ReleasedProducts}"/>
 
-               
+
+
+                <Border Grid.Row="0" BorderBrush="Black" BorderThickness="2" Margin="2" Height="200">
+                    <Image x:Name="bnrImge" Grid.Row="0"
+                       Source="/Assets/bannerimg.jpg" Height="200"  Stretch="UniformToFill" 
+                       >
+
+                    </Image>
+                </Border>
+
+
 
                 <StackPanel Orientation="Vertical" Grid.Row="1" Margin="30,30,0,0">
                     <TextBlock Text="Novedades" FontSize="20"/>

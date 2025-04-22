@@ -35,6 +35,9 @@ namespace StoreFrontUi.Pages
 
             storeFront = new StoreFrontRepository.StoreFrontRepository();
             parentWindow = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+
+
+
             if (parentWindow != null)
             {
          

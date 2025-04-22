@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\bannerimg.jpg" />
     <None Remove="Assets\bw_children_cat.jpg" />
     <None Remove="Assets\bw_men_cat.jpg" />
     <None Remove="Assets\bw_sports_cat.jpg" />
@@ -37,6 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\bannerimg.jpg" />
     <Resource Include="Assets\bw_children_cat.jpg" />
     <Resource Include="Assets\bw_men_cat.jpg" />
     <Resource Include="Assets\bw_sports_cat.jpg" />
