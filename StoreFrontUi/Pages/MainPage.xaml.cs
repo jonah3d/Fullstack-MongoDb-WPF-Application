@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -18,18 +20,40 @@ using StoreFrontRepository;
 
 namespace StoreFrontUi.Pages
 {
-    public partial class MainPage : Page
+    public partial class MainPage : Page, INotifyPropertyChanged
     {
 
-        public ObservableCollection<Product> NewProducts { get; set; }
-        public ObservableCollection<Product> FilteredProducts { get; set; } = new();
-        public ObservableCollection<Product> ReleasedProducts { get; set; }
+   
 
         private IStoreFront storeFront;
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        private void OnPropertyChanged([CallerMemberName] string name = null) =>
+    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+
+        private ObservableCollection<Product> _releasedProducts = new();
+        public ObservableCollection<Product> ReleasedProducts
+        {
+            get => _releasedProducts;
+            set
+            {
+                if (_releasedProducts != value)
+                {
+                    _releasedProducts = value;
+                    OnPropertyChanged(); // Notify WPF
+                }
+            }
+        }
+        public ObservableCollection<Product> NewProducts { get; set; }
+        public ObservableCollection<Product> FilteredProducts { get; set; } = new();
+
         public MainPage()
         {
             InitializeComponent();
             storeFront = new StoreFrontRepository.StoreFrontRepository();
+
+            this.DataContext = this;
+
 
 
             Loaded += async (s, e) =>
@@ -38,7 +62,7 @@ namespace StoreFrontUi.Pages
                 await LoadReleasedProducts();
             };
 
-            this.DataContext = this;
+         
         }
         public async Task LoadNewProducts()
         {
@@ -90,7 +114,7 @@ namespace StoreFrontUi.Pages
                 if (releasedShoes != null)
                 {
                     ReleasedProducts = new ObservableCollection<Product>(releasedShoes);
-                  // ProductCarousel.ItemsSource = ReleasedProducts;
+
                 }
             }
             catch (Exception ex)

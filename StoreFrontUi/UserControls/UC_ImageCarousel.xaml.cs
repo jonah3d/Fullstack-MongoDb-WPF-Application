@@ -123,6 +123,8 @@ namespace StoreFrontUi.UserControls
             DataContext = this;
             _indicators = new ObservableCollection<ImageIndicator>();
             _imagePaths = new List<string>();
+
+            DataContext = this;
         }
 
 
@@ -149,7 +151,10 @@ namespace StoreFrontUi.UserControls
                     bitmap.CacheOption = BitmapCacheOption.OnLoad;
                     bitmap.UriSource = new Uri(_imagePaths[index]);
                     bitmap.EndInit();
-                    CurrentImage = bitmap;
+                    CurrentImageUrl = _imagePaths[index];
+
+                    MainImage.GetBindingExpression(Image.SourceProperty)?.UpdateTarget();
+
                 }
                 catch (Exception ex)
                 {
@@ -157,8 +162,22 @@ namespace StoreFrontUi.UserControls
                 }
             }
         }
+        // Still inside: public partial class UC_ImageCarousel : UserControl, INotifyPropertyChanged
+        public static readonly DependencyProperty CurrentImageUrlProperty =
+            DependencyProperty.Register(
+                nameof(CurrentImageUrl),
+                typeof(string),
+                typeof(UC_ImageCarousel),
+                new PropertyMetadata(null)
+            );
 
- 
+        public string CurrentImageUrl
+        {
+            get => (string)GetValue(CurrentImageUrlProperty);
+            private set => SetValue(CurrentImageUrlProperty, value);
+        }
+
+
         private void PrevButton_Click(object sender, RoutedEventArgs e)
         {
             if (_imagePaths.Count > 0)
@@ -220,6 +239,7 @@ namespace StoreFrontUi.UserControls
                 OnPropertyChanged(nameof(IsActive));
             }
         }
+
 
         protected void OnPropertyChanged(string name)
         {
