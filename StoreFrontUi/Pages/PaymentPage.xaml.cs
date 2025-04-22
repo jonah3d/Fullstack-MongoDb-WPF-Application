@@ -18,6 +18,7 @@ using QuestPDF.Fluent;
 using StoreFrontModel;
 using StoreFrontRepository;
 using StoreFrontUi.Document;
+using StoreFrontUi.Utils;
 
 
 namespace StoreFrontUi.Pages
@@ -189,21 +190,58 @@ namespace StoreFrontUi.Pages
                 ProgressBar.Value = 75;
                 await Task.Delay(200); // simulate processing
 
+
+
+
                 // Save to file
-                File.AppendAllText("invoices.txt", GenerateInvoiceText(invoice));
+            /*    File.AppendAllText("invoices.txt", GenerateInvoiceText(invoice));*/
                 await StoreFront.SaveInvoice(invoice);
 
 
-                // STEP 2: Save the invoice (includes file writing and PDF)
+                var downloader = new InvoiceDownloader(
+                        "http://10.2.124.70:8080/jasperserver",
+                        "jasperadmin",
+                        "bitnami");
+
+                // When calling the method:
+                bool reportDownloaded = await downloader.DownloadReport(
+      reportUri: "/StoreFrontReports/storefrontInvoice", // Fixed case
+      outputPath: @$"C:\Users\Public\Documents\{invoice.InvoiceNumber}.pdf",
+      paramName: "invoiceNum", // Using the ID from your parameter control
+      paramValue: invoice.InvoiceNumber
+  );
+                if (reportDownloaded)
+                {
+                    Console.WriteLine("PDF was successfully created");
+                    // Maybe even try to open it automatically to verify
+                    try
+                    {
+                        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                        {
+                            FileName = @$"C:\Users\Public\Documents\{invoice.InvoiceNumber}.pdf",
+                            UseShellExecute = true
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Could not open PDF: {ex.Message}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("PDF download failed");
+                }
+
+                /*
                 string pdfPath = System.IO.Path.Combine("Invoices", $"{invoice.InvoiceNumber}.pdf");
-                Directory.CreateDirectory("Invoices"); // Ensure folder exists
+                Directory.CreateDirectory("Invoices"); 
                 var document = new InvoiceDocument(invoice);
-                document.GeneratePdf(pdfPath);
+                document.GeneratePdf(pdfPath);*/
 
 
                 ProgressBar.Value = 100;
 
-                await Task.Delay(300); // Pause at 100 for feedback
+                await Task.Delay(300); 
                 return true;
             }
             catch (Exception ex)
