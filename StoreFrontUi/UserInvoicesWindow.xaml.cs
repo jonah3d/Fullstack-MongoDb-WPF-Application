@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Win32;
 using MongoDB.Driver;
 using StoreFrontModel;
@@ -65,6 +66,18 @@ namespace StoreFrontUi
 
         private async void Btn_Download_Click(object sender, RoutedEventArgs e)
         {
+            var configuration = new ConfigurationBuilder()
+                .AddJsonFile("serversettings.json")
+                .Build();
+
+
+            var jasperUrl = configuration["JasperSettings:ServerUrl"];
+            var jasperUser = configuration["JasperSettings:Username"];
+            var jasperPassword = configuration["JasperSettings:Password"];
+            var ReportPath = configuration["JasperSettings:ReportPath"];
+            var ParameterName = configuration["JasperSettings:ParameterName"];
+
+
             if (SelectedInvoice == null)
             {
                 MessageBox.Show("Please select an invoice to download.");
@@ -82,17 +95,15 @@ namespace StoreFrontUi
             if (saveDialog.ShowDialog() == true)
             {
                 var downloader = new InvoiceDownloader(
-                    "http://10.2.124.70:8080/jasperserver",
-                    "jasperadmin",
-                    "bitnami"
-                );
-
+                        jasperUrl,
+                       jasperUser,
+                        jasperPassword);
                 bool reportDownloaded = await downloader.DownloadReport(
-                    reportUri: "/StoreFrontReports/storefrontInvoice",
-                    outputPath: saveDialog.FileName,  
-                    paramName: "invoiceNum",
-                    paramValue: SelectedInvoice.InvoiceNumber
-                );
+                                    reportUri: ReportPath,
+                                    outputPath: @$"C:\Users\Public\Documents\{SelectedInvoice.InvoiceNumber}.pdf",
+                                    paramName: ParameterName,
+                                    paramValue: SelectedInvoice.InvoiceNumber
+                                );
 
                 if (reportDownloaded)
                 {

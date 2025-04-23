@@ -14,11 +14,13 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Extensions.Configuration;
 using QuestPDF.Fluent;
 using StoreFrontModel;
 using StoreFrontRepository;
 using StoreFrontUi.Document;
 using StoreFrontUi.Utils;
+using Microsoft.Extensions.Configuration;
 
 
 namespace StoreFrontUi.Pages
@@ -42,7 +44,11 @@ namespace StoreFrontUi.Pages
             parentWindow = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
 
             this.DataContext = this;
+
+
+
         }
+       
 
         private void txtCardNumber_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -140,6 +146,24 @@ namespace StoreFrontUi.Pages
         {
             try
             {
+
+                var configuration = new ConfigurationBuilder()
+                .AddJsonFile("serversettings.json")
+                .Build();
+
+              
+                var jasperUrl = configuration["JasperSettings:ServerUrl"];
+                var jasperUser = configuration["JasperSettings:Username"];
+                var jasperPassword = configuration["JasperSettings:Password"];
+                var ReportPath = configuration["JasperSettings:ReportPath"];
+                var ParameterName = configuration["JasperSettings:ParameterName"];
+
+
+                var smtpServer = configuration["EmailSettings:SmtpServer"];
+                var smtpPort = int.Parse(configuration["EmailSettings:Port"]);
+                var senderEmail = configuration["EmailSettings:SenderEmail"];
+                var senderPassword = configuration["EmailSettings:SenderPassword"];
+                var useSSL = bool.Parse(configuration["EmailSettings:UseSSL"]);
                 ProgressBar.Value = 10;
                 await Task.Delay(200); 
 
@@ -202,15 +226,15 @@ namespace StoreFrontUi.Pages
 
 
                 var downloader = new InvoiceDownloader(
-                        "http://10.2.124.70:8080/jasperserver",
-                        "jasperadmin",
-                        "bitnami");
+                        jasperUrl,
+                       jasperUser,
+                        jasperPassword);
 
               
                 bool reportDownloaded = await downloader.DownloadReport(
-                      reportUri: "/StoreFrontReports/storefrontInvoice", 
+                      reportUri:ReportPath, 
                       outputPath: @$"C:\Users\Public\Documents\{invoice.InvoiceNumber}.pdf",
-                      paramName: "invoiceNum",
+                      paramName: ParameterName,
                       paramValue: invoice.InvoiceNumber
                   );
                 if (reportDownloaded)
@@ -218,26 +242,26 @@ namespace StoreFrontUi.Pages
                     MessageBox.Show("PDF was successfully created");
 
                     var emailSender = new EmailSender(
-                        "smtp.gmail.com", 
-                        587,              
-                        "jarthur@milaifontanals.org", 
-                        "hdsliecvbbaonxbv",    
-                        true               
+                        smtpServer, 
+                        smtpPort,              
+                        senderEmail, 
+                        senderPassword,    
+                        useSSL               
                     );
 
-                    string emailSubject = $"Your Invoice #{invoice.InvoiceNumber} from Xapatos Wearables";
+                    string emailSubject = $"Tu Factura #{invoice.InvoiceNumber} desde Xapatos Wearables";
                     string emailBody = $@"
                 <html>
                 <body>
-                    <h2>Thank you for your purchase!</h2>
-                    <p>Dear {User.FirstName} {User.LastName},</p>
-                    <p>Please find attached your invoice #{invoice.InvoiceNumber} dated {invoice.InvoiceDate.ToString("dd/MM/yyyy")}.</p>
-                    <p>Total amount: €{invoice.Total}</p>
+                    <h2>Gracias Por Tu Compra!</h2>
+                    <p>Hola {User.FirstName} {User.LastName},</p>
+                    <p>Adjuntado a esta factura #{invoice.InvoiceNumber} de {invoice.InvoiceDate.ToString("dd/MM/yyyy")}.</p>
+                    <p>Precio Total: €{invoice.Total}</p>
                     <br>
-                    <p>If you have any questions regarding your purchase, please don't hesitate to contact us.</p>
+                    <p>Si tienes cualquier duda sobre tu compra. No dudes en contactarnos.</p>
                     <br>
-                    <p>Best regards,</p>
-                    <p>Xapatos Wearables Team</p>
+                    <p>Gracias,</p>
+                    <p>Equipo Xapatos Wearables</p>
                 </body>
                 </html>";
 

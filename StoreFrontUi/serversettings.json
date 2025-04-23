@@ -1,0 +1,16 @@
+﻿{
+  "JasperSettings": {
+    "ServerUrl": "http://localhost:8080/jasperserver",
+    "Username": "jasperadmin",
+    "Password": "bitnami",
+    "ReportPath": "/StoreFrontReports/storefrontInvoice",
+    "ParameterName": "invoiceNum"
+  },
+  "EmailSettings": {
+    "SmtpServer": "smtp.gmail.com",
+    "Port": 587,
+    "SenderEmail": "jarthur@milaifontanals.org",
+    "SenderPassword": "hdsliecvbbaonxbv",
+    "UseSSL": true
+  }
+}
