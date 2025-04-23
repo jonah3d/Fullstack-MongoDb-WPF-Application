@@ -123,7 +123,7 @@ namespace StoreFrontUi
             Tb_search.Visibility = Visibility.Collapsed;
             Tb_search.IsEnabled = false;
 
-            // If the new page is ProductsFilterPage, show it
+    
             if (e.Content is ProductsFilterPage)
             {
                 Tb_search.Visibility = Visibility.Visible;

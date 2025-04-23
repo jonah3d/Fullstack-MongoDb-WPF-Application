@@ -15,9 +15,7 @@ using StoreFrontRepository;
 
 namespace StoreFrontUi
 {
-    /// <summary>
-    /// Interaction logic for ResetPasswordWindow.xaml
-    /// </summary>
+
     public partial class ResetPasswordWindow : Window
     {
         private IStoreFront storeFront;

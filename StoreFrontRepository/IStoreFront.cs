@@ -44,6 +44,8 @@ namespace StoreFrontRepository
 
         public Task<bool> ResetPassword(string email, string username, string newPassword);
 
+        public Task<bool> ChangeStockAsync(ObjectId productId, ObjectId variantId, string size, int quantity);
+
         public Task<bool> UpdateUser(User user);
     }
 }

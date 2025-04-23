@@ -15,7 +15,7 @@ namespace StoreFrontUi.Utils
         {
             if (imageData == null || imageData.Length == 0)
             {
-                return new ImageBrush(); // Return a default brush
+                return new ImageBrush(); 
             }
 
             try
@@ -32,7 +32,7 @@ namespace StoreFrontUi.Utils
             }
             catch
             {
-                return new ImageBrush(); // Return default brush on error
+                return new ImageBrush(); 
             }
         }
 

@@ -31,7 +31,7 @@ namespace StoreFrontUi.UserControls
             set { SetValue(NewProductsProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for NewProducts.  This enables animation, styling, binding, etc...
+
         public static readonly DependencyProperty NewProductsProperty =
             DependencyProperty.Register("NewProducts", typeof(StoreFrontModel.Product), typeof(UC_NewItem), new PropertyMetadata(null));
 

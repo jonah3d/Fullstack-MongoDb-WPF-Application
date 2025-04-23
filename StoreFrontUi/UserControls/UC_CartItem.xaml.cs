@@ -29,7 +29,7 @@ namespace StoreFrontUi.UserControls
                 Foreground = new SolidColorBrush(Colors.Black)
             };
 
-            // Assuming btn_deleteBtn is a Button
+       
             btn_deleteBtn.Content = icon;
         }
 
@@ -65,8 +65,7 @@ namespace StoreFrontUi.UserControls
                 }
                 else
                 {
-                    // Quantity is 1 and about to be decreased to 0
-                    // Signal to remove the item
+    
                     RemoveItem?.Invoke(this, Item);
                 }
             }

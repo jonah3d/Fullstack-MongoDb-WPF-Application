@@ -272,5 +272,50 @@ namespace StoreFrontUi.Pages
                 MessageBox.Show($"An error occurred while adding the item to the cart: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        private async void Btn_changeStock_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (SelectedVariant != null && SelectedSize != null)
+                {
+                    var productId = StoreProduct.Id;
+                    var variantId = SelectedVariant.Id;
+                    var size = SelectedSize.Size;
+                    var newStock = int.Parse(stockValuechnage.Text);
+                    if (newStock < 0)
+                    {
+                        MessageBox.Show("Stock cannot be negative.", "Invalid Stock", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+
+                    var quantityDelta = newStock - SelectedSize.Stock;
+
+                    var success = await storeFront.ChangeStockAsync(productId, variantId, size, quantityDelta);
+
+                    if (success)
+                    {
+                   
+                        SelectedSize.Stock = newStock;
+
+                        
+                        MessageBox.Show("Stock updated successfully.");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Stock update failed.");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Please select a variant and size before changing stock.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while changing the stock: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
+
     }
+}

@@ -40,7 +40,7 @@ namespace StoreFrontUi.Pages
                 if (_releasedProducts != value)
                 {
                     _releasedProducts = value;
-                    OnPropertyChanged(); // Notify WPF
+                    OnPropertyChanged();
                 }
             }
         }

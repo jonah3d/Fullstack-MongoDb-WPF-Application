@@ -46,7 +46,7 @@ namespace StoreFrontUi.Pages
                   
                     currentSearchText = searchText;
                     ApplyFilters();
-                   // return Task.CompletedTask; // Return a completed task to satisfy the async signature
+                   // return Task.CompletedTask; 
                 };
             }
             this.DataContext = this;

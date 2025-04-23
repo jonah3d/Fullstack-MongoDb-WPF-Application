@@ -79,7 +79,7 @@ namespace StoreFrontUi.Pages
 
             try
             {
-                // STEP 1: Decrease stock for each cart item
+         
                 foreach (var item in Cart.Items)
                 {
                     bool stockUpdated = await StoreFront.DeleteStock(item.ProductId, item.VariantId, item.Size, item.Quantity);
@@ -94,7 +94,7 @@ namespace StoreFrontUi.Pages
 
                 ProgressBar.Value = 50;
 
-                // STEP 2: Save the invoice (includes file writing)
+               
                 bool invoiceSaved = await saveInvoiceWithProgress();
                
                 if (!invoiceSaved)
@@ -104,7 +104,7 @@ namespace StoreFrontUi.Pages
                     return;
                 }
 
-                // STEP 3: Delete the cart
+         
                // await StoreFront.DeleteCart(User.Id,Cart.CartId);
 
                 parentWindow.StoreCart.Purchased = true;
@@ -120,7 +120,7 @@ namespace StoreFrontUi.Pages
                 await Task.Delay(200);
 
                 MessageBox.Show("Payment successful!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                // Optionally navigate to another page
+         
                 parentWindow.MainFramePage.Navigate(new Pages.MainPage());
             }
             catch (Exception ex)
@@ -141,7 +141,7 @@ namespace StoreFrontUi.Pages
             try
             {
                 ProgressBar.Value = 10;
-                await Task.Delay(200); // Simulate startup
+                await Task.Delay(200); 
 
                 var invoiceNumber = await StoreFront.GenerateInvoiceNumberAsync();
                 ProgressBar.Value = 30;
@@ -188,7 +188,7 @@ namespace StoreFrontUi.Pages
                 };
 
                 ProgressBar.Value = 75;
-                await Task.Delay(200); // simulate processing
+                await Task.Delay(200); 
 
 
 
@@ -206,11 +206,11 @@ namespace StoreFrontUi.Pages
                         "jasperadmin",
                         "bitnami");
 
-                // When calling the method:
+              
                 bool reportDownloaded = await downloader.DownloadReport(
-                      reportUri: "/StoreFrontReports/storefrontInvoice", // Fixed case
+                      reportUri: "/StoreFrontReports/storefrontInvoice", 
                       outputPath: @$"C:\Users\Public\Documents\{invoice.InvoiceNumber}.pdf",
-                      paramName: "invoiceNum", // Using the ID from your parameter control
+                      paramName: "invoiceNum",
                       paramValue: invoice.InvoiceNumber
                   );
                 if (reportDownloaded)
@@ -218,11 +218,11 @@ namespace StoreFrontUi.Pages
                     MessageBox.Show("PDF was successfully created");
 
                     var emailSender = new EmailSender(
-                        "smtp.gmail.com",  // Gmail SMTP server
-                        587,               // Gmail SMTP port
-                        "jarthur@milaifontanals.org",  // Your Gmail address
-                        "hdsliecvbbaonxbv",     // Your Gmail app password (not your regular password)
-                        true               // Enable SSL
+                        "smtp.gmail.com", 
+                        587,              
+                        "jarthur@milaifontanals.org", 
+                        "hdsliecvbbaonxbv",    
+                        true               
                     );
 
                     string emailSubject = $"Your Invoice #{invoice.InvoiceNumber} from Xapatos Wearables";
@@ -258,7 +258,7 @@ namespace StoreFrontUi.Pages
                         MessageBox.Show("Failed to send invoice email");
                     }
 
-                    // Maybe even try to open it automatically to verify
+                  
                     try
                     {
                         System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo

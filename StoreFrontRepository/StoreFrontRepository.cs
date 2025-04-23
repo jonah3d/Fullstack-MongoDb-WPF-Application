@@ -897,6 +897,37 @@ namespace StoreFrontRepository
             }
         }
 
+        public async Task<bool> ChangeStockAsync(ObjectId productId, ObjectId variantId, string size, int quantity)
+        {
+            try
+            {
+                var products = mongoDatabase.GetCollection<Product>("products");
+
+                var filter = Builders<Product>.Filter.And(
+                    Builders<Product>.Filter.Eq(p => p.Id, productId),
+                    Builders<Product>.Filter.ElemMatch(p => p.Variants, v => v.Id == variantId)
+                );
+
+                var update = Builders<Product>.Update.Inc("variants.$[variant].sizes.$[size].stock", quantity);
+
+                var arrayFilters = new List<ArrayFilterDefinition>
+        {
+            new JsonArrayFilterDefinition<BsonDocument>("{ 'variant._id': ObjectId('" + variantId + "') }"),
+            new JsonArrayFilterDefinition<BsonDocument>("{ 'size.size': '" + size + "' }")
+        };
+
+                var updateOptions = new UpdateOptions { ArrayFilters = arrayFilters };
+
+                var result = await products.UpdateOneAsync(filter, update, updateOptions);
+
+                return result.ModifiedCount > 0;
+            }
+            catch (Exception ex)
+            {
+                throw new StoreFrontException($"Error Changing Stock: {ex.Message}");
+            }
+        }
+
 
     }
 }
