@@ -279,28 +279,32 @@ namespace StoreFrontUi.Pages
 
         private bool IsMenProduct(Product product)
         {
-    
-            return product.Categories?.Any(c => c.Name.Contains("Men") || c.Name.Contains("men")) ?? false;
+            return product.CategoryIds?.Any(c => c.ToString() == "67d3ffdbe5e5fab7820fd6f9") ?? false;  // Men category ID
+         // return product.Categories?.Any(c => c.Name.Contains("Men") || c.Name.Contains("men")) ?? false;
         }
 
         private bool IsWomenProduct(Product product)
         {
-            return product.Categories?.Any(c => c.Name.Contains("Women") || c.Name.Contains("women")) ?? false;
+            return product.CategoryIds?.Any(c => c.ToString() == "67d3fff8e5e5fab7820fd6fb") ?? false;  // Women category ID
+                      // return product.Categories?.Any(c => c.Name.Contains("Women") || c.Name.Contains("women")) ?? false;
         }
 
         private bool IsChildrenProduct(Product product)
         {
-            return product.Categories?.Any(c => c.Name.Contains("Children") || c.Name.Contains("children") || c.Name.Contains("Kids") || c.Name.Contains("kids")) ?? false;
+            return product.CategoryIds?.Any(c => c.ToString() == "67fa7ba06829821420405087") ?? false;  // Children category ID
+      // return product.Categories?.Any(c => c.Name.Contains("Children") || c.Name.Contains("children") || c.Name.Contains("Kids") || c.Name.Contains("kids")) ?? false;
         }
 
         private bool IsSportProduct(Product product)
         {
-            return product.Categories?.Any(c => c.Name.Contains("Sport") || c.Name.Contains("sport") || c.Name.Contains("Athletic") || c.Name.Contains("athletic")) ?? false;
+            return product.CategoryIds?.Any(c => c.ToString() == "67fcd7c1147ef4b3d55493e2") ?? false;
+            // return product.Categories?.Any(c => c.Name.Contains("Sport") || c.Name.Contains("sport") || c.Name.Contains("Athletic") || c.Name.Contains("athletic")) ?? false;
         }
 
         private bool IsWorkProduct(Product product)
         {
-            return product.Categories?.Any(c => c.Name.Contains("Work") || c.Name.Contains("work") || c.Name.Contains("Formal") || c.Name.Contains("formal") || c.Name.Contains("Business") || c.Name.Contains("business")) ?? false;
+            return product.CategoryIds?.Any(c => c.ToString() == "680111af22a352ad9b6840d0") ?? false;
+            // return product.Categories?.Any(c => c.Name.Contains("Work") || c.Name.Contains("work") || c.Name.Contains("Formal") || c.Name.Contains("formal") || c.Name.Contains("Business") || c.Name.Contains("business")) ?? false;
         }
 
         private void ProductsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
