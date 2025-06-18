@@ -1,0 +1,38 @@
+# FULLSTACK MONGODB E-COMMERCE APPLICATION
+
+This project involves designing and implementing the wpf frontend of an online sports shoe store, focusing on the purchasing process. 
+The application needs to allow users to browse products,  view detailed product information, manage a shopping cart, and complete the payment process.
+
+The main objective of this project is the use of the no-sql database MongoDb with C# and study the functionalities no-sql databases.
+
+## Aplication Functionalities
+- Product Browse: Users can search for products by category (a hierarchical tree defined in the database), product name, price range, or size. Products are displayed in a paginated grid, showing variations in color, price, and discounts.
+
+- Product Detail: A dedicated page for each product displays up to four images, an HTML description, and options to select colors and available sizes (based on stock).
+Shopping Cart: The cart summarizes selected products, quantities, sizes, and colors, detailing line item prices, discounts, shipping costs, and the total. Shipping costs are determined by user-selected methods, with varying prices, minimum order thresholds for free shipping, and associated VAT types.
+
+- Payment: Users will log in to access their personal and shipping/billing details. Payment is made via credit card, with validation of the card type and number. Upon successful payment, a confirmation message is displayed, and an invoice is sent via email.
+
+- Invoice Management: Invoices must be printable at any time, with all economic data (quantities, prices, discounts, VAT percentages) frozen at the time of purchase. VAT types and percentages are defined in the database. Store identification data for invoices are also stored in the database for flexibility.
+
+
+## Project Structure
+
+### StoreFrontDb
+This project/module holds the database connection context and client. It facilitates the data connection between mongodb and the rest of the modules. Data is supplied to the connection parameters through appsettings.json
+with the following syntax  
+```{
+  "ConnectionStrings": {
+    "storefront": "mongodb://username:password@ipaddress:port"
+  }
+}
+````
+
+### StoreFrontModel
+A C# module that holds all the business model classes to be used by the application. Since they are to be used by mongodb, they must be annotated with mongodb annotations depending on their purpose.
+
+### StoreFrontRepository
+Module responsible for using the db connection to make db queries and forward the result to the rest of the application. It consists of an interface and its implemantation
+
+### StoreFrontUi
+A c# wpf project that defines the interface that the user will use to interact with our backend service.
