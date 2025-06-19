@@ -36,3 +36,71 @@ Module responsible for using the db connection to make db queries and forward th
 
 ### StoreFrontUi
 A c# wpf project that defines the interface that the user will use to interact with our backend service.
+
+
+## Tech Stack
+### MongoDb. 
+As this project is mainly focused on learning a non relational database, mongodb was the obvious choice due to its evergrowing popularity and relative ease of use. The database server is hosted in a docker container
+
+### Jasper Reports
+A jasper reports server running in a docker container is used to create invoices for every purchase and emailed to the client using smpt in C#
+
+### Wpf
+Since its a .net application the obvious choice of frontend is wpf. Winforms is old and has no xaml support, uwp is slow and sandboxed. 
+
+### Docker
+The application database server and the report server are hosted in docker. The following commands were used
+
+```
+docker network create botiga
+docker volume create --name mariadb_data
+docker run -d --name mariadb `
+  -p 7777:3306 `
+  --env ALLOW_EMPTY_PASSWORD=yes `
+  --env MARIADB_USER=bn_jasperreports `
+  --env MARIADB_PASSWORD=bitnami `
+  --env MARIADB_DATABASE=bitnami_jasperreports `
+  --network botiga `
+  --volume mariadb_data:/bitnami/mariadb `
+  bitnami/mariadb:latest
+
+docker volume create --name jasperreports_data
+docker run -d --name jasperreports `
+  -p 8080:8080 `
+  --env JASPERREPORTS_DATABASE_USER=bn_jasperreports `
+  --env JASPERREPORTS_DATABASE_PASSWORD=bitnami `
+  --env JASPERREPORTS_DATABASE_NAME=bitnami_jasperreports `
+  --network botiga `
+  --volume jasperreports_data:/bitnami/jasperreports `
+  bitnami/jasperreports:latest
+
+credentials
+8080
+jasperadmin
+bitnami
+
+
+docker run -d --name storefront `
+  -p 27017:27017 `
+  -v E:\Documents\GradoSuperiorDam2\Proyecto2\MongoDb\Db:/data/db `
+  -e MONGO_INITDB_ROOT_USERNAME=[mongouser] `
+  -e MONGO_INITDB_ROOT_PASSWORD=[mongopassword] `
+  --network botiga `
+  mongo:latest
+
+
+credentials
+27017
+[mongosuser]
+[mongopassword]
+
+mongodb://mongouser:[mongopassword]@localhost:27017/StoreFront?authSource=admin
+
+```
+In the root folder of this repository under dbCollection I have provided the json files of the coolections used in this program.
+
+## Sample Demo
+
+
+
+  
