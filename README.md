@@ -124,6 +124,8 @@ In order for the frontend to send mails we need to pass smtp parameters and down
 
 ## Sample Demo
 
+[![Watch the video](https://img.youtube.com/vi/bpE_u2WnqWo/maxresdefault.jpg)](https://youtu.be/bpE_u2WnqWo)
 
+### [Watch this video on YouTube](https://youtu.be/bpE_u2WnqWo)
 
   
