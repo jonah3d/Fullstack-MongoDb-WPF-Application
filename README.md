@@ -98,6 +98,29 @@ mongodb://mongouser:[mongopassword]@localhost:27017/StoreFront?authSource=admin
 
 ```
 In the root folder of this repository under dbCollection I have provided the json files of the coolections used in this program.
+In order for the frontend to send mails we need to pass smtp parameters and download the reports from jasper we do that through serversettings.json
+
+```
+
+﻿{
+  "JasperSettings": {
+    "ServerUrl": "http://localhost:8080/jasperserver",
+    "Username": "jasperadmin",
+    "Password": "bitnami",
+    "ReportPath": "/StoreFrontReports/storefrontInvoice",
+    "ParameterName": "invoiceNum"
+  },
+  "EmailSettings": {
+    "SmtpServer": "smtp.gmail.com",
+    "Port": 587,
+    "SenderEmail": "",
+    "SenderPassword": "",
+    "UseSSL": true
+  }
+}
+
+
+```
 
 ## Sample Demo
 
